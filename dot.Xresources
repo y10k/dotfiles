@@ -1,0 +1,306 @@
+! $Id$
+
+! Athena widget
+*beNiceToColormap: False
+*shapeStyle:			Rectangle
+*background:			lightgray
+*borderWidth:			0
+!*MenuButton*borderWidth:	1
+*SimpleMenu*borderWidth:	1
+*SimpleMenu*borderColor:	dark gray
+*Scrollbar*borderWidth:		2
+*Scrollbar*borderColor:		black
+*sensitive:			True
+*highlightThickness:		2
+*Sme*borderWidth:		1
+*SmeBSB*borderWidth:		1
+*SmeBSB*borderColor:		dark gray
+*Box*borderWidth:		2
+*Box*borderColor:		dark gray
+*Box*background:		gray
+*Command*background:		dark gray
+*Toggle*background:		dark gray
+
+XCalc*Command.shapeStyle: ShapeRectangle
+XCalc*Command.font: -*-fixed-medium-r-normal-*-12-*-*-*-*-*-iso8859-*
+XCalc*Command.width:  38
+XCalc*Command.height: 23
+
+Emacs.geometry: 100x48
+#ifdef COLOR
+Emacs*background: Wheat
+Emacs*foreground: Black
+Emacs*pointerColor: MidnightBlue
+Emacs*cursorColor: MidnightBlue
+#endif
+Emacs*bitmapIcon: on
+Emacs.font: fontset-msgothic
+Emacs.fontset-0: \
+	-*-fixed-medium-r-normal--12-*-*-*-c-*-fontset-kaname,\
+	ascii:-misc-fixed-medium-r-semicondensed--13-*-*-*-c-*-iso8859-1,\
+        latin-iso8859-1:-misc-fixed-medium-r-semicondensed--13-*-*-*-c-*-iso8859-1,\
+	latin-jisx0201:-mnkaname-fixed-medium-r-normal--12-*-*-*-c-*-jisx0201.1976-0,\
+	katakana-jisx0201:-mnkaname-fixed-medium-r-normal--12-*-*-*-c-*-jisx0201.1976-0,\
+	japanese-jisx0208:-mnkaname-fixed-medium-r-normal--12-*-*-*-c-*-jisx0208.1983-0
+Emacs.fontset-1: \
+	-*-fixed-bold-r-normal--12-*-*-*-c-*-fontset-kaname,\
+	ascii:-misc-fixed-bold-r-semicondensed--13-*-*-*-c-*-iso8859-1,\
+        latin-iso8859-1:-misc-fixed-bold-r-semicondensed--13-*-*-*-c-*-iso8859-1,\
+	latin-jisx0201:-microsoft-gothic-bold-r-normal--12-*-*-*-c-*-jisx0201.1976-0,\
+	katakana-jisx0201:-microsoft-gothic-bold-r-normal--12-*-*-*-c-*-jisx0201.1976-0,\
+	japanese-jisx0208:-microsoft-gothic-bold-r-normal--12-*-*-*-c-*-jisx0208.1983-0
+Emacs.fontset-2: \
+	-*-fixed-medium-r-normal--12-*-*-*-c-*-fontset-msmincho,\
+	ascii:-misc-fixed-medium-r-semicondensed--13-*-*-*-c-*-iso8859-1,\
+        latin-iso8859-1:-misc-fixed-medium-r-semicondensed--13-*-*-*-c-*-iso8859-1,\
+	latin-jisx0201:-microsoft-mincho-medium-r-normal--13-*-*-*-c-*-jisx0201.1976-0,\
+	katakana-jisx0201:-microsoft-mincho-medium-r-normal--13-*-*-*-c-*-jisx0201.1976-0,\
+	japanese-jisx0208:-microsoft-mincho-medium-r-normal--13-*-*-*-c-*-jisx0208.1983-0
+Emacs.fontset-3: \
+	-*-fixed-bold-r-normal--12-*-*-*-c-*-fontset-msmincho,\
+	ascii:-misc-fixed-bold-r-semicondensed--13-*-*-*-c-*-iso8859-1,\
+        latin-iso8859-1:-misc-fixed-bold-r-semicondensed--13-*-*-*-c-*-iso8859-1,\
+	latin-jisx0201:-microsoft-mincho-bold-r-normal--13-*-*-*-c-*-jisx0201.1976-0,\
+	katakana-jisx0201:-microsoft-mincho-bold-r-normal--13-*-*-*-c-*-jisx0201.1976-0,\
+	japanese-jisx0208:-microsoft-mincho-bold-r-normal--13-*-*-*-c-*-jisx0208.1983-0
+Emacs.fontset-4: \
+	-*-fixed-medium-r-normal--14-*-*-*-c-*-fontset-msgothic,\
+	latin-jisx0201:-microsoft-gothic-medium-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
+	katakana-jisx0201:-microsoft-gothic-medium-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
+	japanese-jisx0208:-microsoft-gothic-medium-r-normal--13-*-*-*-c-*-jisx0208.1983-0
+Emacs.fontset-5: \
+	-*-fixed-bold-r-normal--14-*-*-*-c-*-fontset-msgothic,\
+	latin-jisx0201:-microsoft-gothic-bold-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
+	katakana-jisx0201:-microsoft-gothic-bold-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
+	japanese-jisx0208:-microsoft-gothic-bold-r-normal--14-*-*-*-c-*-jisx0208.1983-0
+
+KTerm*termName: xterm-color
+KTerm*inputMethod: skkinput
+KTerm*preeditType: OverTheSpot
+#KTerm*VT100*background: AntiqueWhite
+KTerm*VT100*translations: \
+	#override Shift<Key>space: begin-conversion(_JAPANESE_CONVERSION)
+KTerm*allowSendEvents: true
+KTerm*VT100*scrollbar*background: gray60
+KTerm*VT100*foreground: Black
+KTerm*VT100*geometry: 100x35
+KTerm*VT100*lineSpace: 0
+KTerm*VT100*scrollBar: True
+KTerm*VT100*kanjiMode: euc
+KTerm*VT100*saveLines: 1024
+KTerm*VT100*fontList: \
+	-*-fixed-medium-r-normal--14-*,\
+	-*-gothic-medium-r-normal--14-*,\
+	-*-mincho-medium-r-normal--14-*
+KTerm*VT100*fontList1: \
+	-*-fixed-medium-r-normal--2-*,\
+	-*-gothic-medium-r-normal--2-*,\
+	-*-mincho-medium-r-normal--2-*
+KTerm*VT100*fontList2: \
+	-*-fixed-medium-r-normal--7-70-75-75-c-50-iso8859-1,\
+	-*-fixed-medium-r-normal--10-*-*-*-*-*-jisx0208.1983-*,\
+	-*-fixed-medium-r-normal--10-*,\
+	-*-gothic-medium-r-normal--10-*,\
+	-*-mincho-medium-r-normal--10-*
+KTerm*VT100*fontList3: \
+	-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1,\
+	-*-fixed-medium-r-normal--12-*-*-*-*-*-jisx0201.1976-*,\
+	-*-fixed-medium-r-normal--12-*-*-*-*-*-jisx0208.1983-*,\
+	-*-fixed-medium-r-normal--12-*
+KTerm*VT100*fontList4: \
+	-*-fixed-medium-r-normal--14-*,\
+	-*-gothic-medium-r-normal--14-*,\
+	-*-mincho-medium-r-normal--14-*
+KTerm*VT100*fontList5: \
+	-*-fixed-medium-r-normal--16-*,\
+	-*-gothic-medium-r-normal--16-*,\
+	-*-mincho-medium-r-normal--16-*
+KTerm*VT100*fontList6: \
+	-*-fixed-medium-r-normal--24-*,\
+	-*-gothic-medium-r-normal--24-*,\
+	-*-mincho-medium-r-normal--24-*
+
+Netscape*inputMethod:
+Netscape*preeditType:
+Netscape*maxImageColors: 64
+Netscape*borderWidth: 0
+
+XDvi*geometry: 780x530
+XDvi*font: -*-helvetica-medium-r-normal-*-10-*-*-*-*-*-iso8859-1
+XDvi.background: white
+XDvi.form*background: gray60
+XDvi.mfMode: canonex
+XDvi.pixelsPerInch: 600
+XDvi.hushSpecials: True
+XDvi.postscript:off
+XDvi.gamma: 1.5
+
+Tgif.Geometry: 700x400
+Tgif.GridSystem: Metric
+Tgif.PSA4PaperSize: true
+Tgif.Modifiers: @im=skkinput
+Tgif.DoubleByteInputMethod: xim
+Tgif.PreeditType: OffTheSpot
+Tgif.FontSizes: 11, 12, 14, 17, 18, 20, 24, 25, 30, 34, 40, 50, 60, 70, 80, 90, 100
+Tgif.HasAlternateDefaultFonts: true
+Tgif.Times-Roman:\
+	-microsoft-times-medium-r-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Times-Bold:\
+	-microsoft-times-bold-r-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Times-Italic:\
+	-microsoft-times-medium-i-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Times-BoldItalic:\
+	-microsoft-times-bold-i-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Courier:\
+	-microsoft-courier-medium-r-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Courier-Bold:\
+	-microsoft-courier-bold-r-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Courier-Oblique:\
+	-microsoft-courier-medium-i-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Courier-BoldOblique:\
+	-microsoft-courier-bold-i-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Helvetica:\
+	-microsoft-arial-medium-r-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Helvetica-Bold:\
+	-microsoft-arial-bold-r-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Helvetica-Oblique:\
+	-microsoft-arial-medium-i-*--%d-*-*-*-*-*-iso8859-*
+Tgif.Helvetica-BoldOblique:\
+	-microsoft-arial-bold-i-*--%d-*-*-*-*-*-iso8859-*
+Tgif.NewCenturySchlbk-Roman:\
+	-microsoft-times-medium-r-*--%d-*-*-*-*-*-iso8859-*
+Tgif.NewCenturySchlbk-Italic:\
+	-microsoft-times-medium-i-*--%d-*-*-*-*-*-iso8859-*
+Tgif.NewCenturySchlbk-Bold:\
+	-microsoft-times-bold-r-*--%d-*-*-*-*-*-iso8859-*
+Tgif.NewCenturySchlbk-BoldItalic:\
+	-microsoft-times-bold-i-*--%d-*-*-*-*-*-iso8859-*
+Tgif.SquareDoubleByteFonts: \n\
+	-microsoft-mincho-medium-r-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		H \n\
+		Ryumin-Light-EUC-H \n\
+	-microsoft-mincho-bold-r-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		H \n\
+		Ryumin-Light-EUC-H \n\
+	-microsoft-mincho-medium-i-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		H \n\
+		Ryumin-Light-EUC-H \n\
+	-microsoft-mincho-bold-i-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		H \n\
+		Ryumin-Light-EUC-H \n\
+	\n\
+	-microsoft-mincho-medium-r-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		V \n\
+		Ryumin-Light-EUC-V \n\
+	-microsoft-mincho-bold-r-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		V \n\
+		Ryumin-Light-EUC-V \n\
+	-microsoft-mincho-medium-i-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		V \n\
+		Ryumin-Light-EUC-V \n\
+	-microsoft-mincho-bold-i-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		V \n\
+		Ryumin-Light-EUC-V \n\
+	\n\
+	-microsoft-gothic-medium-r-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		H \n\
+		GothicBBB-Medium-EUC-H \n\
+	-microsoft-gothic-bold-r-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		H \n\
+		GothicBBB-Medium-EUC-H \n\
+	-microsoft-gothic-medium-i-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		H \n\
+		GothicBBB-Medium-EUC-H \n\
+	-microsoft-gothic-bold-i-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		H \n\
+		GothicBBB-Medium-EUC-H \n\
+	\n\
+	-microsoft-gothic-medium-r-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		V \n\
+		GothicBBB-Medium-EUC-V \n\
+	-microsoft-gothic-bold-r-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		V \n\
+		GothicBBB-Medium-EUC-V \n\
+	-microsoft-gothic-medium-i-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		V \n\
+		GothicBBB-Medium-EUC-V \n\
+	-microsoft-gothic-bold-i-*--%d-*-*-*-*-0-jisx0208.1983-* \n\
+		V \n\
+		GothicBBB-Medium-EUC-V
+
+xv*background: gray
+xv.ctrlGeometry: +200+60
+
+Xcolors*geometry: 400x500
+Xcolors*sample*font: -misc-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*
+Xcolors*colors*font: -*-helvetica-medium-r-normal-*-10-*-*-*-*-*-*-*
+
+Editres.Geometry: 600x500
+Viewres.Geometry: 600x500
+
+XLoad*background: LightSkyBlue
+XLoad*foreground: MidnightBlue
+XLoad*highlight: red
+XLoad*update: 4
+
+berserk*chainNum: 7
+berserk*chainLen: 80
+berserk*popup.label: ベルセルク
+berserk*chainPattern: chain.mag
+berserk*menusNum: 1
+berserk*menu0.numsOfMenu: 2
+berserk*menu0.title: ベルセルク マスコット
+berserk*menu0.masDat0.title: ベヘリット
+berserk*menu0.masDat0.filename: beherit.mag
+berserk*menu0.masDat1.title: 害虫パック
+berserk*menu0.masDat1.filename: gaichu.mag
+
+Xmessage*Command.shapeStyle: Rectangle
+
+XCalendar*inputMethod: skkinput
+XCalendar*preeditType: OverTheSpot
+
+Skkinput.xim.conversionStartKey: Shift<Key>space
+Skkinput.ximp.conversionStartKey: Shift<Key>space
+Skkinput*foreground: Black
+Skkinput*background: AntiqueWhite
+Skkinput*fontSet: \
+	-*-fixed-medium-r-normal--16-*-*-*-*-*-iso8859-*,\
+	-*-gothic-medium-r-normal--16-*-*-*-*-*-jisx0201.1976-*,\
+	-*-gothic-medium-r-normal--16-*-*-*-*-*-jisx0208.1983-*,\
+	-*-gothic-medium-r-normal--16-*-*-*-*-*-jisx0212.1990-*
+Skkinput*minibufferFontSet: \
+	-*-fixed-medium-r-normal--16-*-*-*-*-*-iso8859-*,\
+	-*-gothic-medium-r-normal--16-*-*-*-*-*-jisx0201.1976-*,\
+	-*-gothic-medium-r-normal--16-*-*-*-*-*-jisx0208.1983-*,\
+	-*-gothic-medium-r-normal--16-*-*-*-*-*-jisx0212.1990-*
+
+XClock*geometry: 80x80
+XClock*update: 1
+
+xosview*loadDecay: False
+xosview*loadGraph: False
+xosview*cpuDecay: True
+xosview*cpuGraph: False
+xosview*memDecay: True
+xosview*memGraph: False
+xosview*swapDecay: True
+xosview*swapGraph: False
+xosview*pageDecay: True
+xosview*pageGraph: False
+xosview*netDecay: True
+xosview*netGraph: False
+xosview*diskDecay: True
+xosview*diskGraph: False
+
+xautolock.locker: xlock
+
+Tclock.scale: 0.5
+Tclock.background: white
+Tclock.border: black
+Tclock.borderWidth: 0
+
+gnuplot*background: White
+gnuplot*textColor: Black
+gnuplot*borderColor: Navy
+gnuplot*axisColor: Navy
