@@ -13,7 +13,9 @@ export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin:/usr/X1
 umask 22
 
 # terminal settings
-[ -n "$PS1" ] && [ -t 0 ] && stty erase "^H" intr "^C" susp "^Z"
+if [ -n "$PS1" ] && [ -t 0 ]; then
+  stty erase "^H" intr "^C" susp "^Z"
+fi
 
 # Locale
 export LANG=ja_JP.EUC
