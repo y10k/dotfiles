@@ -33,10 +33,10 @@ ssh-agent bash <<'EOF'
 
     # set root window
     case "`hostname`" in
-    cernobog.*)
-      root_image=$HOME/imgs/ys_01.jpg;;
     hellboy.*)
       root_image=$HOME/imgs/witch2_l.jpg;;
+    *)
+      root_image=$HOME/imgs/ys_01.jpg;;
     esac
     [ -n "$root_image" -a -f "$root_image" ] && display -window root "$root_image"
 
