@@ -28,6 +28,9 @@
 (setq wl-draft-send-mail-func 'wl-draft-send-mail-with-pop-before-smtp)
 (setq elmo-default-nntp-server "news.edit.ne.jp")
 
+; Local Domain
+(setq wl-local-domain "plutonian.ne.jp")
+
 ; Offline mode
 (setq wl-plugged nil)
 (if (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name))
