@@ -93,57 +93,48 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 	     (cdr (assoc fetchmail-server
 			 fetchmail-server-param-alist)))))
 
-(defun fetchmail-param-check (fetchmail-server check)
-  "check オプションのリストを作る。"
-  (if check
-      (list "--check")))
-
 (defun fetchmail-param-query-passwd (fetchmail-server query-passwd)
   "サーバのパスワードを設定する。"
   (if query-passwd
       (let (passwd)
 	(setq passwd (fetchmail-get-passwd fetchmail-server))
 	(if (not passwd)
-	    (fetchmail-set-passwd
-	     fetchmail-server
-	     (read-passwd
-	      (format "Password for %s: " fetchmail-server))))))
+	    (fetchmail-set-passwd fetchmail-server
+				  (read-passwd (format "Password for %s: "
+						       fetchmail-server))))))
   nil)
+
+(defun fetchmail-param-check (fetchmail-server check)
+  "check オプションのリストを作る。"
+  (if check (list "-c")))
 
 (defun fetchmail-param-username (fetchmail-server username)
   "username オプションのリストを作る。"
-  (if username
-      (list "-u" username)))
+  (if username (list "-u" username)))
 
 (defun fetchmail-param-protocol (fetchmail-server protocol)
   "protocol オプションのリストを作る。"
-  (if protocol
-      (list "-p" protocol)))
+  (if protocol (list "-p" protocol)))
 
 (defun fetchmail-param-port (fetchmail-server port)
   "port オプションのリストを作る。"
-  (if port
-      (list "-P" (number-to-string port))))
+  (if port (list "-P" (number-to-string port))))
 
 (defun fetchmail-param-timeout (fetchmail-server timeout)
   "timeout オプションのリストを作る。"
-  (if timeout
-      (list "-t" (number-to-string timeout))))
+  (if timeout (list "-t" (number-to-string timeout))))
 
 (defun fetchmail-param-folder (fetchmail-server folder)
   "folder オプションのリストを作る。"
-  (if folder
-      (list "-r" folder)))
+  (if folder (list "-r" folder)))
 
 (defun fetchmail-param-keep (fetchmail-server keep)
   "keep オプションのリストを作る。"
-  (if keep
-      (list "-k")))
+  (if keep (list "-k")))
 
 (defun fetchmail-param-flush (fetchmail-server flush)
   "flush オプションのリストを作る。"
-  (if flush
-      (list "-F")))
+  (if flush (list "-F")))
 
 (defun fetchmail-param-funcall (fetchmail-server key value)
   "パラメータに対応する変換関数を呼び出す。"
@@ -261,10 +252,8 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 	    (cond
 	     ((string-match "finished" event) 'mail)
 	     ((string-match "exited" event)
-	      (if (= 1 (process-exit-status fetchmail-process))
-		  'nomail
-		(fetchmail-clear-passwd fetchmail-last-server)
-		'failure))))
+	      (if (= 1 (process-exit-status fetchmail-process)) 'nomail
+		(fetchmail-clear-passwd fetchmail-last-server) 'failure))))
       (progn
 	(setq fetchmail-running nil)
 	(force-mode-line-update)
