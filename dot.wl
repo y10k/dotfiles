@@ -65,14 +65,14 @@
 	; ·×»»µ¡
 	("From"
 	 ("Cron Daemon" . "%INBOX.admin.cron"))
-	("To"
-	 ("root"          . "%INBOX.admin.root")
-	 ("root@cernobog" . "%INBOX.admin.cernobog")
-	 ("root@babayaga" . "%INBOX.admin.babayaga"))
 	("Subject"
-	 ("root"     . "%INBOX.admin.root")
 	 ("cernobog" . "%INBOX.admin.cernobog")
-	 ("babayaga" . "%INBOX.admin.babayaga"))))
+	 ("babayaga" . "%INBOX.admin.babayaga")
+	 ("root"     . "%INBOX.admin.root"))
+	("To"
+	 ("root@cernobog" . "%INBOX.admin.cernobog")
+	 ("root@babayaga" . "%INBOX.admin.babayaga")
+	 ("root"          . "%INBOX.admin.root"))))
 (setq wl-refile-rule-alist
       (append wl-refile-rule-alist
 	      ((lambda (rule-src-list)
