@@ -15,7 +15,7 @@
 	 begin-of-label (1- end-of-label)))))
 
 (defun latex-label-make-alist (&optional num)
-  "Make a LaTeX label associated list of current buffer."
+  "Make a associated list of LaTeX labels in current buffer."
   (if (not num)
       (setq num 0))
   (let ((latex-label (latex-label-search)))
