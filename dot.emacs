@@ -29,10 +29,14 @@
 (global-set-key "\C-\\\C-\\" 'help-for-help)
 (global-set-key "\M-g" 'goto-line)
 
+; Frame title
+(setq frame-title-format
+      '(multiple-frames ("%b - " invocation-name "@" system-name)
+			("" invocation-name "@" system-name)))
+
 ; Mode line information
 (setq display-time-24hr-format t)
 (setq display-time-day-and-date t)
-; (setq display-time-format "%y/%m/%d (%a) %h:%m")
 (display-time)
 (line-number-mode t)
 (column-number-mode t)
@@ -74,11 +78,6 @@
     (other-window 1)))
 (global-set-key "\C-^" 'other-window-one-step)
 (setq truncate-partial-width-windows nil)
-
-; Frame
-(setq frame-title-format
-      '(multiple-frames ("%b - " invocation-name "@" system-name)
-			("" invocation-name "@" system-name)))
 
 ; No new lines
 (setq next-line-add-newlines nil)
