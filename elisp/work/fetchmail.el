@@ -48,6 +48,11 @@
        ((omit-passwd . t)
         (protocol . \"apop\"))))")
 
+(defvar fetchmail-server-alias-alist ()
+  "サーバの別名を設定する連想リスト。
+例: '((\"KOBEHEP\" . \"hepsun2.phys.sci.kobe-u.ac.jp\")
+      (\"KOBEPHYS\" . \"phys03.phys.sci.kobe-u.ac.jp\"))")
+
 (defvar fetchmail-preprocess-hook ()
   "fetchmail の前処理を登録するフック。")
 
@@ -179,10 +184,10 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   "Flushオプションのリストを作る。"
   (if flush (list "--flush")))
 
-(defun fetchmail-param-funcall (fetchmail-server key value)
+(defun fetchmail-param-funcall (fetchmail-server func-name func-arg)
   "パラメータに対応する変換関数を呼び出す。"
-  (funcall (cdr (assq key fetchmail-param-func-alist))
-	   fetchmail-server value))
+  (funcall (cdr (assq func-name fetchmail-param-func-alist))
+	   fetchmail-server func-arg))
 
 (defun fetchmail-make-option-list (fetchmail-server fetchmail-param-alist)
   "パラメータからfetchmailのオプションのリストを作る。"
@@ -213,6 +218,11 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 	     (> (length fetchmail-server) 0))
 	fetchmail-server
       nil)))
+
+(defun fetchmail-get-server-name (fetchmail-server-name-or-alias)
+  "Fetchmailのサーバの別名を解決する。"
+  (or (cdr (assoc fetchmail-server-name-or-alias fetchmail-server-alias-alist))
+      fetchmail-server-name-or-alias))
 
 (defun fetchmail-buffer-p ()
   "Fetchmailバッファが開いているかどうかを確認する。"
@@ -273,7 +283,7 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   (let ((process-connection-type t)
 	(fetchmail-run-list (append (list "fetchmail")
 				    fetchmail-option-list
-				    (list fetchmail-server))))
+				    (list (fetchmail-get-server-name fetchmail-server)))))
     (fetchmail-insert-buffer (concat (mapconcat
 				      (lambda (param) param)
 				      fetchmail-run-list " ") "\n"))
@@ -300,6 +310,23 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   (process-send-string (process-name fetchmail-process)
 		       fetchmail-passwd)
   (process-send-eof (process-name fetchmail-process)))
+
+(defun fetchmail-start (fetchmail-server fetchmail-option-list)
+  "Fetchmailを一つのサーバに対して起動する。"
+  (if (get-process fetchmail-process-name)
+      (error "Fetchmail is already running."))
+  (run-hooks 'fetchmail-preprocess-hook)
+  (let ((fetchmail-process
+	 (fetchmail-run fetchmail-server
+			fetchmail-option-list)))
+    (if fetchmail-query-passwd
+	(fetchmail-enter-passwd fetchmail-process
+				(base64-decode-string
+				 (fetchmail-get-passwd fetchmail-server))))
+    (setq fetchmail-running t)
+    (force-mode-line-update)
+    (setq fetchmail-last-server fetchmail-server)
+    (set-process-sentinel fetchmail-process 'fetchmail-finish)))
 
 (defun fetchmail-finish (fetchmail-process event)
   "Fetchmailプロセス終了時の後始末をする。"
@@ -331,23 +358,6 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 	    (unless (fetchmail-window-p)
 	      (message fetchmail-message))
 	    (if fetchmail-notify-beep (beep)))))))
-
-(defun fetchmail-start (fetchmail-server fetchmail-option-list)
-  "Fetchmailを一つのサーバに対して起動する。"
-  (if (get-process fetchmail-process-name)
-      (error "Fetchmail is already running."))
-  (run-hooks 'fetchmail-preprocess-hook)
-  (let ((fetchmail-process
-	 (fetchmail-run fetchmail-server
-			fetchmail-option-list)))
-    (if fetchmail-query-passwd
-	(fetchmail-enter-passwd fetchmail-process
-				(base64-decode-string
-				 (fetchmail-get-passwd fetchmail-server))))
-    (setq fetchmail-running t)
-    (force-mode-line-update)
-    (setq fetchmail-last-server fetchmail-server)
-    (set-process-sentinel fetchmail-process 'fetchmail-finish)))
 
 (defun fetchmail (fetchmail-server)
   "Fetchmailを起動する。引数を与えるかfetchmail-default-serverが
