@@ -5,10 +5,10 @@
 (setq user-mail-address "toki@freedom.ne.jp")
 (setq user-full-name "TOKI Yoshinori")
 
-; User emacs-lisp library path
+; Local emacs-lisp library path
 (setq load-path
-      (append (list (expand-file-name "~/elisp/common")
-		    (expand-file-name "~/elisp/gnu-emacs-20"))
+      (append (list (expand-file-name "~/elisp/lib")
+		    (expand-file-name "~/elisp/work"))
 	      load-path))
 
 ; Japanese environment
