@@ -138,25 +138,29 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 	(setq fetchmail-server-list
 	      (append fetchmail-server-list
 		      fetchmail-server-omit-passwd-list)))
-    (let (fetchmail-server-alist fetchmail-server-pair
+    (let (fetchmail-server-alist
 	  (fetchmail-server-alist-list (list fetchmail-server-option-alist
 					     fetchmail-server-alias-alist)))
       (while fetchmail-server-alist-list
 	(setq fetchmail-server-alist
 	      (car fetchmail-server-alist-list))
-	(setq fetchmail-server-alist-list
-	      (cdr fetchmail-server-alist-list))
 	(while fetchmail-server-alist
-	  (setq fetchmail-server-pair
-		(car fetchmail-server-alist))
+	  (if (stringp (caar fetchmail-server-alist))
+	      (let ((fetchmail-server-couple-list (list (caar fetchmail-server-alist)
+							(fetchmail-get-server-name
+							 (caar fetchmail-server-alist)))))
+		(while fetchmail-server-couple-list
+		  (if (not (member (car fetchmail-server-couple-list)
+				   fetchmail-server-list))
+		      (setq fetchmail-server-list
+			    (cons (car fetchmail-server-couple-list)
+				  fetchmail-server-list)))
+		  (setq fetchmail-server-couple-list
+			(cdr fetchmail-server-couple-list)))))
 	  (setq fetchmail-server-alist
-		(cdr fetchmail-server-alist))
-	  (if (and (stringp (car fetchmail-server-pair))
-		   (not (member (car fetchmail-server-pair)
-				fetchmail-server-list)))
-	    (setq fetchmail-server-list
-		  (cons (car fetchmail-server-pair)
-			fetchmail-server-list))))))
+		(cdr fetchmail-server-alist)))
+	(setq fetchmail-server-alist-list
+	      (cdr fetchmail-server-alist-list))))
     (let ((count 0))
       (mapcar
        (lambda (fetchmail-server)
