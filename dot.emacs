@@ -571,7 +571,7 @@ and source-file directory for your debugger." t)
 (setq fetchmail-server-option-alist
       '(("sv01.phys.sci.kobe-u.ac.jp" "--check")))
 (setq fetchmail-server-alias-alist
-      '(("homesrv"  . "babayaga.plutonian.ne.jp")
+      '(("homesrv"  . "babayaga.plutonia.ne.jp")
 	("freedom"  . "mail.freedom.ne.jp")
 	("kobephys" . "sv01.phys.sci.kobe-u.ac.jp")))
 
@@ -721,7 +721,7 @@ and source-file directory for your debugger." t)
 
 ; Navi2ch
 (require 'navi2ch)
-(setq navi2ch-net-http-proxy "proxy.plutonian.ne.jp:8080")
+(setq navi2ch-net-http-proxy "proxy.plutonia.ne.jp:8080")
 (setq navi2ch-list-bbstable-url "http://www6.ocn.ne.jp/~mirv/2chmenu.html")
 (if (eq window-system 'w32)
     (setq navi2ch-directory "//cernobog/toki/.navi2ch"))
