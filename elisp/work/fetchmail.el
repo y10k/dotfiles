@@ -117,6 +117,16 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 	(cons '(fetchmail-running " Fetching mail...")
 	      minor-mode-alist)))
 
+(defvar fetchmail-mode-map nil
+  "Fetchmailメジャーモードのキーマップ。")
+(unless fetchmail-mode-map
+  (setq fetchmail-mode-map (make-keymap))
+  (define-key fetchmail-mode-map "\C-cx" 'fetchmail)
+  (define-key fetchmail-mode-map "\C-cq" 'fetchmail-close-window))
+
+(defvar fetchmail-mode-hook nil
+  "Fetchmailメジャーモードのフック。")
+
 (defun fetchmail-get-server-name (fetchmail-server-name-or-alias)
   "Fetchmailのサーバの別名を解決する。"
   (or (cdr (assoc fetchmail-server-name-or-alias fetchmail-server-alias-alist))
@@ -378,11 +388,12 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   (fetchmail-start fetchmail-server))
 
 (defun fetchmail-mode ()
-  "Fetchmailバッファ用のモード。"
+  "Fetchmailバッファ用のメジャーモード。"
   (interactive)
+  (kill-all-local-variables)
   (setq major-mode 'fetchmail-mode)
   (setq mode-name "Fetchmail")
-  (setq fetchmail-mode-map (make-keymap))
-  (define-key fetchmail-mode-map "\C-cx" 'fetchmail)
-  (define-key fetchmail-mode-map "\C-cq" 'fetchmail-close-window)
-  (use-local-map fetchmail-mode-map))
+  (use-local-map fetchmail-mode-map)
+  (run-hooks 'fetchmail-mode-hook))
+
+(provide 'fetchmail)
