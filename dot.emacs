@@ -110,10 +110,7 @@
     (setq explicit-shell-file-name "bash.exe")
     (setq comint-output-filter-functions ())
     (add-hook 'comint-output-filter-functions
-	      (function comint-strip-ctrl-m))
-
-    ; HOME directory
-    (cd (expand-file-name "~"))))))
+	      (function comint-strip-ctrl-m))))))
 
 ; Info directories
 (setq Info-default-directory-list
@@ -596,6 +593,10 @@ and source-file directory for your debugger." t)
 (autoload 'w3m "w3m" "Interface for w3m on Emacs." t)
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 (global-set-key "\C-xm" 'browse-url-at-point)
+
+; HOME directory
+(if (eq window-system 'w32)
+    (cd (expand-file-name "~")))
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
