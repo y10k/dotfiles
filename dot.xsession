@@ -24,6 +24,8 @@ if [ -f $usermodmap ]; then
     xmodmap $usermodmap
 fi
 
+xset 5/2			# mouse acceleration
+
 
 ssh-agent bash <<'EOF'
     # load startup file
