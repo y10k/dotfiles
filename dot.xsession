@@ -44,7 +44,13 @@ ssh-agent bash <<'EOF'
     fi
 
     # set root window
-    display -window root $HOME/imgs/ys_01.jpg
+    case "`hostname`" in
+    cernobog.*)
+      root_image=$HOME/imgs/ys_01.jpg;;
+    hellboy.*)
+      root_image=$HOME/imgs/witch2_l.jpg;;
+    esac
+    [ -n "$root_image" -a -f "$root_image" ] && display -window root "$root_image"
 
     # start Window Manager
     fvwm2 &
