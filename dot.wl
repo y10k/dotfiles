@@ -9,7 +9,7 @@
 (cond
  ((and (eq window-system 'w32)
        (or (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name))
-	   (string-match "^[Vv][Oo][Ll][Dd]" (system-name))))
+	   (string-match "^[Vv][Aa][Rr][Cc][Oo][Ll][Aa][Cc]" (system-name))))
   (setq elmo-msgdb-dir "//babayaga/toki/.elmo")
   (setq elmo-localdir-folder-path "//babayaga/toki/Mail")))
 
