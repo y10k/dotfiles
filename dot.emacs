@@ -613,8 +613,8 @@ and source-file directory for your debugger." t)
 	      auto-mode-alist))
 
 ; disable Tool Bar
-(if (string-match "^21\\." emacs-version)
-    (tool-bar-mode -1))
+;(if (string-match "^21\\." emacs-version)
+;    (tool-bar-mode 0))
 
 ; HOME directory
 (if (eq window-system 'w32)

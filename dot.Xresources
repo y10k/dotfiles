@@ -28,6 +28,7 @@ XCalc*Command.height: 23
 
 Emacs.geometry: 100x48
 Emacs.pane.menubar.fontSet: -misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-*
+Emacs.toolBar: 0
 #ifdef COLOR
 Emacs*background: Wheat
 Emacs*foreground: Black
