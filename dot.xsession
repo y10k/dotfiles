@@ -26,18 +26,6 @@ fi
 
 
 ssh-agent bash <<'EOF'
-    # ssh agent
-    echo $SSH_AGENT_PID > $HOME/.ssh/agent.pid
-    if [ -L $HOME/.ssh/auth_sock ]; then
-	rm -f $HOME/.ssh/auth_sock
-    fi
-    ln -s $SSH_AUTH_SOCK $HOME/.ssh/auth_sock
-    ssh_agent_remove() {
-	rm -f $HOME/.ssh/agent.pid
-	rm -f $HOME/.ssh/auth_sock
-    }
-    trap ssh_agent_remove EXIT
-
     # load startup file
     if [ -f $HOME/.bash_profile ]; then
 	. $HOME/.bash_profile
@@ -61,6 +49,8 @@ ssh-agent bash <<'EOF'
     xautolock &
     tclock -geometry -1+1 &
     xeyes -geometry 120x80-0+50 &
+    xload -geometry 180x140+0+180 &
+    xosview -geometry 200x250+0+333 &
     if [ -x /usr/games/fortune ]; then
 	/usr/games/fortune | col -b | expand | \
 	xmessage -geometry +15-18 -name "Today's message" -file - &
