@@ -21,12 +21,12 @@
 (setq wl-stay-folder-window t)
 
 ; Server
-(setq elmo-default-nntp-server "news7.dion.ne.jp")
 (setq elmo-default-pop3-server "mail.freedom.ne.jp")
 (setq elmo-default-imap4-server "mail.plutonian.ne.jp")
 (setq elmo-default-imap4-authenticate-type 'cram-md5)
 (setq wl-smtp-posting-server "mail.freedom.ne.jp")
 (setq wl-draft-send-mail-func 'wl-draft-send-mail-with-pop-before-smtp)
+(setq elmo-default-nntp-server "news.edit.ne.jp")
 
 ; Offline mode
 (setq wl-plugged nil)
