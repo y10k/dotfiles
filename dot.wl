@@ -14,8 +14,8 @@
   (setq elmo-localdir-folder-path "//babayaga/toki/Mail")))
 
 ; Folder
-(setq wl-strict-diff-folders '("inbox" "toki"))
-(setq wl-auto-check-folder-list '("inbox" "toki"))
+(setq wl-strict-diff-folders '("inbox" "@mail\\.plutonian\\.ne\\.jp" "@mail\\.freedom\\.ne\\.jp"))
+(setq wl-auto-check-folder-list '("inbox" "@mail\\.plutonian\\.ne\\.jp" "^%INBOX"))
 (setq wl-auto-uncheck-folder-list '("."))
 (setq wl-default-folder "+inbox")
 (setq wl-default-spec "%")
@@ -39,8 +39,10 @@
     (add-hook 'wl-make-plugged-hook
 	      (function
 	       (lambda ()
+		 (elmo-set-plugged t "mail.freedom.ne.jp" 110)
 		 (elmo-set-plugged t "mail.plutonian.ne.jp" 110)
-		 (elmo-set-plugged t "mail.plutonian.ne.jp" 143)))))
+		 (elmo-set-plugged t "mail.plutonian.ne.jp" 143)
+		 (elmo-set-plugged t "news.edit.ne.jp" 119)))))
 
 ; Message
 (setq elmo-msgdb-extra-fields '("X-ML-Name" "Newsgroups"))
