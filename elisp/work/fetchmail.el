@@ -199,22 +199,23 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defun fetchmail-option-list (fetchmail-server fetchmail-param-alist)
   "パラメータから fetchmail のオプションのリストを作る。"
-  (if fetchmail-param-alist
-      (append (fetchmail-param-funcall fetchmail-server
-				       (car (car fetchmail-param-alist))
-				       (cdr (car fetchmail-param-alist)))
-	      (fetchmail-option-list fetchmail-server
-				     (cdr fetchmail-param-alist)))))
+  (apply
+   (function append)
+   (mapcar
+    (lambda (param-pair)
+      (fetchmail-param-funcall fetchmail-server
+			       (car param-pair) (cdr param-pair)))
+    fetchmail-param-alist)))
 
-(defun fetchmail-server-alist (fetchmail-server-param-alist &optional count)
+(defun fetchmail-server-alist (fetchmail-server-param-alist)
   "fetchmail サーバの連想リストを作る。"
-  (unless count
-    (setq count 0))
-  (if fetchmail-server-param-alist
-      (cons (cons (car (car fetchmail-server-param-alist))
-		  count)
-	    (fetchmail-server-alist (cdr fetchmail-server-param-alist)
-				    (1+ count)))))
+  (let ((count 0))
+    (mapcar
+     (lambda (server-param-pair)
+       (setq count (1+ count))
+       (cons (car server-param-pair)
+	     count))
+     fetchmail-server-param-alist)))
 
 (defun fetchmail-query-server ()
   "fetchmail のサーバをミニバッファで選択する。"
@@ -271,7 +272,7 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
     (fetchmail-insert-buffer (concat (mapconcat
 				      (lambda (param) param)
 				      fetchmail-run-list " ") "\n"))
-    (apply 'start-process
+    (apply (function start-process)
 	   fetchmail-process-name
 	   fetchmail-buffer-name
 	   fetchmail-run-list)))
