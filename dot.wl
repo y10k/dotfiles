@@ -200,6 +200,35 @@ Cop, cop, kopocam! Va! Sagana! Sagana! Va!
   (lambda ()
     (define-key wl-draft-mode-map "\C-c\C-y" 'xcite-yank-cur-msg))))
 
+; X-Face
+(cond ((featurep 'xemacs)
+       ;;
+       )
+      ((= 21 emacs-major-version)
+       (setq wl-highlight-x-face-function 'x-face-decode-message-header)
+       (define-key wl-summary-mode-map "\C-x4s" 'x-face-save)
+       (define-key wl-draft-mode-map "\C-x4i" 'x-face-insert)
+       ;; "\M-t" key is reserved for wl command.
+       (define-key wl-draft-mode-map "\M-\C-t" 'x-face-show)
+       ;;
+       ;; If a file name has no directory component, it should be
+       ;; found in the directory which is specified by the option
+       ;; `x-face-image-file-directory'.
+       (setq x-face-default-xbm-file "YourFace.xbm")
+       ;;
+       (add-hook 'wl-mail-setup-hook 'x-face-insert)
+       ;; If you use `wl-draft-insert-x-face-field' instead of
+       ;; `x-face-insert' for inserting an X-Face, you can highlight
+       ;; it as an image with the setting of the following hook:
+       (add-hook 'wl-draft-insert-x-face-field-hook
+		 (lambda nil
+		   (x-face-insert wl-x-face-file)))
+       )
+      (t
+       ;;
+       ))
+
+
 ; IM
 (defun TT:wl-inc-mail ()
   (interactive)

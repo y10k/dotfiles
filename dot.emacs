@@ -430,6 +430,35 @@
 		 (format "%s <%s>" handle id))
 		(t id))))))
 
+; X-Face
+(cond ((featurep 'xemacs)
+       ;; settings for XEmacs.
+       )
+      ((= 21 emacs-major-version)
+       ;;
+       ;; You may have no need to use the following one line if you
+       ;; always use T-gnus 6.14.5 revision 07 and later.
+       (autoload 'x-face-decode-message-header "x-face-e21")
+       ;;
+       (autoload 'x-face-insert "x-face-e21" nil t)
+       (autoload 'x-face-save "x-face-e21" nil t)
+       (autoload 'x-face-show "x-face-e21" nil t)
+       (autoload 'x-face-turn-off "x-face-e21")
+       ;;
+       ;; Show X-Face images when `x-face-insert' is done.
+       (setq x-face-auto-image t)
+       ;;
+       ;; If you show X-Face images in the message sending buffer,
+       ;; it is STRONGLY recommended that you remove images from the
+       ;; buffer before sending a message.  However, it seems not to
+       ;; be required for Gnusae so far.  The following lines are for
+       ;; SEMI and Mew.  The latter can be put into .mew file instead.
+       (add-hook 'mime-edit-translate-hook 'x-face-turn-off)
+       (add-hook 'mew-make-message-hook 'x-face-turn-off))
+      (t
+       ;; settings for the other Emacsen.
+       ))
+
 ; Ruby mode
 (autoload 'ruby-mode "ruby-mode"
   "mode for editing ruby source files" t)
@@ -672,6 +701,7 @@ and source-file directory for your debugger." t)
                 '(text . html) 3)))
 (global-set-key "\C-xm" 'browse-url-at-point)
 (setq shimbun-asahi-url "http://www.asahi.com/")
+(setq shimbun-asahi-html-url "http://www.asahi.com/")
 
 ; EWB mode
 (autoload 'ewb-mode "ewb-mode" "" t)
