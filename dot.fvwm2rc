@@ -348,8 +348,8 @@ AddToMenu UTILS "Utils" Title
 AddToMenu Main		"Main" Title
 +			"KTerm"    Exec exec kterm -T kterm@`hostname` &
 +			"Emacs"    Exec exec emacs &
++			"Mozilla"  Exec exec mozilla &
 +			"Netscape" Exec exec netscape &
-+			"Mozilla M18" Exec exec mozilla &
 +			"gFTP"     Exec exec gftp &
 +			"GIMP"     Exec exec gimp &
 +			"" Nop
@@ -435,15 +435,15 @@ AddToFunc PrevEmacs
 +    "I" Prev [CurrentPage !Iconic *emacs@*] WarpToWindow
 +    "I" Prev [CurrentPage !Iconic *emacs@*] Focus
 
-AddToFunc NextNetscape
-+    "I" Next [CurrentPage !Iconic Netscape*] Raise
-+    "I" Next [CurrentPage !Iconic Netscape*] WarpToWindow
-+    "I" Next [CurrentPage !Iconic Netscape*] Focus
+AddToFunc NextMozilla
++    "I" Next [CurrentPage !Iconic *Mozilla*] Raise
++    "I" Next [CurrentPage !Iconic *Mozilla*] WarpToWindow
++    "I" Next [CurrentPage !Iconic *Mozilla*] Focus
 
-AddToFunc PrevNetscape
-+    "I" Prev [CurrentPage !Iconic Netscape*] Raise
-+    "I" Prev [CurrentPage !Iconic Netscape*] WarpToWindow
-+    "I" Prev [CurrentPage !Iconic Netscape*] Focus
+AddToFunc PrevMozilla
++    "I" Prev [CurrentPage !Iconic *Mozilla*] Raise
++    "I" Prev [CurrentPage !Iconic *Mozilla*] WarpToWindow
++    "I" Prev [CurrentPage !Iconic *Mozilla*] Focus
 
 ############################################################################
 # MOUSE Setup
@@ -523,8 +523,8 @@ Key F1		A	N	Function NextXTerm
 Key F1		A	S	Function PrevXTerm
 Key F2		A	N	Function NextEmacs
 Key F2		A	S	Function PrevEmacs
-Key F3		A	N	Function NextNetscape
-Key F3		A	S	Function PrevNetscape
+Key F3		A	N	Function NextMozilla
+Key F3		A	S	Function PrevMozilla
 
 ############################################################################
 # FvwmButtons
