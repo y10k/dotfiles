@@ -13,6 +13,8 @@
 	      load-path))
 
 ; Japanese environment
+(require 'un-define)
+(require 'jisx0213)
 (set-language-environment 'Japanese)
 (set-default-coding-systems 'japanese-iso-8bit)
 (set-terminal-coding-system 'japanese-iso-8bit)
