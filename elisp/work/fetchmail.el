@@ -67,14 +67,14 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 	  (cons '(fetchmail-running " Fetching mail...")
 		minor-mode-alist)))
 
-(defun fetchmail-set-passwd
-  (server passwd)
+(defun fetchmail-set-passwd (fetchmail-server passwd)
   "fetchmail-passwd-alist にパスワードを設定する。"
-  (let ((pair (assoc server fetchmail-passwd-alist)))
+  (let ((pair (assoc fetchmail-server
+		     fetchmail-passwd-alist)))
     (if pair
 	(setcdr pair passwd)
       (setq pair (list nil))
-      (setcar pair server)
+      (setcar pair fetchmail-server)
       (setcdr pair passwd)
       (setq fetchmail-passwd-alist
 	    (cons pair fetchmail-passwd-alist)))))
@@ -105,7 +105,7 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 	(setq passwd (fetchmail-get-passwd fetchmail-server))
 	(if (not passwd)
 	    (fetchmail-set-passwd
-	     server
+	     fetchmail-server
 	     (read-passwd
 	      (format "Password for %s: " fetchmail-server))))))
   nil)
