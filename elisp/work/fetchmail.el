@@ -188,11 +188,10 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 (defun fetchmail-close-window ()
   "fetchmail バッファのウィンドウを閉じる。"
   (interactive)
-  (let ((window (get-buffer-window fetchmail-buffer-name)))
-    (if window
-	(progn
-	  (delete-window window)
-	  (bury-buffer fetchmail-buffer-name)))))
+  (if (get-buffer-window fetchmail-buffer-name)
+      (progn
+	(delete-windows-on (get-buffer fetchmail-buffer-name))
+	(bury-buffer fetchmail-buffer-name))))
 
 (defun fetchmail-insert-buffer (msg)
   "fetchmail バッファの最後にメッセージを挿入する。"
