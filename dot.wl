@@ -59,6 +59,9 @@
 	("X-ML-Name"
 	 ("ruby-list" . "%INBOX.ruby.list")
 	 ("rubyunit"  . "%INBOX.ruby.unit"))
+	; ひびとも
+	("Subject"
+	 ("ひびとも通信" . "%INBOX.hibitomo"))
 	; まぐまぐ
 	("Subject"
 	 ("^\\[Weekly Mag2"                         . "%INBOX.mag2.weekly")
@@ -105,7 +108,7 @@
 		 ; TSUTAYA
 		 (("To" "Cc" "From") ("@tsutaya\\.co\\.jp") "%INBOX.tsutaya")
 		 ; NTT
-		 (("To" "Cc" "From") ("ntt\\.co\\.jp$") "%INBOX.ntt")
+		 (("To" "Cc" "From") ("ntt\\.co\\.jp") "%INBOX.ntt")
 		 ))))
 
 ; Expire
