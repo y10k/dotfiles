@@ -28,6 +28,7 @@ XCalc*Command.height: 23
 
 Emacs.geometry: 100x48
 Emacs.pane.menubar.fontSet: -misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-*
+Emacs.menu*.fontSet: -misc-fixed-bold-r-*-*-12-*-*-*-*-*-iso8859-*
 Emacs.toolBar: 0
 #ifdef COLOR
 Emacs*background: Wheat
@@ -36,7 +37,7 @@ Emacs*pointerColor: MidnightBlue
 Emacs*cursorColor: MidnightBlue
 #endif
 Emacs*bitmapIcon: on
-Emacs.font: fontset-msgothic
+Emacs.font: fontset-misc
 Emacs.fontset-0: \
 	-*-fixed-medium-r-normal--12-*-*-*-c-*-fontset-kaname,\
 	ascii:-misc-fixed-medium-r-semicondensed--13-*-*-*-c-*-iso8859-1,\
@@ -75,6 +76,11 @@ Emacs.fontset-5: \
 	latin-jisx0201:-microsoft-gothic-bold-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
 	katakana-jisx0201:-microsoft-gothic-bold-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
 	japanese-jisx0208:-microsoft-gothic-bold-r-normal--14-*-*-*-c-*-jisx0208.1983-0
+Emacs.fontset-6: \
+	-*-fixed-medium-r-normal--14-*-*-*-c-*-fontset-misc,\
+	latin-jisx0201:-misc-fixed-medium-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
+	katakana-jisx0201:-misc-fixed-medium-r-normal--14-*-*-*-c-*-jisx0201.1976-0,\
+	japanese-jisx0208:-misc-fixed-medium-r-normal--14-*-*-*-c-*-jisx0208.1983-0
 
 KTerm*termName: xterm-color
 KTerm*inputMethod: skkinput
