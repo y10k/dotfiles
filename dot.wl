@@ -58,7 +58,8 @@
       '(; Ruby
 	("X-ML-Name"
 	 ("ruby-list" . "%INBOX.ruby.list")
-	 ("rubyunit"  . "%INBOX.ruby.unit"))
+	 ("rubyunit"  . "%INBOX.ruby.unit")
+	 ("rubybook"  . "%INBOX.ruby.unit"))
 	; ひびとも
 	("Subject"
 	 ("ひびとも通信" . "%INBOX.hibitomo"))
