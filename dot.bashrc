@@ -45,7 +45,7 @@ export RCSINIT=-zLT
 export CVS_RSH=ssh
 case "`hostname`" in
 hellboy.*)
-  export CVSROOT=ext:babayaga.plutonian.ne.jp:/home/toki/cvsroot;;
+  export CVSROOT=:ext:babayaga.plutonian.ne.jp:/home/toki/cvsroot;;
 *)
   export CVSROOT=/home/toki/cvsroot;;
 esac
