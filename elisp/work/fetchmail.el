@@ -123,8 +123,7 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 	(setcdr fetchmail-server-passwd-pair
 		fetchmail-passwd)
       (setq fetchmail-server-passwd-alist
-	    (cons (cons fetchmail-server
-			fetchmail-passwd)
+	    (cons (cons fetchmail-server fetchmail-passwd)
 		  fetchmail-server-passwd-alist)))))
 
 (defun fetchmail-get-passwd (fetchmail-server)
@@ -199,13 +198,12 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defun fetchmail-option-list (fetchmail-server fetchmail-param-alist)
   "パラメータから fetchmail のオプションのリストを作る。"
-  (apply
-   (function append)
-   (mapcar
-    (lambda (param-pair)
-      (fetchmail-param-funcall fetchmail-server
-			       (car param-pair) (cdr param-pair)))
-    fetchmail-param-alist)))
+  (apply (function append)
+	 (mapcar
+	  (lambda (param-pair)
+	    (fetchmail-param-funcall fetchmail-server
+				     (car param-pair) (cdr param-pair)))
+	  fetchmail-param-alist)))
 
 (defun fetchmail-server-alist (fetchmail-server-param-alist)
   "fetchmail サーバの連想リストを作る。"
@@ -219,8 +217,13 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defun fetchmail-query-server ()
   "fetchmail のサーバをミニバッファで選択する。"
-  (completing-read "Fetchmail server: "
-		   (fetchmail-server-alist fetchmail-server-param-alist)))
+  (let ((fetchmail-server
+	 (completing-read "Fetchmail server: "
+			  (fetchmail-server-alist fetchmail-server-param-alist))))
+    (if (and fetchmail-server
+	     (> (length fetchmail-server) 0))
+	fetchmail-server
+      nil)))
 
 (defun fetchmail-make-buffer ()
   "fetchmail バッファを作る。"
@@ -263,7 +266,8 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
    (concat "<<< fetchmail"
 	   (if fetchmail-window-time-format
 	       (format-time-string fetchmail-window-time-format
-				   (current-time)))
+				   (current-time))
+	     "")
 	   " >>>\n"))
   (let ((process-connection-type t)
 	(fetchmail-run-list (append (list "fetchmail")
@@ -365,8 +369,7 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 	    (car (car fetchmail-server-param-alist)))
 	   (t
 	    (fetchmail-query-server)))))
-  (if (or (not fetchmail-server)
-	  (= 0 (length fetchmail-server)))
+  (unless fetchmail-server
     (error "Not selected fetchmail server."))
   (let ((fetchmail-query-passwd t))
     (let ((fetchmail-option-list
