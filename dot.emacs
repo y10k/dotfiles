@@ -99,7 +99,10 @@
     (setq explicit-shell-file-name "bash.exe")
     (setq comint-output-filter-functions ())
     (add-hook 'comint-output-filter-functions
-	      (function comint-strip-ctrl-m))))))
+	      (function comint-strip-ctrl-m))
+
+    ; HOME directory
+    (cd (expand-file-name "~"))))))
 
 ; Info directories
 (setq Info-default-directory-list
