@@ -2,11 +2,11 @@
 ;;;  ruby-mode.el -
 ;;;
 ;;;  $Author: matz $
-;;;  $Date: 2000/09/12 05:37:38 $
+;;;  $Date: 2001/02/08 09:18:02 $
 ;;;  created at: Fri Feb  4 14:49:13 JST 1994
 ;;;
 
-(defconst ruby-mode-revision "$Revision: 1.19 $")
+(defconst ruby-mode-revision "$Revision: 1.25.2.1 $")
 
 (defconst ruby-mode-version
   (progn
@@ -52,7 +52,7 @@
 
 (defconst ruby-negative
   (concat "^[ \t]*\\(\\(" ruby-block-mid-re "\\)\\>\\|\\("
-	    ruby-block-end-re "\\)\\>\\|\\}\\|\\]\\)")
+	    ruby-block-end-re "\\)\\>\\|}\\|\\]\\)")
   )
 
 (defconst ruby-operator-chars "-,.+*/%&|^~=<>:")
@@ -442,7 +442,6 @@ The variable ruby-indent-level controls the amount of indentation.
 	(cond
 	 ((nth 0 state)			; within string
 	  (setq indent nil))		;  do nothing
-
 	 ((car (nth 1 state))		; in paren
 	  (goto-char (cdr (nth 1 state)))
 	  (if (eq (car (nth 1 state)) ?\( )
@@ -463,8 +462,7 @@ The variable ruby-indent-level controls the amount of indentation.
 	      (goto-char parse-start)
 	      (back-to-indentation)
 	      (setq indent (ruby-indent-size (current-column) (nth 2 state)))))
-	    ))
-	  
+	    ))	  
 	 ((and (nth 2 state)(> (nth 2 state) 0)) ; in nest
 	  (if (null (cdr (nth 1 state)))
 	      (error "invalid nest"))
@@ -485,7 +483,7 @@ The variable ruby-indent-level controls the amount of indentation.
 
 	 ((and (nth 2 state) (< (nth 2 state) 0)) ; in negative nest
 	  (setq indent (ruby-indent-size (current-column) (nth 2 state)))))
-	 
+
 	(cond
 	 (indent
 	  (goto-char indent-point)
@@ -538,9 +536,10 @@ The variable ruby-indent-level controls the amount of indentation.
 			(goto-char (match-end 0))
 			(not (looking-at "[a-z_]"))))
 		 (and (looking-at ruby-operator-re)
+		      (not (eq (char-after (1- (point))) ??))
+		      (not (eq (char-after (1- (point))) ?$))
 		      (or (not (eq ?/ (char-after (point))))
 			  (null (nth 0 (ruby-parse-region parse-start (point)))))
-		      (not (eq (char-after (1- (point))) ?$))
 		      (or (not (eq ?| (char-after (point))))
 			  (save-excursion
 			    (or (eolp) (forward-char -1))
@@ -550,7 +549,7 @@ The variable ruby-indent-level controls the amount of indentation.
 			      (and (not (eolp))
 				   (progn
 				     (forward-char -1)
-				     (not (looking-at "\\{")))
+				     (not (looking-at "{")))
 				   (progn
 				     (forward-word -1)
 				     (not (looking-at "do\\>[^_]")))))
@@ -593,7 +592,7 @@ An end of a defun is found by moving forward from the beginning of one."
     (setq start (ruby-calculate-indent))
     (if (eobp)
 	nil
-      (while (and (not (bobp)) (not done))
+      (while (and (not (bobp)) (not (eobp)) (not done))
 	(forward-line n)
 	(cond
 	 ((looking-at "^$"))
@@ -664,15 +663,16 @@ An end of a defun is found by moving forward from the beginning of one."
   (or (boundp 'font-lock-variable-name-face)
       (setq font-lock-variable-name-face font-lock-type-face))
 
+
   (add-hook 'ruby-mode-hook
 	    '(lambda ()
 	       (make-local-variable 'font-lock-syntactic-keywords)
 	       (setq font-lock-syntactic-keywords
 		     '(("\\$\\([#\"'`$\\]\\)" 1 (1 . nil))
 		       ("\\(#\\)[{$@]" 1 (1 . nil))
-		       ("\\(/\\).*\\(/\\)"
+		       ("\\(/\\)\\([^/\n]\\|\\\\/\\)*\\(/\\)"
 			(1 (7 . ?'))
-			(2 (7 . ?')))))
+			(3 (7 . ?')))))
 	       (make-local-variable 'font-lock-defaults)
 	       (setq font-lock-defaults '((ruby-font-lock-keywords) nil nil))
 	       (setq font-lock-keywords ruby-font-lock-keywords)))
@@ -749,7 +749,7 @@ An end of a defun is found by moving forward from the beginning of one."
      '("^\\s *def\\s +\\([^( ]+\\)"
        1 font-lock-function-name-face)
      ;; symbols
-     '("\\(^\\|[^:]\\)\\(:\\(\\w\\|_\\)+\\??\\)\\b"
+     '("\\(^\\|[^:]\\)\\(:\\([-+/%&|^~`]\\|\\*\\*?\\|<\\(<\\|=>?\\)?\\|>[>=]?\\|===?\\|=~\\|\\[\\]\\|\\(\\w\\|_\\)+\\([!?=]\\|\\b\\)\\)\\)"
        2 font-lock-reference-face))
     "*Additional expressions to highlight in ruby mode."))
 
