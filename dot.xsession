@@ -51,6 +51,7 @@ ssh-agent bash <<'EOF'
     xeyes -geometry 120x80-0+50 &
     xload -geometry 180x140+0+180 &
     xosview -geometry 200x250+0+333 &
+    xcalendar -geometry -0-100 &
     if [ -x /usr/games/fortune ]; then
 	/usr/games/fortune | col -b | expand | \
 	xmessage -geometry +15-18 -name "Today's message" -file - &

@@ -261,6 +261,8 @@ Xmessage*Command.shapeStyle: Rectangle
 
 XCalendar*inputMethod: skkinput
 XCalendar*preeditType: OverTheSpot
+XCalendar*font: 8x13bold
+XCalendar*fontSet: 8x13bold, -*--14-*
 
 Skkinput.xim.conversionStartKey: Shift<Key>space
 Skkinput.ximp.conversionStartKey: Shift<Key>space
