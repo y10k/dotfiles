@@ -48,6 +48,9 @@
 (defvar fetchmail-window-height-ratio 0.15
   "fetchmail ウィンドウの高さの割合。")
 
+(defvar fetchmail-window-height-limit 10
+  "fetchmail ウィンドウの高さの最大値。")
+
 (defvar fetchmail-last-server nil
   "最後に使われたサーバの名前が入っている。
 fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
@@ -191,9 +194,10 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
       (set-window-buffer
        (split-window (selected-window) 
 		     (- (window-height)
-			(round
-			 (* (window-height)
-			    fetchmail-window-height-ratio))
+			(min fetchmail-window-height-limit
+			     (round
+			      (* (window-height)
+				 fetchmail-window-height-ratio)))
 			1))
        fetchmail-buffer-name)))
 
