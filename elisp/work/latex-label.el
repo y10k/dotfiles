@@ -22,12 +22,17 @@
 
 (defun latex-label-search ()
   "Search a next LaTeX label in current buffer."
-  (let ((start-point (point))
-	(begin-of-label (search-forward "\\label{" nil t))
-	(end-of-label (search-forward "}" nil t)))
-    (if (and begin-of-label end-of-label)
-	(buffer-substring-no-properties begin-of-label
-					(1- end-of-label)))))
+  (let ((begin-of-label (search-forward "\\label{" nil t)))
+    (if begin-of-label
+	(let ((latex-label-source
+	       (buffer-substring-no-properties begin-of-label
+					       (progn
+						 (end-of-line) (point)))))
+	  (let ((point-of-tail
+		 (string-match "}" latex-label-source)))
+	    (if point-of-tail
+		(substring latex-label-source
+			   0 point-of-tail)))))))
 
 (defun latex-label-make-alist ()
   "Make a associated list of LaTeX labels in current buffer."
