@@ -8,6 +8,7 @@
 ;; http://www.freedom.ne.jp/toki/elisp/fetchmail.el
 ;;
 ;; <<< 使用法 >>>
+;; !!!obsolete!!! 後で書き直す!
 ;; まずfetchmail.elをload-pathの通ったディレクトリに置いて.emacsに
 ;;   (autoload 'fetchmail "fetchmail" nil t)
 ;; というコードを追加し、そして次に
@@ -40,13 +41,18 @@
 (defvar fetchmail-default-server nil
   "デフォルトのサーバ。")
 
-(defvar fetchmail-server-param-alist '(("localhost" . ()))
-  "サーバのパラメータを設定する連想リスト。
-例: '((\"hepsun2.phys.sci.kobe-u.ac.jp\" .
-       ((protocol . \"imap\")))
-      (\"phys03.phys.sci.kobe-u.ac.jp\" .
-       ((omit-passwd . t)
-        (protocol . \"apop\"))))")
+(defvar fetchmail-server-passwd-omit-list ()
+  "パスワードの入力を省略するサーバ名のリスト。
+例: '(\"hepsun2.phys.sci.kobe-u.ac.jp\"
+      \"phys03.phys.sci.kobe-u.ac.jp\")")
+
+(defvar fetchmail-server-option-alist ()
+  "サーバ毎のオプションを設定する連想リスト。
+例: '((default \"--protocol\" \"--pop3\" \"--fetchall\") ; デフォルト
+      (\"hepsun2.phys.sci.kobe-u.ac.jp\"
+       \"--protocol\" \"apop\" \"--user\" \"foo\" \"--fetchall\")
+      (\"phys03.phys.sci.kobe-u.ac.jp\"
+       \"--protocol\" \"apop\" \"--user\" \"bar\" \"--keep\" \"--no-flush\" \"--uidl\"))")
 
 (defvar fetchmail-server-alias-alist ()
   "サーバの別名を設定する連想リスト。
@@ -58,20 +64,6 @@
 
 (defvar fetchmail-postprocess-hook ()
   "fetchmail の後処理を登録するフック。")
-
-(defvar fetchmail-param-func-alist
-  '((omit-passwd . fetchmail-param-omit-passwd)
-    (check       . fetchmail-param-check)
-    (username    . fetchmail-param-username)
-    (protocol    . fetchmail-param-protocol)
-    (port        . fetchmail-param-port)
-    (timeout     . fetchmail-param-timeout)
-    (folder      . fetchmail-param-folder)
-    (keep        . fetchmail-param-keep)
-    (flush       . fetchmail-param-flush))
-  "パラメータのシンボルをキーに持ちパラメータの値を解析する関数のシンボルを
-値に持つ連想リスト。fetchmail-server-param-alist関数のパラメータの解析に
-使われる。")
 
 (defvar fetchmail-server-passwd-alist ()
   "サーバのパスワードを保存する連想リスト。")
@@ -87,7 +79,7 @@
 この変数にnilを設定すると時刻を表示しない。")
 
 (defvar fetchmail-window-height-ratio 0.15
-  "Fetchmailウィンドウの高さの割合。")
+  "Fetchmailウィンドウの高さの比率。")
 
 (defvar fetchmail-window-height-lower-limit 5
   "Fetchmailウィンドウの高さの下限。")
@@ -112,117 +104,97 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 	(cons '(fetchmail-running " Fetching mail...")
 	      minor-mode-alist)))
 
-(defun fetchmail-set-passwd (fetchmail-server fetchmail-passwd)
-  "fetchmail-server-passwd-alistにパスワードを設定する。"
-  (let ((fetchmail-server-passwd-pair
-	 (assoc fetchmail-server
-		fetchmail-server-passwd-alist)))
-    (if fetchmail-server-passwd-pair
-	(setcdr fetchmail-server-passwd-pair
-		fetchmail-passwd)
-      (setq fetchmail-server-passwd-alist
-	    (cons (cons fetchmail-server fetchmail-passwd)
-		  fetchmail-server-passwd-alist)))))
+(defun fetchmail-get-server-name (fetchmail-server-name-or-alias)
+  "Fetchmailのサーバの別名を解決する。"
+  (or (cdr (assoc fetchmail-server-name-or-alias fetchmail-server-alias-alist))
+      fetchmail-server-name-or-alias))
 
-(defun fetchmail-get-passwd (fetchmail-server)
-  "fetchmail-server-passwd-alistからパスワードを得る。"
-  (cdr (assoc fetchmail-server
-	      fetchmail-server-passwd-alist)))
+(defun fetchmail-make-option-list (fetchmail-server)
+  "fetchmailのオプションのリストを作る。"
+  (or (cdr (assoc (fetchmail-get-server-name fetchmail-server)
+		  fetchmail-server-option-alist))
+      (cdr (assq 'default fetchmail-server-option-alist))))
 
-(defun fetchmail-clear-passwd (fetchmail-server)
-  "fetchmail-server-passwd-alistからパスワードを削除する。"
-  (fetchmail-set-passwd fetchmail-server nil))
-
-(defun fetchmail-get-server-param (fetchmail-server fetchmail-param)
-  "fetchmail-server-param-alistからサーバのパラメータを得る。"
-  (cdr (assq fetchmail-param
-	     (cdr (assoc fetchmail-server
-			 fetchmail-server-param-alist)))))
-
-(defun fetchmail-query-passwd (fetchmail-server)
-  "サーバのパスワードを設定する。"
-  (unless (fetchmail-get-passwd fetchmail-server)
-    (fetchmail-set-passwd fetchmail-server
-			  (base64-encode-string
-			   (read-passwd (format "Password for %s: "
-						fetchmail-server)) nil))))
-
-(defun fetchmail-param-omit-passwd (fetchmail-server omit-passwd)
-  "パスワードの入力を省略する。"
-  (setq fetchmail-query-passwd nil)
-  ())
-
-(defun fetchmail-param-check (fetchmail-server check)
-  "Checkオプションのリストを作る。"
-  (if check (list "--check")))
-
-(defun fetchmail-param-username (fetchmail-server username)
-  "Usernameオプションのリストを作る。"
-  (if username (list "--username" username)))
-
-(defun fetchmail-param-protocol (fetchmail-server protocol)
-  "Protocolオプションのリストを作る。"
-  (if protocol (list "--protocol" protocol)))
-
-(defun fetchmail-param-port (fetchmail-server port)
-  "Portオプションのリストを作る。"
-  (if port (list "--port" (number-to-string port))))
-
-(defun fetchmail-param-timeout (fetchmail-server timeout)
-  "Timeoutオプションのリストを作る。"
-  (if timeout (list "--timeout" (number-to-string timeout))))
-
-(defun fetchmail-param-folder (fetchmail-server folder)
-  "Folderオプションのリストを作る。"
-  (if folder (list "--folder" folder)))
-
-(defun fetchmail-param-keep (fetchmail-server keep)
-  "Keepオプションのリストを作る。"
-  (if keep (list "--keep")))
-
-(defun fetchmail-param-flush (fetchmail-server flush)
-  "Flushオプションのリストを作る。"
-  (if flush (list "--flush")))
-
-(defun fetchmail-param-funcall (fetchmail-server func-name func-arg)
-  "パラメータに対応する変換関数を呼び出す。"
-  (funcall (cdr (assq func-name fetchmail-param-func-alist))
-	   fetchmail-server func-arg))
-
-(defun fetchmail-make-option-list (fetchmail-server fetchmail-param-alist)
-  "パラメータからfetchmailのオプションのリストを作る。"
-  (apply (function append)
-	 (mapcar
-	  (lambda (param-pair)
-	    (fetchmail-param-funcall fetchmail-server
-				     (car param-pair) (cdr param-pair)))
-	  fetchmail-param-alist)))
-
-(defun fetchmail-make-server-alist (fetchmail-server-param-alist)
+(defun fetchmail-make-server-alist ()
   "Fetchmailサーバの連想リストを作る。"
-  (let ((count 0))
-    (mapcar
-     (lambda (server-param-pair)
-       (setq count (1+ count))
-       (cons (car server-param-pair)
-	     count))
-     fetchmail-server-param-alist)))
+  (let ((fetchmail-server-list ()))
+    (if fetchmail-default-server
+	(setq fetchmail-server-list
+	      (cons fetchmail-default-server fetchmail-server-list)))
+    (if fetchmail-server-passwd-omit-list
+	(setq fetchmail-server-list
+	      (append fetchmail-server-list
+		      fetchmail-server-passwd-omit-list)))
+    (let (fetchmail-server-alist fetchmail-server-pair
+	  (fetchmail-server-alist-list (list fetchmail-server-alias-alist
+					     fetchmail-server-option-alist)))
+      (while fetchmail-server-alist-list
+	(setq fetchmail-server-alist
+	      (car fetchmail-server-alist-list))
+	(setq fetchmail-server-alist-list
+	      (cdr fetchmail-server-alist-list))
+	(while fetchmail-server-alist
+	  (setq fetchmail-server-pair
+		(car fetchmail-server-alist))
+	  (setq fetchmail-server-alist
+		(cdr fetchmail-server-alist))
+	  (if (and (stringp (car fetchmail-server-pair))
+		   (not (member (car fetchmail-server-pair) fetchmail-server-list)))
+	    (setq fetchmail-server-list
+		  (cons (car fetchmail-server-pair)
+			fetchmail-server-list))))))
+    (let ((count 0))
+      (mapcar
+       (lambda (fetchmail-server)
+	 (setq count (1+ count))
+	 (cons fetchmail-server count))
+       fetchmail-server-list))))
 
 (defun fetchmail-query-server ()
   "Fetchmailのサーバをミニバッファで選択する。"
   (let ((fetchmail-server
 	 (completing-read "Fetchmail server: "
-			  (fetchmail-make-server-alist
-			   fetchmail-server-param-alist))))
+			  (fetchmail-make-server-alist)
+			  nil nil nil nil fetchmail-default-server)))
     (if (and fetchmail-server
 	     (> (length fetchmail-server) 0))
 	fetchmail-server
       nil)))
 
-(defun fetchmail-get-server-name (fetchmail-server-name-or-alias)
-  "Fetchmailのサーバの別名を解決する。"
-  (or (cdr (assoc fetchmail-server-name-or-alias fetchmail-server-alias-alist))
-      fetchmail-server-name-or-alias))
+(defun fetchmail-set-passwd (fetchmail-server fetchmail-passwd)
+  "fetchmail-server-passwd-alistにパスワードを設定する。"
+  (let ((fetchmail-server-passwd-pair
+	 (assoc (fetchmail-get-server-name fetchmail-server)
+		fetchmail-server-passwd-alist)))
+    (if fetchmail-server-passwd-pair
+	(setcdr fetchmail-server-passwd-pair
+		fetchmail-passwd)
+      (setq fetchmail-server-passwd-alist
+	    (cons (cons (fetchmail-get-server-name fetchmail-server)
+			fetchmail-passwd)
+		  fetchmail-server-passwd-alist)))))
+
+(defun fetchmail-get-passwd (fetchmail-server)
+  "fetchmail-server-passwd-alistからパスワードを得る。"
+  (cdr (assoc (fetchmail-get-server-name fetchmail-server)
+	      fetchmail-server-passwd-alist)))
+
+(defun fetchmail-clear-passwd (fetchmail-server)
+  "fetchmail-server-passwd-alistからパスワードを削除する。"
+  (fetchmail-set-passwd (fetchmail-get-server-name fetchmail-server) nil)
+  nil)
+
+(defun fetchmail-query-passwd (fetchmail-server)
+  "サーバのパスワードを設定する。"
+  (unless (fetchmail-get-passwd fetchmail-server)
+    (fetchmail-set-passwd (fetchmail-get-server-name fetchmail-server)
+			  (base64-encode-string
+			   (read-passwd (format "Password for %s: "
+						fetchmail-server)) nil))))
+
+(defun fetchmail-query-passwd-p (fetchmail-server)
+  (not (member (fetchmail-get-server-name fetchmail-server)
+	       fetchmail-server-passwd-omit-list)))
 
 (defun fetchmail-buffer-p ()
   "Fetchmailバッファが開いているかどうかを確認する。"
@@ -271,7 +243,7 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 	(delete-windows-on (get-buffer fetchmail-buffer-name))
 	(bury-buffer fetchmail-buffer-name))))
 
-(defun fetchmail-run (fetchmail-server fetchmail-option-list)
+(defun fetchmail-start-process (fetchmail-server)
   "Fetchmailを起動してそのプロセスを返す。"
   (fetchmail-insert-buffer
    (concat "<<< fetchmail"
@@ -281,16 +253,16 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 	     "")
 	   " >>>\n"))
   (let ((process-connection-type t)
-	(fetchmail-run-list (append (list "fetchmail")
-				    fetchmail-option-list
-				    (list (fetchmail-get-server-name fetchmail-server)))))
+	(fetchmail-process-list (append (list "fetchmail")
+					(fetchmail-make-option-list fetchmail-server)
+					(list (fetchmail-get-server-name fetchmail-server)))))
     (fetchmail-insert-buffer (concat (mapconcat
 				      (lambda (param) param)
-				      fetchmail-run-list " ") "\n"))
+				      fetchmail-process-list " ") "\n"))
     (apply (function start-process)
 	   fetchmail-process-name
 	   fetchmail-buffer-name
-	   fetchmail-run-list)))
+	   fetchmail-process-list)))
 
 (defun fetchmail-enter-passwd (fetchmail-process fetchmail-passwd)
   "Fetchmailプロセスにパスワードを入力する。"
@@ -311,15 +283,14 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 		       fetchmail-passwd)
   (process-send-eof (process-name fetchmail-process)))
 
-(defun fetchmail-start (fetchmail-server fetchmail-option-list)
+(defun fetchmail-start (fetchmail-server)
   "Fetchmailを一つのサーバに対して起動する。"
   (if (get-process fetchmail-process-name)
       (error "Fetchmail is already running."))
   (run-hooks 'fetchmail-preprocess-hook)
   (let ((fetchmail-process
-	 (fetchmail-run fetchmail-server
-			fetchmail-option-list)))
-    (if fetchmail-query-passwd
+	 (fetchmail-start-process fetchmail-server)))
+    (if (fetchmail-query-passwd-p fetchmail-server)
 	(fetchmail-enter-passwd fetchmail-process
 				(base64-decode-string
 				 (fetchmail-get-passwd fetchmail-server))))
@@ -353,7 +324,8 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 		   "Failed to fetchmail.")
 		  (t
 		   (error "Invalid fetchmail-exit-status")))))
-	    (run-hooks 'fetchmail-postprocess-hook)
+	    (if (eq 'mail fetchmail-exit-status)
+		(run-hooks 'fetchmail-postprocess-hook))
 	    (fetchmail-insert-buffer (concat fetchmail-message "\n"))
 	    (unless (fetchmail-window-p)
 	      (message fetchmail-message))
@@ -366,29 +338,21 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   (unless (stringp fetchmail-server)
     (setq fetchmail-server
 	  (cond
-	   (fetchmail-server
-	    (fetchmail-query-server))
-	   (fetchmail-default-server
-	    fetchmail-default-server)
+	   (fetchmail-server (fetchmail-query-server))
+	   (fetchmail-default-server fetchmail-default-server)
 	   ((= 1 (length fetchmail-server-param-alist))
 	    (car (car fetchmail-server-param-alist)))
-	   (t
-	    (fetchmail-query-server)))))
+	   (t (fetchmail-query-server)))))
   (unless fetchmail-server
     (error "Not selected fetchmail server."))
-  (let ((fetchmail-query-passwd t))
-    (let ((fetchmail-option-list
-	   (fetchmail-make-option-list fetchmail-server
-				       (cdr (assoc fetchmail-server
-						   fetchmail-server-param-alist)))))
-      (if fetchmail-query-passwd
-	  (fetchmail-query-passwd fetchmail-server))
-      (unless (fetchmail-buffer-p)
-	(fetchmail-make-buffer))
-      (if (and fetchmail-window
-	       (not (fetchmail-window-p t)))
-	  (fetchmail-open-window))
-      (fetchmail-start fetchmail-server fetchmail-option-list))))
+  (if (fetchmail-query-passwd-p fetchmail-server)
+    (fetchmail-query-passwd fetchmail-server))
+  (unless (fetchmail-buffer-p)
+    (fetchmail-make-buffer))
+  (if (and fetchmail-window
+	   (not (fetchmail-window-p t)))
+      (fetchmail-open-window))
+  (fetchmail-start fetchmail-server))
 
 (defun fetchmail-mode ()
   "Fetchmailバッファ用のモード。"
