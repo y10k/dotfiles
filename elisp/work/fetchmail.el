@@ -48,8 +48,11 @@
 (defvar fetchmail-window-height-ratio 0.15
   "fetchmail ウィンドウの高さの割合。")
 
-(defvar fetchmail-window-height-limit 10
-  "fetchmail ウィンドウの高さの最大値。")
+(defvar fetchmail-window-height-lower-limit 5
+  "fetchmail ウィンドウの高さの下限。")
+
+(defvar fetchmail-window-height-upper-limit 10
+  "fetchmail ウィンドウの高さの上限。")
 
 (defvar fetchmail-last-server nil
   "最後に使われたサーバの名前が入っている。
@@ -192,10 +195,11 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
        (split-window
 	(selected-window) 
 	(- (window-height)
-	   (min fetchmail-window-height-limit
-		(round
-		 (* (window-height)
-		    fetchmail-window-height-ratio)))
+	   (max fetchmail-window-height-lower-limit
+		(min fetchmail-window-height-upper-limit
+		     (round
+		      (* (window-height)
+			 fetchmail-window-height-ratio))))
 	   1))
        fetchmail-buffer-name)))
 
