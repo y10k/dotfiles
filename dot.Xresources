@@ -124,6 +124,8 @@ Netscape*inputMethod:
 Netscape*preeditType:
 Netscape*maxImageColors: 64
 Netscape*borderWidth: 0
+Netscape*defaultForeground: #000000
+Netscape*defaultBackground: #E6E6FA
 
 XDvi*geometry: 780x530
 XDvi*font: -*-helvetica-medium-r-normal-*-10-*-*-*-*-*-iso8859-1
