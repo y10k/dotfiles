@@ -45,8 +45,8 @@
 (defvar fetchmail-window t
   "この変数が真のとき fetchmail バッファをウィンドウで開く。")
 
-(defvar fetchmail-window-height 8
-  "fetchmail ウィンドウの高さ。")
+(defvar fetchmail-window-height-ratio 0.15
+  "fetchmail ウィンドウの高さの割合。")
 
 (defvar fetchmail-last-server nil
   "最後に使われたサーバの名前が入っている。
@@ -190,7 +190,11 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
   (if (not (equal fetchmail-buffer-name (buffer-name)))
       (set-window-buffer
        (split-window (selected-window) 
-		     (- (window-height) fetchmail-window-height 1))
+		     (- (window-height)
+			(round
+			 (* (window-height)
+			    fetchmail-window-height-ratio))
+			1))
        fetchmail-buffer-name)))
 
 (defun fetchmail-close-window ()
