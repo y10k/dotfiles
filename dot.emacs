@@ -107,8 +107,11 @@
 	    (cursor-color . "Navy")
 	    (foreground-color . "Black")
 	    (background-color . "OldLace")
-	    (font . "w32font16")
-	    ))
+	    (font . "w32font16")))
+    (if (string-match "^[Vv][Aa][Rr][Cc][Oo][Ll][Aa][Cc]" (system-name))
+	(progn
+	  (setcdr (assq 'width initial-frame-alist) 120)
+	  (setcdr (assq 'height initial-frame-alist) 56)))
     (setq default-frame-alist initial-frame-alist)
 
     ; Shell
@@ -185,8 +188,14 @@
   (interactive (list (read-buffer "New buffer: " nil nil)))
   (switch-to-buffer-other-frame (get-buffer-create buffer-name)))
 (defun duplicate-buffer (base-buffer-name)
-  (make-indirect-buffer base-buffer-name
-			(generate-new-buffer-name (concat "*" base-buffer-name " (copy)*")) t))
+  (let ((base-buffer (get-buffer base-buffer-name)))
+    (let ((default-major-mode (cdr (assq 'major-mode
+					 (buffer-local-variables base-buffer))))
+	  (copy-buffer (make-indirect-buffer
+			base-buffer
+			(generate-new-buffer-name (concat "*" base-buffer-name " (copy)*")))))
+      (set-buffer-major-mode copy-buffer)
+      copy-buffer)))
 (defun copy-buffer (base-buffer-name)
   (interactive (list (buffer-name)))
   (switch-to-buffer (duplicate-buffer base-buffer-name)))
