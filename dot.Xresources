@@ -135,10 +135,10 @@ Netscape*borderWidth: 0
 Netscape*defaultForeground: #000000
 Netscape*defaultBackground: #E6E6FA
 
-XDvi*geometry: 780x530
+XDvi*geometry: 1000x700
+XDvi*borderWidth: 1
 XDvi*font: -*-helvetica-medium-r-normal-*-10-*-*-*-*-*-iso8859-1
 XDvi.background: white
-XDvi.form*background: gray60
 XDvi.mfMode: canonex
 XDvi.pixelsPerInch: 600
 XDvi.hushSpecials: True
