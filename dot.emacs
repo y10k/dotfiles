@@ -723,7 +723,7 @@ and source-file directory for your debugger." t)
 (setq navi2ch-net-http-proxy "proxy.plutonian.ne.jp:8080")
 (setq navi2ch-list-bbstable-url "http://www6.ocn.ne.jp/~mirv/2chmenu.html")
 (if (eq window-system 'w32)
-    (setq navi2ch-directory "//babayaga/toki/.navi2ch"))
+    (setq navi2ch-directory "//cernobog/toki/.navi2ch"))
 
 ; HOME directory
 (if (eq window-system 'w32)
