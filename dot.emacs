@@ -168,12 +168,12 @@
 (global-set-key "\C-x\C-f" 'select-find-file)
 
 ; Buffer switching
-(defadvice switch-to-buffer (before strict-buffer-name activate)
-  (interactive (list (read-buffer "Switch to buffer: " (other-buffer) t))))
-(defadvice switch-to-buffer-other-window (before strict-buffer-name activate)
-  (interactive (list (read-buffer "Switch to buffer in other window: " (other-buffer) t))))
-(defadvice switch-to-buffer-other-frame (before strict-buffer-name activate)
-  (interactive (list (read-buffer "Switch to buffer in other frame: " (other-buffer) t))))
+;(defadvice switch-to-buffer (before strict-buffer-name activate)
+;  (interactive (list (read-buffer "Switch to buffer: " (other-buffer) t))))
+;(defadvice switch-to-buffer-other-window (before strict-buffer-name activate)
+;  (interactive (list (read-buffer "Switch to buffer in other window: " (other-buffer) t))))
+;(defadvice switch-to-buffer-other-frame (before strict-buffer-name activate)
+;  (interactive (list (read-buffer "Switch to buffer in other frame: " (other-buffer) t))))
 
 ; Window switching
 (defun other-window-one-step (previous)
@@ -611,6 +611,10 @@ and source-file directory for your debugger." t)
 (setq auto-mode-alist
       (append '(("\\.ewb$" . ewb-mode))
 	      auto-mode-alist))
+
+; disable Tool Bar
+(if (string-match "^21\\." emacs-version)
+    (tool-bar-mode -1))
 
 ; HOME directory
 (if (eq window-system 'w32)
