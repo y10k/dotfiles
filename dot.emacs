@@ -116,9 +116,13 @@
 
     ; Shell
     (setq explicit-shell-file-name "bash.exe")
-    (setq comint-output-filter-functions ())
-    (add-hook 'comint-output-filter-functions
-	      (function comint-strip-ctrl-m))))))
+    (add-hook 'shell-mode-hook
+	      (lambda ()
+		(add-hook 'comint-output-filter-functions
+			  'comint-strip-ctrl-m)))))))
+
+; Shell mode
+(setq comint-scroll-show-maximum-output t)
 
 ; Info directories
 (setq Info-default-directory-list
