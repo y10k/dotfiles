@@ -23,7 +23,8 @@
 
 ; Window system dependent
 (cond
- (window-system
+ ((or window-system
+      (string-match "color" (getenv "TERM")))
   ; Bold face
   (make-face-bold 'bold)
   (make-face-bold 'bold-italic)
@@ -732,4 +733,4 @@ and source-file directory for your debugger." t)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
-(put 'set-goal-column 'disabled nil)
+
