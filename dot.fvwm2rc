@@ -426,14 +426,14 @@ AddToFunc PrevXTerm
 +    "I" Prev [CurrentPage !Iconic *term*] Focus
 
 AddToFunc NextEmacs
-+    "I" Next [CurrentPage !Iconic emacs@*] Raise
-+    "I" Next [CurrentPage !Iconic emacs@*] WarpToWindow
-+    "I" Next [CurrentPage !Iconic emacs@*] Focus
++    "I" Next [CurrentPage !Iconic *emacs@*] Raise
++    "I" Next [CurrentPage !Iconic *emacs@*] WarpToWindow
++    "I" Next [CurrentPage !Iconic *emacs@*] Focus
 
 AddToFunc PrevEmacs
-+    "I" Prev [CurrentPage !Iconic emacs@*] Raise
-+    "I" Prev [CurrentPage !Iconic emacs@*] WarpToWindow
-+    "I" Prev [CurrentPage !Iconic emacs@*] Focus
++    "I" Prev [CurrentPage !Iconic *emacs@*] Raise
++    "I" Prev [CurrentPage !Iconic *emacs@*] WarpToWindow
++    "I" Prev [CurrentPage !Iconic *emacs@*] Focus
 
 AddToFunc NextNetscape
 +    "I" Next [CurrentPage !Iconic Netscape*] Raise
