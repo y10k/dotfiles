@@ -48,6 +48,7 @@ Wanderlust{
 	%INBOX.freedom				"フリーダム"
 	%INBOX.ntt				"NTT"
 	%INBOX.misc				"その他"
+	%INBOX.spam				"迷惑メール"
 }
 ニュース{
 	-fj.comp.lang.c
