@@ -84,6 +84,10 @@
   ; Window system specific
   (cond
    ((eq window-system 'w32)
+    ; Coding sytem
+    (set-default-coding-systems 'japanese-shift-jis)
+    (set-terminal-coding-system 'japanese-shift-jis)
+
     ; Frame
     (setq initial-frame-alist
 	  '((width . 100)
