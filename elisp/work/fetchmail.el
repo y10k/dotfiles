@@ -349,9 +349,11 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   "Fetchmailを起動する。引数を与えるかfetchmail-default-serverが
 設定されていないときは、ミニバッファで複数のサーバから選択する。"
   (interactive "P")
-  (if fetchmail-server-param-alist
+  (if (and (boundp 'fetchmail-server-param-alist)
+	   fetchmail-server-param-alist)
       (error "obsolete variable: fetchmail-server-param-alist"))
-  (if fetchmail-param-func-alist
+  (if (and (boundp 'fetchmail-param-func-alist)
+	   fetchmail-param-func-alist)
       (error "obsolete variable: fetchmail-param-func-alist"))
   (unless (stringp fetchmail-server)
     (setq fetchmail-server
