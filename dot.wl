@@ -40,7 +40,7 @@
 	("From"
 	 ("^DIARY Archive CGI (toki@imopc7"          . "+diary/local")
 	 ("^DIARY Archive CGI (toki@ppbdbs01"        . "+diary/local")
-	 ("^DIARY Archive CGI (nobody@web\\.freedom" . "+diary/freedom"))
+	 ("^DIARY Archive CGI (nobody@\\(web\\|www\\)\\.freedom" . "+diary/freedom"))
 	; ·×»»µ¡
 	("Subject"
 	 ("cernobog" . "+admin/cernobog")
