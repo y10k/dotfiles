@@ -181,7 +181,8 @@
 
 ; HTML mode
 (setq auto-mode-alist
-      (append '(("\\.rhtml$" . html-mode)) auto-mode-alist))
+      (append '(("\\.rhtml$" . html-mode)
+		("\\.xhtml$" . sgml-mode)) auto-mode-alist))
 (eval-after-load "sgml-mode"
   '(setq html-tag-alist
 	 (let* ((1-7 '(("1") ("2") ("3") ("4") ("5") ("6") ("7")))
