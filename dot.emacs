@@ -592,6 +592,9 @@ and source-file directory for your debugger." t)
 (autoload 'mew-send "mew" nil t)
 (setq mew-mail-domain-list '("mail.freedom.ne.jp"))
 
+; Use unzip on zip mode
+(setq archive-zip-use-pkzip nil)
+
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
