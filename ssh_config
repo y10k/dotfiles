@@ -31,6 +31,6 @@ Host *
 #   StrictHostKeyChecking no
 #   IdentityFile ~/.ssh/identity
 #   Port 22
-#   Protocol 2,1
+  Protocol 1,2
   Cipher blowfish
 #   EscapeChar ~
