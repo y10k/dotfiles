@@ -507,10 +507,6 @@ and source-file directory for your debugger." t)
 ; Parenthesis
 (show-paren-mode t)
 
-; Mailcrypt
-(load "mailcrypt")
-(mc-setversion "2.6")
-
 ; FLIM
 (setq eword-max-size-to-decode (* 64 1024))
 (setq eword-lexical-analyzer		; http://lists.airs.net/wl/archive/199909/msg00009.html
