@@ -75,6 +75,11 @@
 (global-set-key "\C-^" 'other-window-one-step)
 (setq truncate-partial-width-windows nil)
 
+; Frame
+(setq frame-title-format
+      '(multiple-frames ("%b - " invocation-name "@" system-name)
+			("" invocation-name "@" system-name)))
+
 ; No new lines
 (setq next-line-add-newlines nil)
 
