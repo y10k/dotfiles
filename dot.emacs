@@ -21,11 +21,8 @@
 (cond
  (window-system
   ; Bold face
-  (condition-case nil
-      (progn
-	(make-face-bold 'bold)
-	(make-face-bold 'bold-italic))
-    (error nil))
+  (make-face-bold 'bold)
+  (make-face-bold 'bold-italic)
 
   ; Font lock mode
   (custom-declare-face
