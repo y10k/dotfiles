@@ -35,7 +35,7 @@
 ; Offline mode
 (setq wl-plugged nil)
 (if (or (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name))
-	(string-match "^[Vv][Oo][Ll][Dd]" (system-name)))
+	(string-match "^[Vv][Aa][Rr][Cc][Oo][Ll][Aa][Cc]" (system-name)))
     (add-hook 'wl-make-plugged-hook
 	      (function
 	       (lambda ()
