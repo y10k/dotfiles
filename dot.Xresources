@@ -44,6 +44,8 @@ Emacs.fontset-0: \
 	katakana-jisx0201:-misc-fixed-medium-r-normal--14-*-75-75-c-*-jisx0201.1976-0,\
 	japanese-jisx0208:-misc-fixed-medium-r-normal--14-*-75-75-c-*-jisx0208.1983-0
 
+XTerm*termName: xterm-color
+ETerm*termName: xterm-color
 KTerm*termName: xterm-color
 KTerm*inputMethod: skkinput
 KTerm*preeditType: OverTheSpot

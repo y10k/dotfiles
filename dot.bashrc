@@ -91,6 +91,7 @@ alias la='ls -a'
 alias lf='ls -FA'
 alias ll='ls -lA'
 alias ls='ls -F'
+alias diff='diff -u'
 alias vi=/usr/local/bin/nvi
 alias view=/usr/local/bin/nview
 

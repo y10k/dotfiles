@@ -347,18 +347,19 @@ AddToMenu UTILS "Utils" Title
 +		"XOsview"  Exec exec xosview &
 
 AddToMenu Main		"Main" Title
-+			"XTerm"    Exec exec xterm -T xterm@`hostname` &
-+			"KTerm"    Exec exec kterm -T kterm@`hostname` &
++			"XTerm"    Exec exec xterm -T "xterm@`hostname`" &
++			"KTerm"    Exec exec kterm -T "kterm@`hostname`" &
++			"ETerm"    Exec exec Eterm -T "eterm@`hostname`" &
 +			"Emacs"    Exec exec emacs &
 +			"Mozilla"  Exec exec mozilla &
 +			"CD Play"  Exec exec xcdplayer &
 +			"gFTP"     Exec exec gftp &
 +			"GIMP"     Exec exec gimp &
 +			"" Nop
-+			"BABAYAGA" Exec ssh babayaga /usr/X11R6/bin/kterm -ls -T 'kterm@`hostname`' &
-+			"VARCOLAC" Exec ssh varcolac /usr/X11R6/bin/kterm -ls -T 'kterm@`hostname`' &
-+			"CERNOBOG" Exec ssh cernobog /usr/X11R6/bin/kterm -ls -T 'kterm@`hostname`' &
-+			"HELLBOY"  Exec ssh hellboy /usr/X11R6/bin/kterm -ls -T 'kterm@`hostname`' &
++			"BABAYAGA" Exec ssh babayaga /usr/X11R6/bin/kterm -ls -T '"kterm@`hostname`"' &
++			"VARCOLAC" Exec ssh varcolac /usr/X11R6/bin/kterm -ls -T '"kterm@`hostname`"' &
++			"CERNOBOG" Exec ssh cernobog /usr/X11R6/bin/kterm -ls -T '"kterm@`hostname`"' &
++			"HELLBOY"  Exec ssh hellboy /usr/X11R6/bin/kterm -ls -T '"kterm@`hostname`"' &
 +			"" Nop
 +			"XLock"    Exec exec xautolock -locknow
 +			"XLoad"    Exec exec xload &

@@ -466,8 +466,8 @@ and source-file directory for your debugger." t)
 	      auto-mode-alist))
 
 ; Man
-(if (string-match "freebsd" system-configuration))
-    (setq manual-program "jman")
+(if (string-match "freebsd" system-configuration)
+    (setq manual-program "jman"))
 
 ; Comparing files
 (setq diff-switches "-u")
