@@ -32,6 +32,7 @@ Wanderlust{
 	計算機{
 		%INBOX.admin.root		"計算機管理者"
 		%INBOX.admin.mail		"メール管理者"
+		%INBOX.admin.cron		"CRON"
 		%INBOX.admin.babayaga		"BABAYAGA"
 		%INBOX.admin.cernobog		"CERNOBOG"
 	}
@@ -44,6 +45,7 @@ Wanderlust{
 	%INBOX.isize				"ISIZE"
 	%INBOX.diary				"日記アクセスログ"
 	%INBOX.freedom				"フリーダム"
+	%INBOX.ntt				"NTT"
 	%INBOX.misc				"その他"
 }
 ニュース{

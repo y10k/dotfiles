@@ -63,14 +63,16 @@
 	("From"
 	 ("^DIARY Archive CGI (nobody@\\(web\\|www\\)\\.freedom" . "%INBOX.diary"))
 	; ·×»»µ¡
-	("Subject"
-	 ("root"     . "%INBOX.admin.root")
-	 ("cernobog" . "%INBOX.admin.cernobog")
-	 ("babayaga" . "%INBOX.admin.babayaga"))
+	("From"
+	 ("Cron Daemon" . "%INBOX.admin.cron"))
 	("To"
 	 ("root"          . "%INBOX.admin.root")
 	 ("root@cernobog" . "%INBOX.admin.cernobog")
-	 ("root@babayaga" . "%INBOX.admin.babayaga"))))
+	 ("root@babayaga" . "%INBOX.admin.babayaga"))
+	("Subject"
+	 ("root"     . "%INBOX.admin.root")
+	 ("cernobog" . "%INBOX.admin.cernobog")
+	 ("babayaga" . "%INBOX.admin.babayaga"))))
 (setq wl-refile-rule-alist
       (append wl-refile-rule-alist
 	      ((lambda (rule-src-list)
