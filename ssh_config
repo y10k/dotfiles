@@ -17,6 +17,7 @@
 # Site-wide defaults for various options
 
 Host *
+  Compression no
   ForwardAgent yes
   ForwardX11 yes
 #   RhostsAuthentication yes
@@ -31,5 +32,5 @@ Host *
 #   IdentityFile ~/.ssh/identity
 #   Port 22
 #   Protocol 2,1
-#   Cipher blowfish
+  Cipher blowfish
 #   EscapeChar ~
