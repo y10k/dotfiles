@@ -7,8 +7,9 @@
 
 ; Local emacs-lisp library path
 (setq load-path
-      (append (list (expand-file-name "~/elisp/lib")
-		    (expand-file-name "~/elisp/work"))
+      (append (list (expand-file-name "~/elisp/work")
+		    (expand-file-name "~/elisp/patch")
+		    (expand-file-name "~/elisp/lib"))
 	      load-path))
 
 ; Japanese environment
