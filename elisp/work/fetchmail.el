@@ -10,7 +10,8 @@
 ;; <<< 使用法 >>>
 ;; まず fetchmail.el を load-path の通ったディレクトリに置いて .emacs に
 ;;   (autoload 'fetchmail "fetchmail" nil t)
-;; と記述し、fetchmail-server-param-alist 変数の設定をします。
+;; というコードを追加し、そして次に
+;; fetchmail-server-param-alist 変数の設定をします。
 ;; このとき注意しないといけないのが query-passwd パラメータの設定で、
 ;; .fetchmailrc でパスワードの設定をしているときは設定しないか
 ;; nil 値を設定し、パスワードの設定をしてないときは t を設定します。
@@ -67,7 +68,7 @@
     (keep         . fetchmail-param-keep)
     (flush        . fetchmail-param-flush))
   "パラメータのシンボルをキーに持ちパラメータの値を解析する関数のシンボルを
-値に持つ連想リスト。fetchmail-server-param-alist のパラメータの解析に
+値に持つ連想リスト。fetchmail-server-param-alist 関数のパラメータの解析に
 使われる。")
 
 (defvar fetchmail-passwd-alist ()
@@ -90,7 +91,7 @@
 
 (defvar fetchmail-last-server nil
   "最後に使われたサーバの名前が入っている。
-fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
+fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defvar fetchmail-process-name "fetchmail"
   "fetchmail プロセスの名前。")
@@ -143,31 +144,31 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defun fetchmail-param-check (fetchmail-server check)
   "check オプションのリストを作る。"
-  (if check (list "-c")))
+  (if check (list "--check")))
 
 (defun fetchmail-param-username (fetchmail-server username)
   "username オプションのリストを作る。"
-  (if username (list "-u" username)))
+  (if username (list "--username" username)))
 
 (defun fetchmail-param-protocol (fetchmail-server protocol)
   "protocol オプションのリストを作る。"
-  (if protocol (list "-p" protocol)))
+  (if protocol (list "--protocol" protocol)))
 
 (defun fetchmail-param-port (fetchmail-server port)
   "port オプションのリストを作る。"
-  (if port (list "-P" (number-to-string port))))
+  (if port (list "--port" (number-to-string port))))
 
 (defun fetchmail-param-timeout (fetchmail-server timeout)
   "timeout オプションのリストを作る。"
-  (if timeout (list "-t" (number-to-string timeout))))
+  (if timeout (list "--timeout" (number-to-string timeout))))
 
 (defun fetchmail-param-folder (fetchmail-server folder)
   "folder オプションのリストを作る。"
-  (if folder (list "-r" folder)))
+  (if folder (list "--folder" folder)))
 
 (defun fetchmail-param-keep (fetchmail-server keep)
   "keep オプションのリストを作る。"
-  (if keep (list "-k")))
+  (if keep (list "--keep")))
 
 (defun fetchmail-param-flush (fetchmail-server flush)
   "flush オプションのリストを作る。"
@@ -323,7 +324,7 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 (defun fetchmail-start (fetchmail-server fetchmail-option-list)
   "fetchmail を一つのサーバに対して起動する。"
   (if (get-process fetchmail-process-name)
-      (error "Fetchmail is running."))
+      (error "Fetchmail is already running."))
   (run-hooks 'fetchmail-preprocess-hook)
   (let ((fetchmail-process
 	 (fetchmail-run fetchmail-server
