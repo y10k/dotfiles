@@ -1,5 +1,39 @@
-;;; $Id$
 ;;; fetchmail.el --- Emacs から fetchmail を起動する。
+;;; $Id$
+;;
+;; <<< 作者 >>>
+;; 土岐 仁謙 <toki@freedom.ne.jp>
+;;
+;; <<< URL >>>
+;; http://www.freedom.ne.jp/toki/elisp/fetchmail.el
+;;
+;; <<< 使用法 >>>
+;; まず fetchmail.el を load-path の通ったディレクトリに置いて .emacs に
+;;   (autoload 'fetchmail "fetchmail" nil t)
+;; と記述し、fetchmail-server-param-alist 変数の設定をします。
+;; このとき注意しないといけないのが query-passwd パラメータの設定で、
+;; .fetchmailrc でパスワードの設定をしているときは設定しないか
+;; nil 値を設定し、パスワードの設定をしてないときは t を設定します。
+;; .fetchmailrc の設定と query-passwd の設定が食い違っていると
+;; fetchmail.el は正常に動作しないので、気をつけてください。
+;; 後は好みに応じて
+;;   fetchmail-default-server
+;;   fetchmail-preprocess-hook
+;;   fetchmail-postprocess-hook
+;;   fetchmail-notify-beep
+;;   fetchmail-window
+;;   fetchmail-window-height-ratio
+;;   fetchmail-window-height-lower-limit
+;;   fetchmail-window-height-upper-limit
+;; これらの変数の値を適当に設定してください。
+;; 面倒ならデフォルト値のままでも構いません。
+;; 後は M-x fetchmail を実行すると fetchmail が起動します。
+;; query-passwd を t に設定していると、最初に一度だけパスワードを問い合わせて
+;; 記憶し、二回目の実行からは記憶したパスワードを使用します。
+;; このときパスワードは fetchmail-passwd-alist 変数に記憶され、
+;; Emacs Lisp に慣れた人なら簡単に取り出せてしまうので、
+;; 端末の前を離れるときは注意してください。
+;;
 
 (defvar fetchmail-default-server nil
   "デフォルトのサーバ。")
