@@ -14,8 +14,8 @@
   (setq elmo-localdir-folder-path "//babayaga/toki/Mail")))
 
 ; Folder
-(setq wl-strict-diff-folders '("^\\+inbox$" "@mail\\.plutonian\\.ne\\.jp" "@mail\\.freedom\\.ne\\.jp"))
-(setq wl-auto-check-folder-list '("^\\+inbox$" "@mail\\.plutonian\\.ne\\.jp"))
+(setq wl-strict-diff-folders '("^\\+inbox$" "@.*\\.plutonian\\.ne\\.jp" "@mail\\.freedom\\.ne\\.jp"))
+(setq wl-auto-check-folder-list '("^\\+inbox$" "@.*\\.plutonian\\.ne\\.jp"))
 (setq wl-auto-uncheck-folder-list '("."))
 (setq wl-default-folder "+inbox")
 (setq wl-default-spec "%")
@@ -23,7 +23,7 @@
 
 ; Server
 (setq elmo-pop3-default-server "mail.freedom.ne.jp")
-(setq elmo-imap4-default-server "mail.plutonian.ne.jp")
+(setq elmo-imap4-default-server "cernobog.plutonian.ne.jp")
 (setq elmo-imap4-default-authenticate-type 'cram-md5)
 (setq elmo-nntp-default-server "news.edit.ne.jp")
 (setq wl-smtp-posting-server "mail.freedom.ne.jp")
@@ -41,8 +41,9 @@
 	       (lambda ()
 		 (elmo-set-plugged t "mail.freedom.ne.jp" 110)
 		 (elmo-set-plugged t "mx.edit.ne.jp" 110)
-		 (elmo-set-plugged t "mail.plutonian.ne.jp" 110)
-		 (elmo-set-plugged t "mail.plutonian.ne.jp" 143)
+		 (elmo-set-plugged t "babayaga.plutonian.ne.jp" 110)
+		 (elmo-set-plugged t "cernobog.plutonian.ne.jp" 110)
+		 (elmo-set-plugged t "cernobog.plutonian.ne.jp" 143)
 		 (elmo-set-plugged t "news.edit.ne.jp" 119)
 		 (elmo-set-plugged t "shimbun")))))
 
