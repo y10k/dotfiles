@@ -278,7 +278,7 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 	   fetchmail-buffer-name
 	   fetchmail-run-list)))
 
-(defun fetchmail-enter-passwd (fetchmail-process passwd)
+(defun fetchmail-enter-passwd (fetchmail-process fetchmail-passwd)
   "fetchmail プロセスにパスワードを入力する。"
   (catch 'passwd-entered
     (while t
@@ -294,7 +294,7 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 	(error "Fetchmail exited in entering password."))
       (sleep-for 0.1)))
   (process-send-string (process-name fetchmail-process)
-		       passwd)
+		       fetchmail-passwd)
   (process-send-eof (process-name fetchmail-process)))
 
 (defun fetchmail-finish (fetchmail-process event)
