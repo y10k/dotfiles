@@ -138,7 +138,8 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 	(if (not passwd)
 	    (fetchmail-set-passwd fetchmail-server
 				  (read-passwd (format "Password for %s: "
-						       fetchmail-server)))))))
+						       fetchmail-server))))))
+  nil)
 
 (defun fetchmail-param-check (fetchmail-server check)
   "check オプションのリストを作る。"
@@ -354,10 +355,9 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
     (if (not fetchmail-server)
 	(error "Not selected fetchmail server."))
     (let ((fetchmail-option-list
-	   (fetchmail-make-option-list
-	    fetchmail-server
-	    (cdr (assoc fetchmail-server
-			fetchmail-server-param-alist)))))
+	   (fetchmail-make-option-list fetchmail-server
+				       (cdr (assoc fetchmail-server
+						   fetchmail-server-param-alist)))))
       (if (not (get-buffer fetchmail-buffer-name))
 	  (fetchmail-make-buffer))
       (if (and fetchmail-window
