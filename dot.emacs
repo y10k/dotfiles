@@ -123,6 +123,7 @@
 
 ; Shell mode
 (setq comint-scroll-show-maximum-output t)
+(setq comint-scroll-to-bottom-on-output t)
 
 ; Info directories
 (setq Info-default-directory-list
@@ -636,9 +637,26 @@ and source-file directory for your debugger." t)
 (setq archive-zip-use-pkzip nil)
 
 ; WWW browser
+(setq w3m-coding-system
+      (cond
+       ((eq window-system 'w32) 'shift_jis)
+       (t 'euc-jp)))
+(setq w3m-coding-system 'shift_jis)
 (setq browse-url-browser-function 'w3m-browse-url)
+(setq mime-setup-enable-inline-html nil)
 (autoload 'w3m "w3m" "Interface for w3m on Emacs." t)
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+(eval-after-load "mime-view"
+  '(progn
+     (autoload 'mime-w3m-preview-text/html "mime-w3m")
+     (ctree-set-calist-strictly
+      'mime-preview-condition
+      '((type . text)
+        (subtype . html)
+        (body . visible)
+        (body-presentation-method . mime-w3m-preview-text/html)))
+     (set-alist 'mime-view-type-subtype-score-alist
+                '(text . html) 3)))
 (global-set-key "\C-xm" 'browse-url-at-point)
 
 ; EWB mode

@@ -69,6 +69,19 @@ Wanderlust{
 	-fj.rec.comics
 	-fj.rec.games.video.pc
 }
+新聞{
+	@asahi/
+	@mainichi/
+	@nikkei/
+	@cnet/
+	@zdnet/
+	@wired/
+	@impress/
+}
+情報{
+	@security-memo/
+	@ibm-dev/
+}
 圧縮{
 	$archive/
 }
