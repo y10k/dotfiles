@@ -27,8 +27,8 @@
 	(end-of-label (search-forward "}" nil t)))
     (if (and begin-of-label end-of-label
 	     (/= start-point begin-of-label))
-	(buffer-substring-no-properties
-	 begin-of-label (1- end-of-label)))))
+	(buffer-substring-no-properties begin-of-label
+					(1- end-of-label)))))
 
 (defun latex-label-make-alist (&optional num)
   "Make a associated list of LaTeX labels in current buffer."
@@ -55,7 +55,6 @@
     (if (not latex-label-alist)
 	(error (format "Not found a LaTeX label in a buffer: %s."
 		       latex-label-buffer)))
-    (insert
-     (completing-read "LaTeX label: "
-		      latex-label-alist nil t nil
-		      'latex-label-history))))
+    (insert (completing-read "LaTeX label: "
+			     latex-label-alist nil t nil
+			     'latex-label-history))))
