@@ -10,8 +10,8 @@
  ((and (eq window-system 'w32)
        (or (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name))
 	   (string-match "^[Vv][Aa][Rr][Cc][Oo][Ll][Aa][Cc]" (system-name))))
-  (setq elmo-msgdb-directory "//babayaga/toki/.elmo")
-  (setq elmo-localdir-folder-path "//babayaga/toki/Mail")))
+  (setq elmo-msgdb-directory "//cernobog/toki/.elmo")
+  (setq elmo-localdir-folder-path "//cernobog/toki/Mail")))
 
 ; Folder
 (setq wl-strict-diff-folders '("^\\+inbox$" "@.*\\.plutonian\\.ne\\.jp" "@mail\\.freedom\\.ne\\.jp"))
