@@ -17,6 +17,90 @@
 (set-default-coding-systems 'japanese-iso-8bit)
 (set-terminal-coding-system 'japanese-iso-8bit)
 
+; Window system dependent
+(cond
+ (window-system
+  ; Bold face
+  (condition-case nil
+      (progn
+	(make-face-bold 'bold)
+	(make-face-bold 'bold-italic))
+    (error nil))
+
+  ; Font lock mode
+  (custom-declare-face
+   'font-lock-builtin-face
+   '((((class grayscale) (background light)) (:foreground "lightgray" :bold t))
+     (((class grayscale) (background dark)) (:foreground "dimgray" :bold t))
+     (((class color) (background light)) (:foreground "seagreen"))
+     (((class color) (background dark)) (:foreground "darkolivegreen"))
+     (t (:bold t)))
+   "font lock mode face used to highlight builtins."
+   :group 'font-lock-highlighting-faces)
+  (custom-declare-face
+   'font-lock-string-face
+   '((((class grayscale) (background light)) (:foreground "dimgray" :italic t))
+     (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
+     (((class color) (background light)) (:foreground "gray40"))
+     (((class color) (background dark)) (:foreground "lightsalmon"))
+     (t (:italic t)))
+   "font lock mode face used to highlight strings."
+   :group 'font-lock-highlighting-faces)
+  (custom-declare-face
+   'font-lock-variable-name-face
+   '((((class grayscale) (background light))
+      (:foreground "gray90" :bold t :italic t))
+     (((class grayscale) (background dark))
+      (:foreground "dimgray" :bold t :italic t))
+     (((class color) (background light)) (:foreground "brown"))
+     (((class color) (background dark)) (:foreground "lightgoldenrod"))
+     (t (:bold t :italic t)))
+   "font lock mode face used to highlight variable names."
+   :group 'font-lock-highlighting-faces)
+  (custom-declare-face
+   'info-node
+   '((((class grayscale) (background light))
+      (:foreground "black" :bold t))
+     (((class grayscale) (background dark))
+      (:foreground "white" :bold t))
+     (((class color) (background light)) (:foreground "purple" :bold t))
+     (((class color) (background dark)) (:foreground "plum1" :bold t))
+     (t (:bold t)))
+   "info mode face used to highlight node."
+   :group 'font-lock-highlighting-faces)
+  (custom-declare-face
+   'info-xref
+   '((((class grayscale) (background light))
+      (:foreground "black" :bold t))
+     (((class grayscale) (background dark))
+      (:foreground "white" :bold t))
+     (((class color) (background light)) (:foreground "blue" :bold t))
+     (((class color) (background dark)) (:foreground "cyan" :bold t))
+     (t (:bold t)))
+   "info mode face used to highlight xref."
+   :group 'font-lock-highlighting-faces)
+  (global-font-lock-mode t)
+
+  ; Window system specific
+  (cond
+   ((eq window-system 'w32)
+    ; Frame
+    (setq initial-frame-alist
+	  '((width . 100)
+	    (height . 45)
+	    (cursor-color . "Navy")
+	    (foreground-color . "Black")
+	    (background-color . "OldLace")
+	    ; (font . "ms-gothic-13")
+	    ))
+    (setq default-frame-alist initial-frame-alist)
+
+    ; Shell
+    (setq explicit-shell-file-name "bash.exe")
+    (setq comint-output-filter-functions ())
+    (add-hook 'comint-output-filter-functions
+	      (function comint-strip-ctrl-m))))))
+
 ; Info directories
 (setq Info-default-directory-list
       '("/usr/share/info"
@@ -70,7 +154,7 @@
 (defadvice switch-to-buffer-other-frame (before strict-buffer-name activate)
   (interactive (list (read-buffer "Switch to buffer in other frame: " (other-buffer) t))))
 
-; Window
+; Window switching
 (defun other-window-one-step (previous)
   (interactive "P")
   (if previous
@@ -88,72 +172,8 @@
   (insert (current-time-string)))
 
 ; Emacsclient
-(server-start)
-
-; Bold face
-(if window-system
-    (condition-case nil
-	(progn
-	  (make-face-bold 'bold)
-	  (make-face-bold 'bold-italic))
-      (error nil)))
-
-; Font lock mode
-(custom-declare-face
- 'font-lock-builtin-face
- '((((class grayscale) (background light)) (:foreground "lightgray" :bold t))
-   (((class grayscale) (background dark)) (:foreground "dimgray" :bold t))
-   (((class color) (background light)) (:foreground "seagreen"))
-   (((class color) (background dark)) (:foreground "darkolivegreen"))
-   (t (:bold t)))
- "font lock mode face used to highlight builtins."
- :group 'font-lock-highlighting-faces)
-(custom-declare-face
- 'font-lock-string-face
- '((((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-   (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-   (((class color) (background light)) (:foreground "gray40"))
-   (((class color) (background dark)) (:foreground "lightsalmon"))
-   (t (:italic t)))
- "font lock mode face used to highlight strings."
- :group 'font-lock-highlighting-faces)
-(custom-declare-face
- 'font-lock-variable-name-face
- '((((class grayscale) (background light))
-    (:foreground "gray90" :bold t :italic t))
-   (((class grayscale) (background dark))
-    (:foreground "dimgray" :bold t :italic t))
-   (((class color) (background light)) (:foreground "brown"))
-   (((class color) (background dark)) (:foreground "lightgoldenrod"))
-   (t (:bold t :italic t)))
- "font lock mode face used to highlight variable names."
- :group 'font-lock-highlighting-faces)
-(custom-declare-face
- 'info-node
- '((((class grayscale) (background light))
-    (:foreground "black" :bold t))
-   (((class grayscale) (background dark))
-    (:foreground "white" :bold t))
-   (((class color) (background light)) (:foreground "purple" :bold t))
-   (((class color) (background dark)) (:foreground "plum1" :bold t))
-   (t (:bold t)))
- "info mode face used to highlight node."
- :group 'font-lock-highlighting-faces)
-(custom-declare-face
- 'info-xref
- '((((class grayscale) (background light))
-    (:foreground "black" :bold t))
-   (((class grayscale) (background dark))
-    (:foreground "white" :bold t))
-   (((class color) (background light)) (:foreground "blue" :bold t))
-   (((class color) (background dark)) (:foreground "cyan" :bold t))
-   (t (:bold t)))
- "info mode face used to highlight xref."
- :group 'font-lock-highlighting-faces)
-(if (not (getenv "xmono"))
-    ; xmono is monochrome x server flag.
-    ; see `.xsession' file.
-    (global-font-lock-mode t))
+(unless (eq window-system 'w32)
+  (server-start))
 
 ; HTML mode
 (setq auto-mode-alist
@@ -493,7 +513,7 @@ and source-file directory for your debugger." t)
 	  (setq ad-return-value (eword-decode-string ad-return-value)))))
 
 ; SEMI
-; (load "mime-setup")
+(load "mime-setup")
 (setq mime-edit-split-message nil)
 
 ; Wanderlust
