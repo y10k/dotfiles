@@ -5,6 +5,13 @@
 ;;; Wanderlust
 ;;;
 
+; Win32 HOME network settings
+(cond
+ ((and (eq window-system 'w32)
+       (equal (system-name) "CERNOBOG"))
+  (setq elmo-msgdb-dir "//babayaga/toki/.elmo")
+  (setq elmo-localdir-folder-path "//babayaga/toki/Mail")))
+
 ; Folder
 (setq wl-strict-diff-folders '("inbox" "toki"))
 (setq wl-auto-check-folder-list '("inbox" "toki"))
@@ -205,4 +212,3 @@ Cop, cop, kopocam! Va! Sagana! Sagana! Va!
 ; Color
 (set-face-foreground 'wl-highlight-message-cited-text-2 "DeepPink")
 (set-face-foreground 'wl-highlight-summary-new-face "Magenta")
-
