@@ -85,14 +85,24 @@
     (set-default-coding-systems 'japanese-shift-jis)
     (set-terminal-coding-system 'japanese-shift-jis)
 
+    ; Font
+    (create-fontset-from-request
+     "w32font16"
+     '((width . 8)
+       (height . 16)
+       (fixed . t)
+       (italic . nil))
+     '((family . "Lucida Console")
+       (family . "ＭＳ ゴシック")))
+
     ; Frame
     (setq initial-frame-alist
 	  '((width . 100)
-	    (height . 45)
+	    (height . 42)
 	    (cursor-color . "Navy")
 	    (foreground-color . "Black")
 	    (background-color . "OldLace")
-	    ; (font . "ms-gothic-13")
+	    (font . "w32font16")
 	    ))
     (setq default-frame-alist initial-frame-alist)
 
@@ -107,9 +117,9 @@
 
 ; Info directories
 (setq Info-default-directory-list
-      '("/usr/share/info"
-	"/usr/local/info"
-	"/usr/X11R6/info"))
+      (mapcar
+       (lambda (path) (expand-file-name path))
+       '("/usr/share/info" "/usr/local/info" "/usr/X11R6/info")))
 
 ; User key bindings
 (load "term/bobcat")
@@ -535,7 +545,8 @@ and source-file directory for your debugger." t)
 (global-set-key "\C-xj" '(function skk-auto-fill-mode))
 (add-hook 'isearch-mode-hook (function skk-isearch-mode-setup))
 (add-hook 'isearch-mode-end-hook (function skk-isearch-mode-cleanup))
-(setq skk-large-jisyo "/usr/local/share/skk/SKK-JISYO.L")
+(setq skk-large-jisyo
+      (expand-file-name "/usr/local/share/skk/SKK-JISYO.L"))
 (setq skk-rom-kana-rule-list
       '(("hh" "h"
 	 ("ッ" . "っ"))
@@ -552,19 +563,29 @@ and source-file directory for your debugger." t)
 (global-set-key "\C-xw" 'sdic-describe-word)
 (global-set-key "\C-xW" 'sdic-describe-word-at-point)
 (setq sdic-eiwa-dictionary-list
-      '((sdicf-client "/usr/local/share/dict/gene.sdic.gz"
-		      (title "GENE")
-		      (strategy direct))
-	(sdicf-client "/usr/local/share/dict/eedict.sdic.gz"
-		      (title "EEDICT")
-		      (strategy direct))))
+      (mapcar
+       (lambda (sdic-dictionary)
+	 (setcar (cdr sdic-dictionary)
+		 (expand-file-name (cadr sdic-dictionary)))
+	 sdic-dictionary)
+       '((sdicf-client "/usr/local/share/dict/gene.sdic.gz"
+		       (title "GENE")
+		       (strategy direct))
+	 (sdicf-client "/usr/local/share/dict/eedict.sdic.gz"
+		       (title "EEDICT")
+		       (strategy direct)))))
 (setq sdic-waei-dictionary-list
-      '((sdicf-client "/usr/local/share/dict/jedict.sdic.gz"
-		      (title "JEDICT")
-		      (strategy direct))
-	(sdicf-client "/usr/local/share/dict/jgene.sdic.gz"
-		      (title "JGENE")
-		      (strategy direct))))
+      (mapcar
+       (lambda (sdic-dictionary)
+	 (setcar (cdr sdic-dictionary)
+		 (expand-file-name (cadr sdic-dictionary)))
+	 sdic-dictionary)
+       '((sdicf-client "/usr/local/share/dict/jedict.sdic.gz"
+		       (title "JEDICT")
+		       (strategy direct))
+	 (sdicf-client "/usr/local/share/dict/jgene.sdic.gz"
+		       (title "JGENE")
+		       (strategy direct)))))
 
 ; Mew
 (autoload 'mew "mew" nil t)
