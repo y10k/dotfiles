@@ -398,6 +398,8 @@
   "run an inferior ruby process" t)
 (autoload 'inf-ruby-keys "inf-ruby"
   "set local key defs for inf-ruby in ruby-mode")
+(setq ruby-program-name
+      (concat "ruby " (expand-file-name "/usr/local/bin/irb") " --inf-ruby-mode"))
 (add-hook
  'ruby-mode-hook
  (function
