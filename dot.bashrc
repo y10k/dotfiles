@@ -42,6 +42,7 @@ export PERL_BADLANG=
 export RCSINIT=-zLT
 
 # CVS
+export CVS_RSH=ssh
 case "`hostname`" in
 hellboy.*)
   export CVSROOT=ext:babayaga.plutonian.ne.jp:/home/toki/cvsroot;;
