@@ -49,10 +49,8 @@
    :group 'font-lock-highlighting-faces)
   (custom-declare-face
    'font-lock-variable-name-face
-   '((((class grayscale) (background light))
-      (:foreground "gray90" :bold t :italic t))
-     (((class grayscale) (background dark))
-      (:foreground "dimgray" :bold t :italic t))
+   '((((class grayscale) (background light)) (:foreground "gray90" :bold t :italic t))
+     (((class grayscale) (background dark)) (:foreground "dimgray" :bold t :italic t))
      (((class color) (background light)) (:foreground "brown"))
      (((class color) (background dark)) (:foreground "lightgoldenrod"))
      (t (:bold t :italic t)))
@@ -60,10 +58,8 @@
    :group 'font-lock-highlighting-faces)
   (custom-declare-face
    'info-node
-   '((((class grayscale) (background light))
-      (:foreground "black" :bold t))
-     (((class grayscale) (background dark))
-      (:foreground "white" :bold t))
+   '((((class grayscale) (background light)) (:foreground "black" :bold t))
+     (((class grayscale) (background dark)) (:foreground "white" :bold t))
      (((class color) (background light)) (:foreground "purple" :bold t))
      (((class color) (background dark)) (:foreground "plum1" :bold t))
      (t (:bold t)))
@@ -71,15 +67,20 @@
    :group 'font-lock-highlighting-faces)
   (custom-declare-face
    'info-xref
-   '((((class grayscale) (background light))
-      (:foreground "black" :bold t))
-     (((class grayscale) (background dark))
-      (:foreground "white" :bold t))
+   '((((class grayscale) (background light)) (:foreground "black" :bold t))
+     (((class grayscale) (background dark)) (:foreground "white" :bold t))
      (((class color) (background light)) (:foreground "blue" :bold t))
      (((class color) (background dark)) (:foreground "cyan" :bold t))
      (t (:bold t)))
    "info mode face used to highlight xref."
    :group 'font-lock-highlighting-faces)
+  (custom-declare-face
+   'sh-heredoc-face
+   '((((class color) (background light)) (:foreground "sea green"))
+     (((class color) (background dark)) (:foreground "yellow" :bold t))
+     (t (:bold t)))
+   "Face to show a here-document"
+   :group 'sh-indentation)
   (global-font-lock-mode t)
 
   ; Window system specific
