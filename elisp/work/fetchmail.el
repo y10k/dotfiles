@@ -1,4 +1,4 @@
-;;; fetchmail.el --- Emacs から fetchmail を起動する。
+;;; Fetchmail.el --- Emacs から fetchmail を起動する。
 ;;; $Id$
 ;;
 ;; <<< 作者 >>>
@@ -7,18 +7,31 @@
 ;; <<< URL >>>
 ;; http://www.freedom.ne.jp/toki/elisp/fetchmail.el
 ;;
+;; <<< 注意 >>>
+;; [2000-09-10]
+;; カスタマイズの変数が一部変更されました。
+;; 次の変数は廃止になったので注意してください。
+;;   fetchmail-server-param-alist
+;;   fetchmail-param-func-alist
+;;
 ;; <<< 使用法 >>>
-;; !!!obsolete!!! 後で書き直す!
 ;; まずfetchmail.elをload-pathの通ったディレクトリに置いて.emacsに
 ;;   (autoload 'fetchmail "fetchmail" nil t)
-;; というコードを追加し、そして次に
-;; fetchmail-server-param-alist変数の設定をします。
-;; このとき注意しないといけないのがomit-passwdパラメータの設定で、
-;; ~/.fetchmailrcでパスワードの設定をしているときは必ずtを設定して下さい。
-;; ~/.fetchmailrc の設定とomit-passwdの設定が食い違っていると
-;; fetchmail.elは正常に動作しないので、気をつけてください。
+;; というコードを追加します。
+;; 次に変数fetchmail-server-omit-passwd-listにfetchmailに.fetchmailrcで
+;; パスワードを設定してあるサーバ名を設定します。
+;; 変数fetchmail-server-omit-passwd-listにサーバ名を追加すると
+;; fetchmailを起動するときにパスワードを尋ねなくなります。
+;; 逆に変数fetchmail-server-omit-passwd-listのサーバ名を削除して
+;; .fetchmammilrcからパスワードのエントリを削除すると、
+;; fetchmailを起動するとき最初の一回だけパスワードを尋ねて
+;; それ以降はEmacsを終了するまでパスワードを記憶します。
+;; 変数fetchmail-server-omit-passwd-listと.fetchmailrcの設定が
+;; 矛盾しているとうまく動作しないので注意してください。
 ;; 後は好みに応じて
 ;;   fetchmail-default-server
+;;   fetchmail-server-option-alist
+;;   fetchmail-server-alias-alist
 ;;   fetchmail-preprocess-hook
 ;;   fetchmail-postprocess-hook
 ;;   fetchmail-notify-beep
@@ -30,11 +43,11 @@
 ;; これらの変数の値を適当に設定してください。
 ;; 面倒ならデフォルト値のままでも構いません。
 ;; 後はM-x fetchmailを実行するとfetchmailが起動します。
-;; omit-passwdをnilに設定しているかあるいは設定していなければ、
-;; 最初に一度だけパスワードを問い合わせて記憶し、
-;; 二回目の実行からは記憶したパスワードを使用します。
+;; サーバが変数fetchmail-server-omit-passwd-listに登録されていなければ
+;; 最初に一度だけパスワードを問い合わせて記憶し、二回目の実行からは
+;; 記憶したパスワードを使用します。
 ;; このときパスワードはfetchmail-server-passwd-alist変数に記憶され、
-;; Emacs Lispに慣れた人なら簡単に取り出せてしまうので、
+;; Emacs Lispに慣れた人なら簡単に取り出せてしまうので
 ;; 端末の前を離れるときは注意してください。
 ;;
 
@@ -59,14 +72,14 @@
 例: '((\"KOBEHEP\" . \"hepsun2.phys.sci.kobe-u.ac.jp\")
       (\"KOBEPHYS\" . \"phys03.phys.sci.kobe-u.ac.jp\"))")
 
+(defvar fetchmail-server-passwd-alist ()
+  "サーバのパスワードを保存する連想リスト。")
+
 (defvar fetchmail-preprocess-hook ()
   "Fetchmailの前処理を登録するフック。")
 
 (defvar fetchmail-postprocess-hook ()
   "Fetchmailの後処理を登録するフック。")
-
-(defvar fetchmail-server-passwd-alist ()
-  "サーバのパスワードを保存する連想リスト。")
 
 (defvar fetchmail-notify-beep t
   "この変数が真のときfetchmailが終了したことをbeep音で知らせる。")
@@ -336,6 +349,10 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   "Fetchmailを起動する。引数を与えるかfetchmail-default-serverが
 設定されていないときは、ミニバッファで複数のサーバから選択する。"
   (interactive "P")
+  (if fetchmail-server-param-alist
+      (error "obsolete variable: fetchmail-server-param-alist"))
+  (if fetchmail-param-func-alist
+      (error "obsolete variable: fetchmail-param-func-alist"))
   (unless (stringp fetchmail-server)
     (setq fetchmail-server
 	  (cond
