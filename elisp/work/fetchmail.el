@@ -151,14 +151,14 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
   (if (and query-passwd
 	   (not (fetchmail-get-passwd fetchmail-server)))
       (fetchmail-set-passwd fetchmail-server
-			    (concat
-			     (mapcar
-			      (lambda (ch)
-				(setq ch (fetchmail-rotate ch ?0 10 3))
-				(setq ch (fetchmail-rotate ch ?A 26 13))
-				(setq ch (fetchmail-rotate ch ?a 26 13)))
-			      (read-passwd (format "Password for %s: "
-						   fetchmail-server))))))
+			    (mapconcat
+			     (lambda (ch)
+			       (setq ch (fetchmail-rotate ch ?0 10 3))
+			       (setq ch (fetchmail-rotate ch ?A 26 13))
+			       (setq ch (fetchmail-rotate ch ?a 26 13))
+			       (char-to-string ch))
+			     (read-passwd (format "Password for %s: "
+						  fetchmail-server)) nil)))
   nil)
 
 (defun fetchmail-param-check (fetchmail-server check)
@@ -338,14 +338,14 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 			fetchmail-option-list)))
     (if (fetchmail-get-server-param fetchmail-server 'query-passwd)
 	(fetchmail-enter-passwd fetchmail-process
-				(concat
-				 (mapcar
-				  (lambda (ch)
-				    (setq ch (fetchmail-rotate ch ?0 10 (- 10 3)))
-				    (setq ch (fetchmail-rotate ch ?A 26 (- 26 13)))
-				    (setq ch (fetchmail-rotate ch ?a 26 (- 26 13))))
-				  (copy-sequence
-				   (fetchmail-get-passwd fetchmail-server))))))
+				(mapconcat
+				 (lambda (ch)
+				   (setq ch (fetchmail-rotate ch ?0 10 (- 10 3)))
+				   (setq ch (fetchmail-rotate ch ?A 26 (- 26 13)))
+				   (setq ch (fetchmail-rotate ch ?a 26 (- 26 13)))
+				   (char-to-string ch))
+				 (copy-sequence
+				  (fetchmail-get-passwd fetchmail-server)) nil)))
     (setq fetchmail-running t)
     (force-mode-line-update)
     (setq fetchmail-last-server fetchmail-server)
