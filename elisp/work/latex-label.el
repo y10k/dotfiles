@@ -1,5 +1,21 @@
 ;;; LaTeX label insertion
 ;;; $Id$
+;;
+;; <<< Author >>>
+;; Yoshinori Toki <toki@freedom.ne.jp>
+;;
+;; <<< URL >>>
+;; http://www.freedom.ne.jp/toki/elisp/latex-label.el
+;;
+;; <<< Installation >>>
+;; (autoload 'latex-label-insert "latex-label"
+;;   "Insertion of a LaTeX label." t)
+;; (add-hook
+;;  'latex-mode-hook
+;;  (function
+;;   (lambda ()
+;;     (define-key tex-mode-map "\C-cl" 'latex-label-insert))))
+;;
 
 (defvar latex-label-history ()
   "LaTeX label completion minibuffer history.")
