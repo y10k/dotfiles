@@ -595,6 +595,12 @@ and source-file directory for your debugger." t)
 ; Use unzip on zip mode
 (setq archive-zip-use-pkzip nil)
 
+; WWW browser
+(setq browse-url-browser-function 'w3m-browse-url)
+(autoload 'w3m "w3m" "Interface for w3m on Emacs." t)
+(autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+(global-set-key "\C-xm" 'browse-url-at-point)
+
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
