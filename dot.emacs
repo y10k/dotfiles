@@ -718,6 +718,13 @@ and source-file directory for your debugger." t)
 (if (eq emacs-major-version 21)
     (mouse-wheel-mode 1))
 
+; Navi2ch
+(require 'navi2ch)
+(setq navi2ch-net-http-proxy "proxy.plutonian.ne.jp:8080")
+(setq navi2ch-list-bbstable-url "http://www6.ocn.ne.jp/~mirv/2chmenu.html")
+(if (eq window-system 'w32)
+    (setq navi2ch-directory "//babayaga/toki/.navi2ch"))
+
 ; HOME directory
 (if (eq window-system 'w32)
     (cd (expand-file-name "~")))
