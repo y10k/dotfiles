@@ -119,6 +119,12 @@
       (mapcar
        (lambda (path) (expand-file-name path))
        '("/usr/share/info" "/usr/local/info" "/usr/X11R6/info")))
+(cond
+ ((eq window-system 'w32)
+  (setq Info-directory-list
+	(mapcar
+	 (lambda (path) (expand-file-name path))
+	 '("/usr/local/Meadow/1.14/info" "/usr/local/info")))))
 
 ; User key bindings
 (load "term/bobcat")
