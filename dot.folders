@@ -12,11 +12,11 @@
 	&toki/apop@sv01.phys.sci.kobe-u.ac.jp	"受信箱@神戸HEP"
 }
 Wanderlust{
-	+draft	"草案箱"
-	+send	"送信済"
-	+queue	"送信中"
-	+tmp	"作業用"
-	+trash	"廃棄"
+	+draft					"草案箱"
+	+send					"送信済"
+	+queue					"送信中"
+	+tmp					"作業用"
+	+trash					"廃棄"
 }
 メール{
 	Ruby{
@@ -31,8 +31,8 @@ Wanderlust{
 	計算機{
 		%INBOX.admin.root		"計算機管理者"
 		%INBOX.admin.mail		"メール管理者"
-		%INBOX.admin.babayaga		"CERNOBOG"
-		%INBOX.admin.cernobog		"BABAYAGA"
+		%INBOX.admin.babayaga		"BABAYAGA"
+		%INBOX.admin.cernobog		"CERNOBOG"
 	}
 	%INBOX.home				"実家"
 	%INBOX.kobe_hep				"神戸高エネ研OB"
