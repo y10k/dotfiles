@@ -13,20 +13,21 @@ export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin:/usr/X1
 umask 22
 
 # terminal settings
-tty -s && stty erase "^H" intr "^C" susp "^Z"
+[ -t 0 ] && stty erase "^H" intr "^C" susp "^Z"
 
 # Locale
 export LANG=ja_JP.EUC
 export LC_TIME=C
 
-# Editor & pager
-if [ -z "$EMACS" ]; then
+# Editor and Pager
+case "$EMACS" in
+'') # in Terminal
   export EDITOR=vi
-  export PAGER=lv
-else
+  export PAGER=lv;;
+*) # in Emacs
   export EDITOR=emacsclient
-  export PAGER=cat
-fi
+  export PAGER=cat;;
+esac
 
 # LV
 export LV="-d -Ia -Kej -Oej"
@@ -36,13 +37,17 @@ export FTP_PASSIVE_MODE=YES
 
 # Perl
 export PERL_BADLANG=
-alias ipl="perl -de 0"
 
 # RCS
 export RCSINIT=-zLT
 
 # CVS
-export CVSROOT=/home/toki/cvsroot
+case "`hostname`" in
+hellboy.*)
+  export CVSROOT=ext:babayaga.plutonian.ne.jp:/home/toki/cvsroot;;
+*)
+  export CVSROOT=/home/toki/cvsroot;;
+esac
 
 # Ports site
 export MASTER_SITE_OVERRIDE='ftp://netlab.is.tsukuba.ac.jp/pub/os/FreeBSD/distfiles/${DIST_SUBDIR}/'
