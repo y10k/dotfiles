@@ -576,6 +576,8 @@ and source-file directory for your debugger." t)
 
 ; Wanderlust
 (setq wl-plugged nil)			; OFFLINE mode
+(if (and (eq emacs-major-version 21) (eq emacs-minor-version 2))
+    (setq wl-icon-directory (expand-file-name "/usr/local/share/emacs/21.2/etc/wl/icons")))
 (autoload 'wl "wl" "wanderlust" t)
 (autoload 'wl-draft "wl" "write draft with wanderlust." t)
 
@@ -643,7 +645,8 @@ and source-file directory for your debugger." t)
       (cond
        ((eq window-system 'w32) 'shift_jis)
        (t 'euc-jp)))
-(setq w3m-coding-system 'shift_jis)
+(if (and (eq emacs-major-version 21) (eq emacs-minor-version 2))
+    (setq w3m-icon-directory "/usr/local/share/emacs/21.2/etc/w3m/icons"))
 (setq browse-url-browser-function 'w3m-browse-url)
 (setq mime-setup-enable-inline-html nil)
 (autoload 'w3m "w3m" "Interface for w3m on Emacs." t)
@@ -668,6 +671,7 @@ and source-file directory for your debugger." t)
      (set-alist 'mime-view-type-subtype-score-alist
                 '(text . html) 3)))
 (global-set-key "\C-xm" 'browse-url-at-point)
+(setq shimbun-asahi-url "http://www.asahi.com/")
 
 ; EWB mode
 (autoload 'ewb-mode "ewb-mode" "" t)

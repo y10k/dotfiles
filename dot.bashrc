@@ -71,7 +71,7 @@ export WWW_HOME=http://www.freedom.ne.jp/toki/
 
 # Ruby
 export RUBY_HOME=$HOME/ruby
-export RUBYLIB=$RUBY_HOME/lib:$RUBY_HOME/lib/i386-freebsd:$RUBY_HOME/site_ruby:$RUBY_HOME/site_ruby/i386-freebsd
+export RUBYLIB=$RUBY_HOME/lib:$RUBY_HOME/lib/i386-freebsd
 
 # Name servers
 export NS_NEWEB=210.132.91.129

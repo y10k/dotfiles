@@ -47,6 +47,7 @@ Wanderlust{
 	%INBOX.diary				"日記アクセスログ"
 	%INBOX.freedom				"フリーダム"
 	%INBOX.ntt				"NTT"
+	%INBOX.kotarochin			"高橋(浩)"
 	%INBOX.misc				"その他"
 	%INBOX.spam				"迷惑メール"
 }
