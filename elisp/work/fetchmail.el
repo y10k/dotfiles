@@ -225,8 +225,8 @@ fetchmail の終了状態は 'mail, 'nomail, 'failure の三種類。"
      (while server-list
        (setq i (+ i 1))
        (setq collection
-	     (append collection
-		     (list (list (car (car server-list)) i))))
+	     (cons (list (car (car server-list)) i)
+		   collection))
        (setq server-list (cdr server-list)))
      collection)
    nil t))
