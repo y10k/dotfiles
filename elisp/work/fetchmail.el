@@ -5,7 +5,16 @@
   "デフォルトのサーバ。")
 
 (defvar fetchmail-server-param-alist '(("localhost" . ()))
-  "サーバ名の文字列をキーに持ちパラメータの連想リストを値に持つ連想リスト。")
+  "サーバのパラメータを設定する連想リスト。
+例: '((\"mail.freedom.ne.jp\" .
+       ((query-passwd . t)
+        (protocol . \"pop3\")))
+      (\"hepsun2.phys.sci.kobe-u.ac.jp\" .
+       ((query-passwd . t)
+        (protocol . \"imap\")))
+      (\"phys03.phys.sci.kobe-u.ac.jp\" .
+       ((query-passwd . t)
+        (protocol . \"apop\"))))")
 
 (defvar fetchmail-param-func-alist
   '((query-passwd . fetchmail-param-query-passwd)
@@ -17,12 +26,12 @@
     (folder       . fetchmail-param-folder)
     (keep         . fetchmail-param-keep)
     (flush        . fetchmail-param-flush))
-  "パラメータのシンボルをキーに持ちパラメータの値を解析する関数を
+  "パラメータのシンボルをキーに持ちパラメータの値を解析する関数のシンボルを
 値に持つ連想リスト。fetchmail-server-param-alist のパラメータの解析に
 使われる。")
 
 (defvar fetchmail-passwd-alist ()
-  "サーバ名をキーに持ちパスワードを値にもつ連想リスト。")
+  "サーバのパスワードを保存する連想リスト。")
 
 (defvar fetchmail-notify-beep t
   "この変数が真のとき fetchmail が終了したことを beep 音で知らせる。")
@@ -34,7 +43,7 @@
   "fetchmail ウィンドウの高さ。")
 
 (defvar fetchmail-last-server nil
-  "最も最近使われたサーバの名前が入っている。
+  "最後に使われたサーバの名前が入っている。
 fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defvar fetchmail-exit-func nil
@@ -253,12 +262,19 @@ fetchmail の終了状態は 'mail, 'nomail, 'failure の三種類。"
   (let (server)
     ; サーバの選択
     (setq server
-	  (if query-server
-	      (fetchmail-query-server)
-	    (if fetchmail-default-server
-		fetchmail-default-server
-	      (fetchmail-query-server))))
-    (if (= 0 (length server))
+	  (cond
+	   (query-server
+	    (fetchmail-query-server))
+	   (fetchmail-default-server
+	    fetchmail-default-server)
+	   ((= 1 (length server-param-alist))
+	    (car (car server-param-alist)))
+	   ((= 0 (length server-param-alist))
+	    nil)
+	   (t
+	    (fetchmail-query-server))))
+    (if (or (not server)
+	    (= 0 (length server)))
 	(error "Not selected fetchmail server."))
     ; fetchmail バッファの初期化
     (get-buffer-create fetchmail-buffer-name)
