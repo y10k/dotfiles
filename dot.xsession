@@ -24,7 +24,7 @@ if [ -f $usermodmap ]; then
     xmodmap $usermodmap
 fi
 
-xset 5/2			# mouse acceleration
+xset m 8/3			# mouse acceleration
 
 ssh-agent bash <<'EOF'
     # load startup file
@@ -39,6 +39,8 @@ ssh-agent bash <<'EOF'
     case "`hostname`" in
     hellboy.*)
       root_image=$HOME/imgs/witch2_l.jpg;;
+    varcolac.*)
+      root_image=$HOME/imgs/ysc03_l.bmp;;
     *)
       root_image=$HOME/imgs/ys_01.jpg;;
     esac

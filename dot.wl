@@ -57,6 +57,9 @@
 	("X-ML-Name"
 	 ("ruby-list" . "%INBOX.ruby.list")
 	 ("rubyunit"  . "%INBOX.ruby.unit"))
+	; TSUTAYA
+	("From"
+	 ("@tsutaya\\.co\\.jp$" . "%INBOX.tsutaya"))
 	; まぐまぐ
 	("Subject"
 	 ("^\\[Weekly Mag2"                         . "%INBOX.mag2.weekly")
