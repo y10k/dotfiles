@@ -16,6 +16,12 @@
        ((query-passwd . t)
         (protocol . \"apop\"))))")
 
+(defvar fetchmail-preprocess-hook ()
+  "fetchmail の前処理を登録するフック。")
+
+(defvar fetchmail-postprocess-hook ()
+  "fetchmail の後処理を登録するフック。")
+
 (defvar fetchmail-param-func-alist
   '((query-passwd . fetchmail-param-query-passwd)
     (check        . fetchmail-param-check)
@@ -52,6 +58,7 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defvar fetchmail-exit-status nil
   "fetchmail 終了時の状態が設定される。
+状態はシンボル値で mail, nomail, failure の三種類ある。
 fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defvar fetchmail-process-name "fetchmail"
@@ -256,6 +263,7 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
       (progn
 	(setq fetchmail-running nil)
 	(force-mode-line-update)
+	(run-hooks 'fetchmail-postprocess-hook)
 	(if fetchmail-exit-func
 	    (funcall fetchmail-exit-func
 		     fetchmail-last-server fetchmail-exit-status)))))
@@ -269,6 +277,7 @@ exit-func が与えられたときは、fetchmail が終了したときに
 fetchmail の終了状態は 'mail, 'nomail, 'failure の三種類。"
   (if (get-process fetchmail-process-name)
       (error "Fetchmail is running."))
+  (run-hooks 'fetchmail-preprocess-hook)
   (let ((fetchmail-process (fetchmail-run fetchmail-server
 					  fetchmail-param-alist)))
     (if (fetchmail-get-server-param fetchmail-server 'query-passwd)
