@@ -256,9 +256,9 @@ fetchmail の終了状態は 'mail, 'nomail, 'failure の三種類。"
     (insert-before-markers msg)))
 
 (defun fetchmail (query-server)
-  (interactive "P")
   "fetchmail を起動する。引数を与えるか fetchmail-default-server が
 設定されていないときは、ミニバッファで複数のサーバから選択する。"
+  (interactive "P")
   (let (server)
     ; サーバの選択
     (setq server
