@@ -29,14 +29,14 @@
 	(buffer-substring-no-properties begin-of-label
 					(1- end-of-label)))))
 
-(defun latex-label-make-alist (&optional num)
+(defun latex-label-make-alist (&optional count)
   "Make a associated list of LaTeX labels in current buffer."
-  (if (not num)
-      (setq num 0))
+  (if (not count)
+      (setq count 0))
   (let ((latex-label (latex-label-search)))
     (if latex-label
-	(cons (list latex-label num)
-	      (latex-label-make-alist (1+ num))))))
+	(cons (list latex-label count)
+	      (latex-label-make-alist (1+ count))))))
 
 (defun latex-label-insert (query-buffer)
   "Insertion of a LaTeX label."
