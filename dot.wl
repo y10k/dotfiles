@@ -21,7 +21,7 @@
 (setq wl-stay-folder-window t)
 
 ; Server
-(setq elmo-default-nntp-server "news.neweb.ne.jp")
+(setq elmo-default-nntp-server "news7.dion.ne.jp")
 (setq elmo-default-pop3-server "mail.freedom.ne.jp")
 (setq wl-smtp-posting-server "mail.freedom.ne.jp")
 (setq wl-draft-send-mail-func 'wl-draft-send-mail-with-pop-before-smtp)
@@ -129,7 +129,7 @@
     (if (or (string-match "^%" wl-summary-buffer-folder-name)
 	    (string-match "^-" wl-summary-buffer-folder-name)
 	    (string-match "^&" wl-summary-buffer-folder-name))
-	(if wl-plugged (wl-summary-expire))
+	(if (elmo-plugged-p) (wl-summary-expire))
       (wl-summary-expire)))))
 
 ; Draft
