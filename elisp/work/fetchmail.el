@@ -23,6 +23,7 @@
 ;;   fetchmail-postprocess-hook
 ;;   fetchmail-notify-beep
 ;;   fetchmail-window
+;;   fetchmail-window-time-format
 ;;   fetchmail-window-height-ratio
 ;;   fetchmail-window-height-lower-limit
 ;;   fetchmail-window-height-upper-limit
