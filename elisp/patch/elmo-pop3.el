@@ -713,10 +713,10 @@
   (with-current-buffer (process-buffer process)
     (let ((start elmo-pop3-read-point)
 	  end)
-      (goto-char start)
-      (while (not (re-search-forward "^\\.\r?\n" nil t))
-	(accept-process-output process)
-	(goto-char start))
+      (while (progn
+	       (goto-char (max start (- (point-max) 128)))
+	       (not (re-search-forward "^\\.\r?\n" nil t)))
+	(accept-process-output process))
       (setq end (point))
       (with-current-buffer outbuf
 	(erase-buffer)
