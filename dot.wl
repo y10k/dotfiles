@@ -22,12 +22,12 @@
 (setq wl-stay-folder-window t)
 
 ; Server
-(setq elmo-default-pop3-server "mail.freedom.ne.jp")
-(setq elmo-default-imap4-server "mail.plutonian.ne.jp")
-(setq elmo-default-imap4-authenticate-type 'cram-md5)
+(setq elmo-pop3-default-server "mail.freedom.ne.jp")
+(setq elmo-imap4-default-server "mail.plutonian.ne.jp")
+(setq elmo-imap4-default-authenticate-type 'cram-md5)
+(setq elmo-nntp-default-server "news.edit.ne.jp")
 (setq wl-smtp-posting-server "mail.freedom.ne.jp")
-(setq wl-draft-send-mail-func 'wl-draft-send-mail-with-pop-before-smtp)
-(setq elmo-default-nntp-server "news.edit.ne.jp")
+(setq wl-draft-send-mail-function 'wl-draft-send-mail-with-pop-before-smtp)
 
 ; Local Domain
 (setq wl-local-domain "plutonian.ne.jp")
@@ -49,7 +49,7 @@
 (setq elmo-archive-treat-file t)
 (setq wl-alias-file "~/.aliases")
 (setq wl-summary-important-above 0)
-(setq wl-summary-temp-above 1000)
+(setq wl-summary-target-above 1000)
 (setq wl-message-id-domain "mail.freedom.ne.jp")
 (setq wl-summary-auto-refile-skip-marks ())
 (setq wl-refile-rule-alist
