@@ -46,7 +46,20 @@
 (setq wl-message-id-domain "mail.freedom.ne.jp")
 (setq wl-summary-auto-refile-skip-marks ())
 (setq wl-refile-rule-alist
-      '(; 日記ログ
+      '(; Ruby
+	("X-ML-Name"
+	 ("ruby-list" . "%INBOX.ruby.list")
+	 ("rubyunit"  . "%INBOX.ruby.unit"))
+	; まぐまぐ
+	("Subject"
+	 ("^\\[Weekly Mag2"                         . "%INBOX.mag2.weekly")
+	 ("^\\[\\(電脳通情報部\\|明日を創るもの\\|もっとわかる＠ＩＴ\\)"
+	                                            . "%INBOX.mag2.id_0000003443")
+	 ("^\\[今週の○○"                          . "%INBOX.mag2.id_0000004784")
+	 ("^たった一人の情報システム課"             . "%INBOX.mag2.id_0000016004"))
+	("From"
+	 ("mag2" . "%INBOX.mag2"))
+	; 日記ログ
 	("From"
 	 ("^DIARY Archive CGI (nobody@\\(web\\|www\\)\\.freedom" . "%INBOX.diary"))
 	; 計算機
@@ -57,19 +70,7 @@
 	("To"
 	 ("root"          . "%INBOX.admin.root")
 	 ("root@cernobog" . "%INBOX.admin.cernobog")
-	 ("root@babayaga" . "%INBOX.admin.babayaga"))
-	; Ruby
-	("X-ML-Name"
-	 ("ruby-list" . "%INBOX.ruby.list")
-	 ("X-Ml-Name" . "%INBOX.ruby.unit"))
-	; まぐまぐ
-	("Subject"
-	 ("^\\[Weekly Mag2"                         . "%INBOX.mag2.weekly")
-	 ("^\\[\\(電脳通情報部\\|明日を創るもの\\)" . "%INBOX.mag2.id_0000003443")
-	 ("^\\[今週の○○"                          . "%INBOX.mag2.id_0000004784")
-	 ("^たった一人の情報システム課"             . "%INBOX.mag2.id_0000016004"))
-	("From"
-	 ("mag2" . "%INBOX.mag2"))))
+	 ("root@babayaga" . "%INBOX.admin.babayaga"))))
 (setq wl-refile-rule-alist
       (append wl-refile-rule-alist
 	      ((lambda (rule-src-list)
