@@ -184,7 +184,7 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   (funcall (cdr (assq key fetchmail-param-func-alist))
 	   fetchmail-server value))
 
-(defun fetchmail-option-list (fetchmail-server fetchmail-param-alist)
+(defun fetchmail-make-option-list (fetchmail-server fetchmail-param-alist)
   "パラメータからfetchmailのオプションのリストを作る。"
   (apply (function append)
 	 (mapcar
@@ -368,9 +368,9 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
     (error "Not selected fetchmail server."))
   (let ((fetchmail-query-passwd t))
     (let ((fetchmail-option-list
-	   (fetchmail-option-list fetchmail-server
-				  (cdr (assoc fetchmail-server
-					      fetchmail-server-param-alist)))))
+	   (fetchmail-make-option-list fetchmail-server
+				       (cdr (assoc fetchmail-server
+						   fetchmail-server-param-alist)))))
       (if fetchmail-query-passwd
 	  (fetchmail-query-passwd fetchmail-server))
       (unless (fetchmail-buffer-p)
