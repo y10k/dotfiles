@@ -669,6 +669,9 @@ and source-file directory for your debugger." t)
 ;(if (string-match "^21\\." emacs-version)
 ;    (tool-bar-mode 0))
 
+; Mouse Wheel mode
+(mouse-wheel-mode 1)
+
 ; HOME directory
 (if (eq window-system 'w32)
     (cd (expand-file-name "~")))
