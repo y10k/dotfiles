@@ -351,7 +351,7 @@ AddToMenu Main		"Main" Title
 +			"KTerm"    Exec exec kterm -T kterm@`hostname` &
 +			"Emacs"    Exec exec emacs &
 +			"Mozilla"  Exec exec mozilla &
-+			"Netscape" Exec exec netscape &
++			"CD Play"  Exec exec xcdplayer &
 +			"gFTP"     Exec exec gftp &
 +			"GIMP"     Exec exec gimp &
 +			"" Nop
