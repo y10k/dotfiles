@@ -225,11 +225,30 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 	fetchmail-server
       nil)))
 
+(defun fetchmail-buffer-p ()
+  "fetchmail バッファが開いているかどうかを確認する。"
+  (if (get-buffer fetchmail-buffer-name)
+      t
+    nil))
+
 (defun fetchmail-make-buffer ()
   "fetchmail バッファを作る。"
   (let ((default-major-mode 'fetchmail-mode))
     (set-buffer-major-mode
      (get-buffer-create fetchmail-buffer-name))))
+
+(defun fetchmail-insert-buffer (msg)
+  "fetchmail バッファの最後にメッセージを挿入する。"
+  (save-excursion
+    (set-buffer fetchmail-buffer-name)
+    (goto-char (point-max))
+    (insert-before-markers msg)))
+
+(defun fetchmail-window-p (&optional all-frames)
+  "fetchmail ウィンドウが開いているかどうかを確認する。"
+  (if (get-buffer-window fetchmail-buffer-name all-frames)
+      t
+    nil))
 
 (defun fetchmail-open-window ()
   "fetchmail バッファをウィンドウで開く。"
@@ -248,17 +267,10 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 (defun fetchmail-close-window ()
   "fetchmail バッファのウィンドウを閉じる。"
   (interactive)
-  (if (get-buffer-window fetchmail-buffer-name)
+  (if (fetchmail-window-p t)
       (progn
 	(delete-windows-on (get-buffer fetchmail-buffer-name))
 	(bury-buffer fetchmail-buffer-name))))
-
-(defun fetchmail-insert-buffer (msg)
-  "fetchmail バッファの最後にメッセージを挿入する。"
-  (save-excursion
-    (set-buffer fetchmail-buffer-name)
-    (goto-char (point-max))
-    (insert-before-markers msg)))
 
 (defun fetchmail-run (fetchmail-server fetchmail-option-list)
   "fetchmail を起動してそのプロセスを返す。"
@@ -327,7 +339,7 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 		   (error "Invalid fetchmail-exit-status")))))
 	    (run-hooks 'fetchmail-postprocess-hook)
 	    (fetchmail-insert-buffer (concat fetchmail-message "\n"))
-	    (unless (get-buffer-window fetchmail-buffer-name)
+	    (unless (fetchmail-window-p)
 	      (message fetchmail-message))
 	    (if fetchmail-notify-beep (beep)))))))
 
@@ -378,10 +390,10 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 					      fetchmail-server-param-alist)))))
       (if fetchmail-query-passwd
 	  (fetchmail-query-passwd fetchmail-server))
-      (unless (get-buffer fetchmail-buffer-name)
+      (unless (fetchmail-buffer-p)
 	(fetchmail-make-buffer))
       (if (and fetchmail-window
-	       (not (get-buffer-window fetchmail-buffer-name)))
+	       (not (fetchmail-window-p t)))
 	  (fetchmail-open-window))
       (fetchmail-start fetchmail-server fetchmail-option-list))))
 
