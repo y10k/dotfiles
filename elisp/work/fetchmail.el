@@ -24,14 +24,14 @@
 (defvar fetchmail-passwd-alist ()
   "サーバ名をキーに持ちパスワードを値にもつ連想リスト。")
 
+(defvar fetchmail-notify-beep t
+  "この変数が真のとき fetchmail が終了したことを beep 音で知らせる。")
+
 (defvar fetchmail-window t
   "この変数が真のとき fetchmail バッファをウィンドウで開く。")
 
 (defvar fetchmail-window-height 10
   "fetchmail ウィンドウの高さ。")
-
-(defvar fetchmail-notify-beep nil
-  "この変数が真のとき fetchmail が終了したことを beep 音で知らせる。")
 
 (defvar fetchmail-last-server nil
   "最も最近使われたサーバの名前が入っている。
@@ -232,7 +232,7 @@ fetchmail の終了状態は 'mail, 'nomail, 'failure の三種類。"
   (save-excursion
     (set-buffer fetchmail-buffer-name)
     (goto-char (point-max))
-    (insert msg)))
+    (insert-before-markers msg)))
 
 (defun fetchmail (query-server)
   (interactive "P")
