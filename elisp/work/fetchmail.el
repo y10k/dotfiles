@@ -51,6 +51,13 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 (defvar fetchmail-buffer-name "*fetchmail*"
   "fetchmail バッファの名前。")
 
+(defvar fetchmail-running nil
+  "fetchmail が動作中であることを表わすマイナーモード変数")
+(if (not (assq 'fetchmail-running minor-mode-alist))
+    (setq minor-mode-alist
+	  (cons '(fetchmail-running " Fetching mail...")
+		minor-mode-alist)))
+
 (defun fetchmail-set-passwd
   (server passwd)
   "fetchmail-passwd-alist にパスワードを設定する。"
@@ -185,6 +192,8 @@ fetchmail の終了状態は 'mail, 'nomail, 'failure の三種類。"
 	  (save-excursion
 	    (set-buffer fetchmail-buffer-name)
 	    (goto-char (process-mark fetchmail-process)))))
+    (setq fetchmail-running t)
+    (force-mode-line-update)
     (setq fetchmail-last-server server)
     (setq fetchmail-exit-func exit-func)
     (set-process-sentinel
@@ -199,9 +208,12 @@ fetchmail の終了状態は 'mail, 'nomail, 'failure の三種類。"
 		       'nomail
 		     (fetchmail-clear-passwd fetchmail-last-server)
 		     'failure))))
-	   (if fetchmail-exit-func
-	       (funcall fetchmail-exit-func
-			fetchmail-last-server fetchmail-exit-status)))))))
+	   (progn
+	     (setq fetchmail-running nil)
+	     (force-mode-line-update)
+	     (if fetchmail-exit-func
+		 (funcall fetchmail-exit-func
+			  fetchmail-last-server fetchmail-exit-status))))))))
 
 (defun fetchmail-query-server ()
   "fetchmail のサーバをミニバッファで選択する。"
