@@ -60,10 +60,10 @@
       (\"KOBEPHYS\" . \"phys03.phys.sci.kobe-u.ac.jp\"))")
 
 (defvar fetchmail-preprocess-hook ()
-  "fetchmail の前処理を登録するフック。")
+  "Fetchmailの前処理を登録するフック。")
 
 (defvar fetchmail-postprocess-hook ()
-  "fetchmail の後処理を登録するフック。")
+  "Fetchmailの後処理を登録するフック。")
 
 (defvar fetchmail-server-passwd-alist ()
   "サーバのパスワードを保存する連想リスト。")
@@ -109,8 +109,8 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   (or (cdr (assoc fetchmail-server-name-or-alias fetchmail-server-alias-alist))
       fetchmail-server-name-or-alias))
 
-(defun fetchmail-make-option-list (fetchmail-server)
-  "fetchmailのオプションのリストを作る。"
+(defun fetchmail-get-option-list (fetchmail-server)
+  "fetchmailのオプションのリストを返す。"
   (or (cdr (assoc (fetchmail-get-server-name fetchmail-server)
 		  fetchmail-server-option-alist))
       (cdr (assq 'default fetchmail-server-option-alist))))
@@ -126,8 +126,8 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 	      (append fetchmail-server-list
 		      fetchmail-server-passwd-omit-list)))
     (let (fetchmail-server-alist fetchmail-server-pair
-	  (fetchmail-server-alist-list (list fetchmail-server-alias-alist
-					     fetchmail-server-option-alist)))
+	  (fetchmail-server-alist-list (list fetchmail-server-option-alist
+					     fetchmail-server-alias-alist)))
       (while fetchmail-server-alist-list
 	(setq fetchmail-server-alist
 	      (car fetchmail-server-alist-list))
@@ -139,15 +139,16 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 	  (setq fetchmail-server-alist
 		(cdr fetchmail-server-alist))
 	  (if (and (stringp (car fetchmail-server-pair))
-		   (not (member (car fetchmail-server-pair) fetchmail-server-list)))
+		   (not (member (car fetchmail-server-pair)
+				fetchmail-server-list)))
 	    (setq fetchmail-server-list
 		  (cons (car fetchmail-server-pair)
 			fetchmail-server-list))))))
     (let ((count 0))
       (mapcar
        (lambda (fetchmail-server)
-	 (setq count (1+ count))
-	 (cons fetchmail-server count))
+	 (cons fetchmail-server
+	       (setq count (1+ count))))
        fetchmail-server-list))))
 
 (defun fetchmail-query-server ()
@@ -166,23 +167,28 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   (let ((fetchmail-server-passwd-pair
 	 (assoc (fetchmail-get-server-name fetchmail-server)
 		fetchmail-server-passwd-alist)))
-    (if fetchmail-server-passwd-pair
-	(setcdr fetchmail-server-passwd-pair
-		fetchmail-passwd)
-      (setq fetchmail-server-passwd-alist
-	    (cons (cons (fetchmail-get-server-name fetchmail-server)
-			fetchmail-passwd)
-		  fetchmail-server-passwd-alist)))))
+    (let ((fetchmail-old-passwd (cdr fetchmail-server-passwd-pair)))
+      (if fetchmail-server-passwd-pair
+	  (setcdr fetchmail-server-passwd-pair
+		  fetchmail-passwd)
+	(setq fetchmail-server-passwd-alist
+	      (cons (cons (fetchmail-get-server-name fetchmail-server)
+			  fetchmail-passwd)
+		    fetchmail-server-passwd-alist)))
+      fetchmail-old-passwd)))
 
 (defun fetchmail-get-passwd (fetchmail-server)
-  "fetchmail-server-passwd-alistからパスワードを得る。"
+  "fetchmail-server-passwd-alistからパスワードを取り出す。"
   (cdr (assoc (fetchmail-get-server-name fetchmail-server)
 	      fetchmail-server-passwd-alist)))
 
 (defun fetchmail-clear-passwd (fetchmail-server)
   "fetchmail-server-passwd-alistからパスワードを削除する。"
-  (fetchmail-set-passwd (fetchmail-get-server-name fetchmail-server) nil)
-  nil)
+  (fetchmail-set-passwd (fetchmail-get-server-name fetchmail-server) nil))
+
+(defun fetchmail-query-passwd-p (fetchmail-server)
+  (not (member (fetchmail-get-server-name fetchmail-server)
+	       fetchmail-server-passwd-omit-list)))
 
 (defun fetchmail-query-passwd (fetchmail-server)
   "サーバのパスワードを設定する。"
@@ -191,10 +197,6 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 			  (base64-encode-string
 			   (read-passwd (format "Password for %s: "
 						fetchmail-server)) nil))))
-
-(defun fetchmail-query-passwd-p (fetchmail-server)
-  (not (member (fetchmail-get-server-name fetchmail-server)
-	       fetchmail-server-passwd-omit-list)))
 
 (defun fetchmail-buffer-p ()
   "Fetchmailバッファが開いているかどうかを確認する。"
@@ -222,8 +224,9 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
     nil))
 
 (defun fetchmail-open-window ()
-  "Fetchmailバッファをウィンドウで開く。"
-  (unless (equal fetchmail-buffer-name (buffer-name))
+  "Fetchmailバッファのウィンドウを開く。"
+  (interactive)
+  (unless (fetchmail-window-p t)
     (set-window-buffer
      (split-window (selected-window) 
 		   (- (window-height)
@@ -249,12 +252,11 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
    (concat "<<< fetchmail"
 	   (if fetchmail-window-time-format
 	       (format-time-string fetchmail-window-time-format
-				   (current-time))
-	     "")
+				   (current-time)))
 	   " >>>\n"))
   (let ((process-connection-type t)
 	(fetchmail-process-list (append (list "fetchmail")
-					(fetchmail-make-option-list fetchmail-server)
+					(fetchmail-get-option-list fetchmail-server)
 					(list (fetchmail-get-server-name fetchmail-server)))))
     (fetchmail-insert-buffer (concat (mapconcat
 				      (lambda (param) param)
@@ -268,6 +270,7 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   "Fetchmailプロセスにパスワードを入力する。"
   (catch 'passwd-entered
     (while t
+      (sleep-for 0.1)
       (save-excursion
 	(set-buffer fetchmail-buffer-name)
 	(goto-char (process-mark fetchmail-process))
@@ -276,60 +279,58 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 			  (buffer-substring (point)
 					    (process-mark fetchmail-process)))
 	    (throw 'passwd-entered nil)))
-      (unless (process-status fetchmail-process)
-	(error "Fetchmail exited in entering password."))
-      (sleep-for 0.1)))
-  (process-send-string (process-name fetchmail-process)
-		       fetchmail-passwd)
-  (process-send-eof (process-name fetchmail-process)))
+      (if (or (not (process-status fetchmail-process))
+	      (not (eq (process-status fetchmail-process) 'run)))
+	(error "Fetchmail aborted in entering password."))))
+  (process-send-string fetchmail-process fetchmail-passwd)
+  (process-send-eof fetchmail-process))
 
 (defun fetchmail-start (fetchmail-server)
   "Fetchmailを一つのサーバに対して起動する。"
   (if (get-process fetchmail-process-name)
       (error "Fetchmail is already running."))
   (run-hooks 'fetchmail-preprocess-hook)
-  (let ((fetchmail-process
-	 (fetchmail-start-process fetchmail-server)))
-    (if (fetchmail-query-passwd-p fetchmail-server)
-	(fetchmail-enter-passwd fetchmail-process
-				(base64-decode-string
-				 (fetchmail-get-passwd fetchmail-server))))
+  (let ((fetchmail-process (fetchmail-start-process fetchmail-server)))
     (setq fetchmail-running t)
     (force-mode-line-update)
     (setq fetchmail-last-server fetchmail-server)
-    (set-process-sentinel fetchmail-process 'fetchmail-finish)))
+    (set-process-sentinel fetchmail-process
+			  (function fetchmail-finish))
+    (if (fetchmail-query-passwd-p fetchmail-server)
+	(fetchmail-enter-passwd fetchmail-process
+				(base64-decode-string
+				 (fetchmail-get-passwd fetchmail-server))))))
 
 (defun fetchmail-finish (fetchmail-process event)
   "Fetchmailプロセス終了時の後始末をする。"
   (let ((fetchmail-exit-status
 	 (cond
-	  ((string-match "finished" event)
-	   'mail)
+	  ((string-match "finished" event) 'mail)
 	  ((string-match "exited" event)
 	   (if (= 1 (process-exit-status fetchmail-process))
 	       'nomail
-	     (fetchmail-clear-passwd fetchmail-last-server)
-	     'failure)))))
-    (if fetchmail-exit-status
-	(progn
-	  (setq fetchmail-running nil)
-	  (force-mode-line-update)
-	  (let ((fetchmail-message
-		 (cond
-		  ((eq 'mail fetchmail-exit-status)
-		   "You have mail.")
-		  ((eq 'nomail fetchmail-exit-status)
-		   "You have no mail.")
-		  ((eq 'failure fetchmail-exit-status)
-		   "Failed to fetchmail.")
-		  (t
-		   (error "Invalid fetchmail-exit-status")))))
-	    (if (eq 'mail fetchmail-exit-status)
-		(run-hooks 'fetchmail-postprocess-hook))
-	    (fetchmail-insert-buffer (concat fetchmail-message "\n"))
-	    (unless (fetchmail-window-p)
-	      (message fetchmail-message))
-	    (if fetchmail-notify-beep (beep)))))))
+	     'failure))
+	  (t 'failure))))
+    (if (eq fetchmail-exit-status 'failure)
+	(fetchmail-clear-passwd fetchmail-last-server))
+    (setq fetchmail-running nil)
+    (force-mode-line-update)
+    (let ((fetchmail-message
+	   (cond
+	    ((eq 'mail fetchmail-exit-status)
+	     "You have mail.")
+	    ((eq 'nomail fetchmail-exit-status)
+	     "You have no mail.")
+	    ((eq 'failure fetchmail-exit-status)
+	     "Failed on fetchmail.")
+	    (t
+	     (error "Invalid fetchmail-exit-status")))))
+      (if (eq 'mail fetchmail-exit-status)
+	  (run-hooks 'fetchmail-postprocess-hook))
+      (fetchmail-insert-buffer (concat fetchmail-message "\n"))
+      (unless (fetchmail-window-p)
+	(message fetchmail-message))
+      (if fetchmail-notify-beep (beep)))))
 
 (defun fetchmail (fetchmail-server)
   "Fetchmailを起動する。引数を与えるかfetchmail-default-serverが
@@ -349,8 +350,7 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
     (fetchmail-query-passwd fetchmail-server))
   (unless (fetchmail-buffer-p)
     (fetchmail-make-buffer))
-  (if (and fetchmail-window
-	   (not (fetchmail-window-p t)))
+  (if fetchmail-window
       (fetchmail-open-window))
   (fetchmail-start fetchmail-server))
 
