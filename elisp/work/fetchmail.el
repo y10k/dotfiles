@@ -55,6 +55,9 @@
 		  (progn
 		    (error "Fetchmail abort!")))
 	      (sleep-for 0.1)))
+	  (save-excursion
+	    (set-buffer fetchmail-buffer-name)
+	    (goto-char (process-mark fetchmail-process)))
 	  (process-send-string
 	   (process-name fetchmail-process) fetchmail-passwd)
 	  (process-send-eof
