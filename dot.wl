@@ -126,11 +126,9 @@
  'wl-summary-prepared-pre-hook
  (function
   (lambda ()
-    (if (or (string-match "^%" wl-summary-buffer-folder-name)
-	    (string-match "^-" wl-summary-buffer-folder-name)
-	    (string-match "^&" wl-summary-buffer-folder-name))
-	(if (elmo-plugged-p) (wl-summary-expire))
-      (wl-summary-expire)))))
+    (cond
+     (t
+      (wl-summary-expire))))))
 
 ; Draft
 (setq wl-interactive-send t)
