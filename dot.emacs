@@ -230,9 +230,9 @@
   (interactive)
   (insert (current-time-string)))
 
-; Emacsclient
-(unless (eq window-system 'w32)
-  (server-start))
+;; ; Emacsclient
+;; (unless (eq window-system 'w32)
+;;   (server-start))
 
 ; HTML mode
 (setq auto-mode-alist
