@@ -12,9 +12,11 @@
 		    (expand-file-name "~/elisp/lib"))
 	      load-path))
 
+; UFT-8
+;(require 'un-define)
+;(require 'jisx0213)
+
 ; Japanese environment
-(require 'un-define)
-(require 'jisx0213)
 (set-language-environment 'Japanese)
 (set-default-coding-systems 'japanese-iso-8bit)
 (set-terminal-coding-system 'japanese-iso-8bit)
@@ -603,6 +605,12 @@ and source-file directory for your debugger." t)
 (autoload 'w3m "w3m" "Interface for w3m on Emacs." t)
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 (global-set-key "\C-xm" 'browse-url-at-point)
+
+; EWB mode
+(autoload 'ewb-mode "ewb-mode" "" t)
+(setq auto-mode-alist
+      (append '(("\\.ewb$" . ewb-mode))
+	      auto-mode-alist))
 
 ; HOME directory
 (if (eq window-system 'w32)
