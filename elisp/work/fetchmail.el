@@ -120,7 +120,7 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 (defvar fetchmail-mode-map nil
   "Fetchmailメジャーモードのキーマップ。")
 (unless fetchmail-mode-map
-  (setq fetchmail-mode-map (make-keymap))
+  (setq fetchmail-mode-map (make-sparse-keymap))
   (define-key fetchmail-mode-map "\C-cx" 'fetchmail)
   (define-key fetchmail-mode-map "\C-cq" 'fetchmail-close-window))
 
@@ -239,7 +239,7 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defun fetchmail-insert-buffer (msg)
   "Fetchmailバッファの最後にメッセージを挿入する。"
-  (save-excursion
+  (save-selected-window
     (set-buffer fetchmail-buffer-name)
     (goto-char (point-max))
     (insert-before-markers msg)))
@@ -298,7 +298,7 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
   (catch 'passwd-entered
     (while t
       (sleep-for 0.1)
-      (save-excursion
+      (save-selected-window
 	(set-buffer fetchmail-buffer-name)
 	(goto-char (process-mark fetchmail-process))
 	(beginning-of-line)
