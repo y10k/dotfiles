@@ -36,20 +36,6 @@
 			 "--protocol" fetchmail-protocol
 			 "--username" fetchmail-username
 			 fetchmail-mailserver))
-    (set-process-sentinel
-     fetchmail-process
-     ; Fetchmail 終了の通知
-     (lambda (process event)
-       (cond
-	((string-match "finished" event)
-	 (message "You have mail.")
-	 (if fetchmail-notify-beep (beep))
-	 (force-mode-line-update))
-	((string-match "exited" event)
-	 (if (= 1 (process-exit-status process))
-	     (message "You have no mail.")
-	   (message "Fetchmail failure!"))
-	 (if fetchmail-notify-beep (beep))))))
     (if fetchmail-use-passwd
 	; Fetchmail にパスワードを入力する
 	(progn
@@ -65,8 +51,26 @@
 				   (point)
 				   (process-mark fetchmail-process)))
 		    (throw 'query nil)))
+	      (if (eq 'exit (process-status fetchmail-process-name))
+		  (progn
+		    (error "Fetchmail abort!")))
 	      (sleep-for 0.1)))
 	  (process-send-string
 	   (process-name fetchmail-process) fetchmail-passwd)
 	  (process-send-eof
-	   (process-name fetchmail-process))))))
+	   (process-name fetchmail-process))))
+    (set-process-sentinel
+     fetchmail-process
+     ; Fetchmail 終了の通知
+     (lambda (process event)
+       (cond
+	((string-match "finished" event)
+	 (if fetchmail-notify-beep (beep))
+	 (message "You have mail."))
+	((string-match "exited" event)
+	 (if fetchmail-notify-beep (beep))
+	 (if (= 1 (process-exit-status process))
+	     (message "You have no mail.")
+	   (message "Fetchmail failure!")
+	   (if fetchmail-use-passwd
+	       (setq fetchmail-passwd nil)))))))))
