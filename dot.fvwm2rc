@@ -346,6 +346,7 @@ AddToMenu UTILS "Utils" Title
 +		"XOsview"  Exec exec xosview &
 
 AddToMenu Main		"Main" Title
++			"XTerm"    Exec exec xterm -T xterm@`hostname` &
 +			"KTerm"    Exec exec kterm -T kterm@`hostname` &
 +			"Emacs"    Exec exec emacs &
 +			"Mozilla"  Exec exec mozilla &
