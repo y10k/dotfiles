@@ -22,7 +22,7 @@ export LC_TIME=C
 # Editor and Pager
 case "$EMACS" in
 '') # in Terminal
-  export EDITOR=vi
+  export EDITOR=/usr/local/bin/nvi
   export PAGER=lv;;
 *) # in Emacs
   export EDITOR=emacsclient
@@ -91,6 +91,8 @@ alias la='ls -a'
 alias lf='ls -FA'
 alias ll='ls -lA'
 alias ls='ls -F'
+alias vi=/usr/local/bin/nvi
+alias view=/usr/local/bin/nview
 
 # Shell options
 HISTSIZE=1000
