@@ -60,7 +60,8 @@
 	 ("root@babayaga" . "%INBOX.admin.babayaga"))
 	; Ruby
 	("X-ML-Name"
-	 ("ruby-list" . "%INBOX.ruby.list"))
+	 ("ruby-list" . "%INBOX.ruby.list")
+	 ("X-Ml-Name" . "%INBOX.ruby.unit"))
 	; まぐまぐ
 	("Subject"
 	 ("^\\[Weekly Mag2"                         . "%INBOX.mag2.weekly")
