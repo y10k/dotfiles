@@ -12,10 +12,9 @@
 ;;   (autoload 'fetchmail "fetchmail" nil t)
 ;; というコードを追加し、そして次に
 ;; fetchmail-server-param-alist 変数の設定をします。
-;; このとき注意しないといけないのが query-passwd パラメータの設定で、
-;; .fetchmailrc でパスワードの設定をしているときは設定しないか
-;; nil 値を設定し、パスワードの設定をしてないときは t を設定します。
-;; .fetchmailrc の設定と query-passwd の設定が食い違っていると
+;; このとき注意しないといけないのが omit-passwd パラメータの設定で、
+;; ~/.fetchmailrc でパスワードの設定をしているときは必ず t を設定して下さい。
+;; ~/.fetchmailrc の設定と omit-passwd の設定が食い違っていると
 ;; fetchmail.el は正常に動作しないので、気をつけてください。
 ;; 後は好みに応じて
 ;;   fetchmail-default-server
@@ -30,8 +29,9 @@
 ;; これらの変数の値を適当に設定してください。
 ;; 面倒ならデフォルト値のままでも構いません。
 ;; 後は M-x fetchmail を実行すると fetchmail が起動します。
-;; query-passwd を t に設定していると、最初に一度だけパスワードを
-;; 問い合わせて記憶し、二回目の実行からは記憶したパスワードを使用します。
+;; omit-passwd を nil に設定しているかあるいは設定していなければ、
+;; 最初に一度だけパスワードを問い合わせて記憶し、
+;; 二回目の実行からは記憶したパスワードを使用します。
 ;; このときパスワードは fetchmail-server-passwd-alist 変数に記憶され、
 ;; Emacs Lisp に慣れた人なら簡単に取り出せてしまうので、
 ;; 端末の前を離れるときは注意してください。
@@ -42,14 +42,10 @@
 
 (defvar fetchmail-server-param-alist '(("localhost" . ()))
   "サーバのパラメータを設定する連想リスト。
-例: '((\"mail.freedom.ne.jp\" .
-       ((query-passwd . t)
-        (protocol . \"pop3\")))
-      (\"hepsun2.phys.sci.kobe-u.ac.jp\" .
-       ((query-passwd . t)
-        (protocol . \"imap\")))
+例: '((\"hepsun2.phys.sci.kobe-u.ac.jp\" .
+       ((protocol . \"imap\")))
       (\"phys03.phys.sci.kobe-u.ac.jp\" .
-       ((query-passwd . t)
+       ((omit-passwd . t)
         (protocol . \"apop\"))))")
 
 (defvar fetchmail-preprocess-hook ()
@@ -59,15 +55,15 @@
   "fetchmail の後処理を登録するフック。")
 
 (defvar fetchmail-param-func-alist
-  '((query-passwd . fetchmail-param-query-passwd)
-    (check        . fetchmail-param-check)
-    (username     . fetchmail-param-username)
-    (protocol     . fetchmail-param-protocol)
-    (port         . fetchmail-param-port)
-    (timeout      . fetchmail-param-timeout)
-    (folder       . fetchmail-param-folder)
-    (keep         . fetchmail-param-keep)
-    (flush        . fetchmail-param-flush))
+  '((omit-passwd . fetchmail-param-omit-passwd)
+    (check       . fetchmail-param-check)
+    (username    . fetchmail-param-username)
+    (protocol    . fetchmail-param-protocol)
+    (port        . fetchmail-param-port)
+    (timeout     . fetchmail-param-timeout)
+    (folder      . fetchmail-param-folder)
+    (keep        . fetchmail-param-keep)
+    (flush       . fetchmail-param-flush))
   "パラメータのシンボルをキーに持ちパラメータの値を解析する関数のシンボルを
 値に持つ連想リスト。fetchmail-server-param-alist 関数のパラメータの解析に
 使われる。")
@@ -146,20 +142,23 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 	     (cdr (assoc fetchmail-server
 			 fetchmail-server-param-alist)))))
 
-(defun fetchmail-param-query-passwd (fetchmail-server query-passwd)
+(defun fetchmail-query-passwd (fetchmail-server)
   "サーバのパスワードを設定する。"
-  (if (and query-passwd
-	   (not (fetchmail-get-passwd fetchmail-server)))
-      (fetchmail-set-passwd fetchmail-server
-			    (mapconcat
-			     (lambda (ch)
-			       (setq ch (fetchmail-rotate ch ?0 10 3))
-			       (setq ch (fetchmail-rotate ch ?A 26 13))
-			       (setq ch (fetchmail-rotate ch ?a 26 13))
-			       (char-to-string ch))
-			     (read-passwd (format "Password for %s: "
-						  fetchmail-server)) nil)))
-  nil)
+  (unless (fetchmail-get-passwd fetchmail-server)
+    (fetchmail-set-passwd fetchmail-server
+			  (mapconcat
+			   (lambda (ch)
+			     (setq ch (fetchmail-rotate ch ?0 10 3))
+			     (setq ch (fetchmail-rotate ch ?A 26 13))
+			     (setq ch (fetchmail-rotate ch ?a 26 13))
+			     (char-to-string ch))
+			   (read-passwd (format "Password for %s: "
+						fetchmail-server)) nil))))
+
+(defun fetchmail-param-omit-passwd (fetchmail-server omit-passwd)
+  "パスワードの入力を省略する。"
+  (setq fetchmail-query-passwd nil)
+  ())
 
 (defun fetchmail-param-check (fetchmail-server check)
   "check オプションのリストを作る。"
@@ -191,7 +190,7 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defun fetchmail-param-flush (fetchmail-server flush)
   "flush オプションのリストを作る。"
-  (if flush (list "-F")))
+  (if flush (list "--flush")))
 
 (defun fetchmail-param-funcall (fetchmail-server key value)
   "パラメータに対応する変換関数を呼び出す。"
@@ -220,8 +219,7 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 (defun fetchmail-query-server ()
   "fetchmail のサーバをミニバッファで選択する。"
   (completing-read "Fetchmail server: "
-		   (fetchmail-server-alist fetchmail-server-param-alist)
-		   nil t))
+		   (fetchmail-server-alist fetchmail-server-param-alist)))
 
 (defun fetchmail-make-buffer ()
   "fetchmail バッファを作る。"
@@ -336,7 +334,7 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
   (let ((fetchmail-process
 	 (fetchmail-run fetchmail-server
 			fetchmail-option-list)))
-    (if (fetchmail-get-server-param fetchmail-server 'query-passwd)
+    (if fetchmail-query-passwd
 	(fetchmail-enter-passwd fetchmail-process
 				(mapconcat
 				 (lambda (ch)
@@ -351,28 +349,31 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
     (setq fetchmail-last-server fetchmail-server)
     (set-process-sentinel fetchmail-process 'fetchmail-finish)))
 
-(defun fetchmail (query-server)
+(defun fetchmail (fetchmail-server)
   "fetchmail を起動する。引数を与えるか fetchmail-default-server が
 設定されていないときは、ミニバッファで複数のサーバから選択する。"
   (interactive "P")
-  (let ((fetchmail-server
-	 (cond
-	  (query-server
-	   (fetchmail-query-server))
-	  (fetchmail-default-server
-	   fetchmail-default-server)
-	  ((= 1 (length fetchmail-server-param-alist))
-	   (car (car fetchmail-server-param-alist)))
-	  ((= 0 (length fetchmail-server-param-alist))
-	   nil)
-	  (t
-	   (fetchmail-query-server)))))
-    (unless fetchmail-server
-      (error "Not selected fetchmail server."))
+  (unless (stringp fetchmail-server)
+    (setq fetchmail-server
+	  (cond
+	   (fetchmail-server
+	    (fetchmail-query-server))
+	   (fetchmail-default-server
+	    fetchmail-default-server)
+	   ((= 1 (length fetchmail-server-param-alist))
+	    (car (car fetchmail-server-param-alist)))
+	   (t
+	    (fetchmail-query-server)))))
+  (if (or (not fetchmail-server)
+	  (= 0 (length fetchmail-server)))
+    (error "Not selected fetchmail server."))
+  (let ((fetchmail-query-passwd t))
     (let ((fetchmail-option-list
 	   (fetchmail-option-list fetchmail-server
 				  (cdr (assoc fetchmail-server
 					      fetchmail-server-param-alist)))))
+      (if fetchmail-query-passwd
+	  (fetchmail-query-passwd fetchmail-server))
       (unless (get-buffer fetchmail-buffer-name)
 	(fetchmail-make-buffer))
       (if (and fetchmail-window
