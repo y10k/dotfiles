@@ -8,14 +8,14 @@
 ;; http://www.freedom.ne.jp/toki/elisp/fetchmail.el
 ;;
 ;; <<< 使用法 >>>
-;; まず fetchmail.el を load-path の通ったディレクトリに置いて .emacs に
+;; まずfetchmail.elをload-pathの通ったディレクトリに置いて.emacsに
 ;;   (autoload 'fetchmail "fetchmail" nil t)
 ;; というコードを追加し、そして次に
-;; fetchmail-server-param-alist 変数の設定をします。
-;; このとき注意しないといけないのが omit-passwd パラメータの設定で、
-;; ~/.fetchmailrc でパスワードの設定をしているときは必ず t を設定して下さい。
-;; ~/.fetchmailrc の設定と omit-passwd の設定が食い違っていると
-;; fetchmail.el は正常に動作しないので、気をつけてください。
+;; fetchmail-server-param-alist変数の設定をします。
+;; このとき注意しないといけないのがomit-passwdパラメータの設定で、
+;; ~/.fetchmailrcでパスワードの設定をしているときは必ずtを設定して下さい。
+;; ~/.fetchmailrc の設定とomit-passwdの設定が食い違っていると
+;; fetchmail.elは正常に動作しないので、気をつけてください。
 ;; 後は好みに応じて
 ;;   fetchmail-default-server
 ;;   fetchmail-preprocess-hook
@@ -28,12 +28,12 @@
 ;;   fetchmail-window-height-upper-limit
 ;; これらの変数の値を適当に設定してください。
 ;; 面倒ならデフォルト値のままでも構いません。
-;; 後は M-x fetchmail を実行すると fetchmail が起動します。
-;; omit-passwd を nil に設定しているかあるいは設定していなければ、
+;; 後はM-x fetchmailを実行するとfetchmailが起動します。
+;; omit-passwdをnilに設定しているかあるいは設定していなければ、
 ;; 最初に一度だけパスワードを問い合わせて記憶し、
 ;; 二回目の実行からは記憶したパスワードを使用します。
-;; このときパスワードは fetchmail-server-passwd-alist 変数に記憶され、
-;; Emacs Lisp に慣れた人なら簡単に取り出せてしまうので、
+;; このときパスワードはfetchmail-server-passwd-alist変数に記憶され、
+;; Emacs Lispに慣れた人なら簡単に取り出せてしまうので、
 ;; 端末の前を離れるときは注意してください。
 ;;
 
@@ -145,12 +145,7 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
   "サーバのパスワードを設定する。"
   (unless (fetchmail-get-passwd fetchmail-server)
     (fetchmail-set-passwd fetchmail-server
-			  (mapconcat
-			   (lambda (ch)
-			     (setq ch (fetchmail-rotate ch ?0 10 3))
-			     (setq ch (fetchmail-rotate ch ?A 26 13))
-			     (setq ch (fetchmail-rotate ch ?a 26 13))
-			     (char-to-string ch))
+			  (base64-encode-string
 			   (read-passwd (format "Password for %s: "
 						fetchmail-server)) nil))))
 
@@ -353,14 +348,8 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 			fetchmail-option-list)))
     (if fetchmail-query-passwd
 	(fetchmail-enter-passwd fetchmail-process
-				(mapconcat
-				 (lambda (ch)
-				   (setq ch (fetchmail-rotate ch ?0 10 (- 10 3)))
-				   (setq ch (fetchmail-rotate ch ?A 26 (- 26 13)))
-				   (setq ch (fetchmail-rotate ch ?a 26 (- 26 13)))
-				   (char-to-string ch))
-				 (copy-sequence
-				  (fetchmail-get-passwd fetchmail-server)) nil)))
+				(base64-decode-string
+				 (fetchmail-get-passwd fetchmail-server))))
     (setq fetchmail-running t)
     (force-mode-line-update)
     (setq fetchmail-last-server fetchmail-server)
