@@ -101,10 +101,10 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defvar fetchmail-running nil
   "fetchmail が動作中であることを表わすマイナーモード変数")
-(if (not (assq 'fetchmail-running minor-mode-alist))
-    (setq minor-mode-alist
-	  (cons '(fetchmail-running " Fetching mail...")
-		minor-mode-alist)))
+(unless (assq 'fetchmail-running minor-mode-alist)
+  (setq minor-mode-alist
+	(cons '(fetchmail-running " Fetching mail...")
+	      minor-mode-alist)))
 
 (defun fetchmail-set-passwd (fetchmail-server passwd)
   "fetchmail-passwd-alist にパスワードを設定する。"
@@ -135,11 +135,12 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 (defun fetchmail-param-query-passwd (fetchmail-server query-passwd)
   "サーバのパスワードを設定する。"
   (if query-passwd
-      (let ((passwd (fetchmail-get-passwd fetchmail-server)))
-	(if (not passwd)
-	    (fetchmail-set-passwd fetchmail-server
-				  (read-passwd (format "Password for %s: "
-						       fetchmail-server))))))
+      (let ((passwd
+	     (fetchmail-get-passwd fetchmail-server)))
+	(unless passwd
+	  (fetchmail-set-passwd fetchmail-server
+				(read-passwd (format "Password for %s: "
+						     fetchmail-server))))))
   nil)
 
 (defun fetchmail-param-check (fetchmail-server check)
@@ -197,8 +198,8 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defun fetchmail-make-server-alist (fetchmail-server-param-alist &optional count)
   "fetchmail サーバの連想リストを作る。"
-  (if (not count)
-      (setq count 0))
+  (unless count
+    (setq count 0))
   (if fetchmail-server-param-alist
       (let ((server-node
 	     (list (car (car fetchmail-server-param-alist)) count)))
@@ -222,17 +223,17 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defun fetchmail-open-window ()
   "fetchmail バッファをウィンドウで開く。"
-  (if (not (equal fetchmail-buffer-name (buffer-name)))
-      (set-window-buffer
-       (split-window (selected-window) 
-		     (- (window-height)
-			(max fetchmail-window-height-lower-limit
-			     (min fetchmail-window-height-upper-limit
-				  (round
-				   (* (window-height)
-				      fetchmail-window-height-ratio))))
-			1))
-       fetchmail-buffer-name)))
+  (unless (equal fetchmail-buffer-name (buffer-name))
+    (set-window-buffer
+     (split-window (selected-window) 
+		   (- (window-height)
+		      (max fetchmail-window-height-lower-limit
+			   (min fetchmail-window-height-upper-limit
+				(round
+				 (* (window-height)
+				    fetchmail-window-height-ratio))))
+		      1))
+     fetchmail-buffer-name)))
 
 (defun fetchmail-close-window ()
   "fetchmail バッファのウィンドウを閉じる。"
@@ -283,8 +284,8 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 			  (buffer-substring (point)
 					    (process-mark fetchmail-process)))
 	    (throw 'passwd-entered nil)))
-      (if (not (process-status fetchmail-process))
-	  (error "Fetchmail exited in entering password."))
+      (unless (process-status fetchmail-process)
+	(error "Fetchmail exited in entering password."))
       (sleep-for 0.1)))
   (process-send-string (process-name fetchmail-process)
 		       passwd)
@@ -317,8 +318,8 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 		   (error "Invalid fetchmail-exit-status")))))
 	    (run-hooks 'fetchmail-postprocess-hook)
 	    (fetchmail-insert-buffer (concat fetchmail-message "\n"))
-	    (if (not (get-buffer-window fetchmail-buffer-name))
-		(message fetchmail-message))
+	    (unless (get-buffer-window fetchmail-buffer-name)
+	      (message fetchmail-message))
 	    (if fetchmail-notify-beep (beep)))))))
 
 (defun fetchmail-start (fetchmail-server fetchmail-option-list)
@@ -353,14 +354,14 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 	   nil)
 	  (t
 	   (fetchmail-query-server)))))
-    (if (not fetchmail-server)
-	(error "Not selected fetchmail server."))
+    (unless fetchmail-server
+      (error "Not selected fetchmail server."))
     (let ((fetchmail-option-list
 	   (fetchmail-make-option-list fetchmail-server
 				       (cdr (assoc fetchmail-server
 						   fetchmail-server-param-alist)))))
-      (if (not (get-buffer fetchmail-buffer-name))
-	  (fetchmail-make-buffer))
+      (unless (get-buffer fetchmail-buffer-name)
+	(fetchmail-make-buffer))
       (if (and fetchmail-window
 	       (not (get-buffer-window fetchmail-buffer-name)))
 	  (fetchmail-open-window))

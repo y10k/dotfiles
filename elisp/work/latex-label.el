@@ -31,8 +31,8 @@
 
 (defun latex-label-make-alist (&optional count)
   "Make a associated list of LaTeX labels in current buffer."
-  (if (not count)
-      (setq count 0))
+  (unless count
+    (setq count 0))
   (let ((latex-label (latex-label-search)))
     (if latex-label
 	(cons (list latex-label count)
@@ -51,9 +51,9 @@
 	     (set-buffer latex-label-buffer)
 	     (goto-char (point-min))
 	     (latex-label-make-alist))))
-      (if (not latex-label-alist)
-	  (error (format "Not found a LaTeX label in a buffer: %s"
-			 latex-label-buffer)))
+      (unless latex-label-alist
+	(error (format "Not found a LaTeX label in a buffer: %s"
+		       latex-label-buffer)))
       (insert (completing-read "LaTeX label: "
 			       latex-label-alist nil t nil
 			       'latex-label-history)))))
