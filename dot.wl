@@ -8,7 +8,8 @@
 ; Win32 HOME network settings
 (cond
  ((and (eq window-system 'w32)
-       (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name)))
+       (or (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name))
+	   (string-match "^[Vv][Oo][Ll][Dd]" (system-name))))
   (setq elmo-msgdb-dir "//babayaga/toki/.elmo")
   (setq elmo-localdir-folder-path "//babayaga/toki/Mail")))
 
@@ -33,7 +34,8 @@
 
 ; Offline mode
 (setq wl-plugged nil)
-(if (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name))
+(if (or (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name))
+	(string-match "^[Vv][Oo][Ll][Dd]" (system-name)))
     (add-hook 'wl-make-plugged-hook
 	      (function
 	       (lambda ()
