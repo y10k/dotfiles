@@ -80,6 +80,10 @@
 (defvar fetchmail-window t
   "この変数が真のとき fetchmail バッファをウィンドウで開く。")
 
+(defvar fetchmail-window-time-format " [%a %b %e %T %Y]"
+  "fetchmail を起動した時刻を表示する書式。
+この変数に nil を設定すると時刻を表示しない。")
+
 (defvar fetchmail-window-height-ratio 0.15
   "fetchmail ウィンドウの高さの割合。")
 
@@ -259,7 +263,12 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defun fetchmail-run (fetchmail-server fetchmail-option-list)
   "fetchmail を起動してそのプロセスを返す。"
-  (fetchmail-insert-buffer "<<< fetchmail >>>\n")
+  (fetchmail-insert-buffer
+   (concat "<<< fetchmail"
+	   (if fetchmail-window-time-format
+	       (format-time-string fetchmail-window-time-format
+				   (current-time)))
+	   " >>>\n"))
   (let ((process-connection-type t)
 	(fetchmail-run-list (append (list "fetchmail")
 				    fetchmail-option-list
