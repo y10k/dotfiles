@@ -26,12 +26,14 @@ fi
 
 xset 5/2			# mouse acceleration
 
-
 ssh-agent bash <<'EOF'
     # load startup file
     if [ -f $HOME/.bash_profile ]; then
 	. $HOME/.bash_profile
     fi
+
+    # input method
+    export XMODIFIERS='@im=skkinput'
 
     # set root window
     case "`hostname`" in
