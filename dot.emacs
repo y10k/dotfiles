@@ -191,9 +191,9 @@
   (let ((base-buffer (get-buffer base-buffer-name)))
     (let ((default-major-mode (cdr (assq 'major-mode
 					 (buffer-local-variables base-buffer))))
-	  (copy-buffer (make-indirect-buffer
-			base-buffer
-			(generate-new-buffer-name (concat "*" base-buffer-name " (copy)*")))))
+	  (copy-buffer (make-indirect-buffer base-buffer
+					     (generate-new-buffer-name
+					      (concat "*" base-buffer-name " (copy)*")))))
       (set-buffer-major-mode copy-buffer)
       copy-buffer)))
 (defun copy-buffer (base-buffer-name)
