@@ -195,17 +195,17 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 		next-option-list))
 	  option-list))))
 
-(defun fetchmail-make-server-alist (fetchmail-server-param-alist &optional num)
+(defun fetchmail-make-server-alist (fetchmail-server-param-alist &optional count)
   "fetchmail サーバの連想リストを作る。"
-  (if (not num)
-      (setq num 0))
+  (if (not count)
+      (setq count 0))
   (if fetchmail-server-param-alist
       (let ((server-node
-	     (list (car (car fetchmail-server-param-alist)) num)))
+	     (list (car (car fetchmail-server-param-alist)) count)))
 	(if (cdr fetchmail-server-param-alist)
 	    (cons server-node
 		  (fetchmail-make-server-alist (cdr fetchmail-server-param-alist)
-					       (1+ num)))
+					       (1+ count)))
 	  (list server-node)))))
 
 (defun fetchmail-query-server ()
