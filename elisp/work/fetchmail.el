@@ -55,15 +55,6 @@
   "最後に使われたサーバの名前が入っている。
 fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 
-(defvar fetchmail-exit-func nil
-  "fetchmail 終了時に呼ばれる関数を登録する。
-fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
-
-(defvar fetchmail-exit-status nil
-  "fetchmail 終了時の状態が設定される。
-状態はシンボル値で mail, nomail, failure の三種類ある。
-fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
-
 (defvar fetchmail-process-name "fetchmail"
   "fetchmail プロセスの名前。")
 
@@ -155,31 +146,37 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
   "パラメータから fetchmail のオプションのリストを作る。"
   (if fetchmail-param-alist
       (let ((option-list
-	     (fetchmail-param-funcall fetchmail-server
-				      (car (car fetchmail-param-alist))
-				      (cdr (car fetchmail-param-alist)))))
+	     (fetchmail-param-funcall
+	      fetchmail-server
+	      (car (car fetchmail-param-alist))
+	      (cdr (car fetchmail-param-alist)))))
 	(if (cdr fetchmail-param-alist)
-	    (append option-list
-		    (fetchmail-make-option-list fetchmail-server
-						(cdr fetchmail-param-alist)))
+	    (let ((next-option-list
+		   (fetchmail-make-option-list
+		    fetchmail-server
+		    (cdr fetchmail-param-alist))))
+	      (if option-list
+		  (append option-list next-option-list)
+		next-option-list))
 	  option-list))))
 
-(defun fetchmail-make-server-alist (server-param-alist num)
+(defun fetchmail-make-server-alist (fetchmail-server-param-alist num)
   "fetchmail サーバの連想リストを作る。"
-  (if server-param-alist
+  (if fetchmail-server-param-alist
       (let ((server-node
-	     (list (car (car server-param-alist)) num)))
-	(if (cdr server-param-alist)
+	     (list (car (car fetchmail-server-param-alist)) num)))
+	(if (cdr fetchmail-server-param-alist)
 	    (cons server-node
 		  (fetchmail-make-server-alist
-		   (cdr server-param-alist) (+ 1 num)))
+		   (cdr fetchmail-server-param-alist) (+ 1 num)))
 	  (list server-node)))))
 
 (defun fetchmail-query-server ()
   "fetchmail のサーバをミニバッファで選択する。"
   (completing-read
    "Fetchmail server: "
-   (fetchmail-make-server-alist fetchmail-server-param-alist 1)
+   (fetchmail-make-server-alist
+    fetchmail-server-param-alist 1)
    nil t))
 
 (defun fetchmail-make-buffer ()
@@ -192,13 +189,14 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
   "fetchmail バッファをウィンドウで開く。"
   (if (not (equal fetchmail-buffer-name (buffer-name)))
       (set-window-buffer
-       (split-window (selected-window) 
-		     (- (window-height)
-			(min fetchmail-window-height-limit
-			     (round
-			      (* (window-height)
-				 fetchmail-window-height-ratio)))
-			1))
+       (split-window
+	(selected-window) 
+	(- (window-height)
+	   (min fetchmail-window-height-limit
+		(round
+		 (* (window-height)
+		    fetchmail-window-height-ratio)))
+	   1))
        fetchmail-buffer-name)))
 
 (defun fetchmail-close-window ()
@@ -229,17 +227,20 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
   (let ((process-connection-type t)
 	(fetchmail-run-list
 	 (append (list "fetchmail")
-		 (fetchmail-make-option-list fetchmail-server
-					     fetchmail-param-alist)
+		 (fetchmail-make-option-list
+		  fetchmail-server
+		  fetchmail-param-alist)
 		 (list fetchmail-server))))
     (fetchmail-insert-buffer
-     (concat (fetchmail-list-to-string fetchmail-run-list) "\n"))
+     (concat (fetchmail-list-to-string
+	      fetchmail-run-list)
+	     "\n"))
     (apply 'start-process
 	   fetchmail-process-name
 	   fetchmail-buffer-name
 	   fetchmail-run-list)))
 
-(defun fetchmail-enter-passwd (fetchmail-process)
+(defun fetchmail-enter-passwd (fetchmail-process passwd)
   "fetchmail プロセスにパスワードを入力する。"
   (catch 'passwd-entered
     (while t
@@ -252,64 +253,80 @@ fetchmail-start が自動的に設定するので、ユーザが設定してはいけない。")
 	     (buffer-substring (point)
 			       (process-mark fetchmail-process)))
 	    (throw 'passwd-entered nil)))
-      (if (eq 'exit
-	      (process-status (process-name fetchmail-process)))
-	  (error "Fetchmail abort."))
+      (if (not (process-status fetchmail-process))
+	  (error "Fetchmail exited in entering password."))
       (sleep-for 0.1)))
-  (process-send-string (process-name fetchmail-process)
-		       (fetchmail-get-passwd fetchmail-server))
-  (process-send-eof (process-name fetchmail-process)))
+  (process-send-string
+   (process-name fetchmail-process)
+   passwd)
+  (process-send-eof
+   (process-name fetchmail-process)))
 
 (defun fetchmail-finish (fetchmail-process event)
   "fetchmail プロセス終了時の後始末をする。"
-  (if (setq fetchmail-exit-status
-	    (cond
-	     ((string-match "finished" event) 'mail)
-	     ((string-match "exited" event)
-	      (if (= 1 (process-exit-status fetchmail-process)) 'nomail
-		(fetchmail-clear-passwd fetchmail-last-server) 'failure))))
-      (progn
-	(setq fetchmail-running nil)
-	(force-mode-line-update)
-	(run-hooks 'fetchmail-postprocess-hook)
-	(if fetchmail-exit-func
-	    (funcall fetchmail-exit-func
-		     fetchmail-last-server fetchmail-exit-status)))))
+  (let ((fetchmail-exit-status
+	 (cond
+	  ((string-match "finished" event)
+	   'mail)
+	  ((string-match "exited" event)
+	   (if (= 1 (process-exit-status fetchmail-process))
+	       'nomail
+	     (fetchmail-clear-passwd fetchmail-last-server)
+	     'failure)))))
+    (if fetchmail-exit-status
+	(progn
+	  (setq fetchmail-running nil)
+	  (force-mode-line-update)
+	  (let ((fetchmail-message
+		 (cond
+		  ((eq 'mail fetchmail-exit-status)
+		   "You have mail.")
+		  ((eq 'nomail fetchmail-exit-status)
+		   "You have no mail.")
+		  ((eq 'failure fetchmail-exit-status)
+		   "Failed to fetchmail.")
+		  (t
+		   (error "Invalid fetchmail-exit-status")))))
+	    (run-hooks 'fetchmail-postprocess-hook)
+	    (fetchmail-insert-buffer (concat fetchmail-message "\n"))
+	    (if (not (get-buffer-window fetchmail-buffer-name))
+		(message fetchmail-message))
+	    (if fetchmail-notify-beep (beep)))))))
 
-(defun fetchmail-start
-  (fetchmail-server
-   fetchmail-param-alist &optional exit-func)
-  "fetchmail を一つのサーバに対して起動する。
-exit-func が与えられたときは、fetchmail が終了したときに
-サーバ名と fetchmail の終了状態が渡されて呼ばれる。
-fetchmail の終了状態は 'mail, 'nomail, 'failure の三種類。"
+(defun fetchmail-start (fetchmail-server fetchmail-param-alist)
+  "fetchmail を一つのサーバに対して起動する。"
   (if (get-process fetchmail-process-name)
       (error "Fetchmail is running."))
   (run-hooks 'fetchmail-preprocess-hook)
-  (let ((fetchmail-process (fetchmail-run fetchmail-server
-					  fetchmail-param-alist)))
+  (let ((fetchmail-process
+	 (fetchmail-run fetchmail-server
+			fetchmail-param-alist)))
     (if (fetchmail-get-server-param fetchmail-server 'query-passwd)
-	(fetchmail-enter-passwd fetchmail-process))
+	(fetchmail-enter-passwd
+	 fetchmail-process
+	 (fetchmail-get-passwd fetchmail-server)))
     (setq fetchmail-running t)
     (force-mode-line-update)
     (setq fetchmail-last-server fetchmail-server)
-    (setq fetchmail-exit-func exit-func)
     (set-process-sentinel fetchmail-process 'fetchmail-finish)))
 
 (defun fetchmail (query-server)
   "fetchmail を起動する。引数を与えるか fetchmail-default-server が
 設定されていないときは、ミニバッファで複数のサーバから選択する。"
   (interactive "P")
-  (let (fetchmail-server)
-    (setq fetchmail-server
-	  (cond
-	   (query-server (fetchmail-query-server))
-	   (fetchmail-default-server fetchmail-default-server)
-	   ((= 1 (length fetchmail-server-param-alist))
-	    (car (car fetchmail-server-param-alist)))
-	   ((= 0 (length fetchmail-server-param-alist)) nil)
-	   (t (fetchmail-query-server))))
-    (if (or (not fetchmail-server) (= 0 (length fetchmail-server)))
+  (let ((fetchmail-server
+	 (cond
+	  (query-server
+	   (fetchmail-query-server))
+	  (fetchmail-default-server
+	   fetchmail-default-server)
+	  ((= 1 (length fetchmail-server-param-alist))
+	   (car (car fetchmail-server-param-alist)))
+	  ((= 0 (length fetchmail-server-param-alist))
+	   nil)
+	  (t
+	   (fetchmail-query-server)))))
+    (if (not fetchmail-server)
 	(error "Not selected fetchmail server."))
     (if (not (get-buffer fetchmail-buffer-name))
 	(fetchmail-make-buffer))
@@ -320,20 +337,7 @@ fetchmail の終了状態は 'mail, 'nomail, 'failure の三種類。"
 	   (assoc fetchmail-server fetchmail-server-param-alist)))
       (fetchmail-start
        (car server-param-alist)
-       (cdr server-param-alist)
-       (lambda (fetchmail-server fetchmail-exit-status)
-	 (let ((fetchmail-message
-		(cond
-		 ((eq 'mail fetchmail-exit-status)
-		  "You have mail.")
-		 ((eq 'nomail fetchmail-exit-status)
-		  "You have no mail.")
-		 ((eq 'failure fetchmail-exit-status)
-		  "Failed to fetchmail."))))
-	   (fetchmail-insert-buffer (concat fetchmail-message "\n"))
-	   (if (not (get-buffer-window fetchmail-buffer-name))
-	       (message fetchmail-message))
-	   (if fetchmail-notify-beep (beep))))))))
+       (cdr server-param-alist)))))
 
 (defun fetchmail-mode ()
   "fetchmail バッファ用のモード。"
