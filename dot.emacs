@@ -115,7 +115,8 @@
     (setq default-frame-alist initial-frame-alist)
 
     ; Shell
-    (setq explicit-shell-file-name "bash.exe")
+    (setq shell-file-name "bash")
+    (setq explicit-shell-file-name "bash")
     (add-hook 'shell-mode-hook
 	      (lambda ()
 		(add-hook 'comint-output-filter-functions
@@ -177,6 +178,7 @@
 (global-set-key "\C-x\C-f" 'select-find-file)
 
 ; Buffer switching
+(global-set-key "\C-x\C-b" 'electric-buffer-list)
 (defadvice switch-to-buffer (before strict-buffer-name activate)
   (interactive (list (read-buffer "Switch to buffer: " (other-buffer) t))))
 (defadvice switch-to-buffer-other-window (before strict-buffer-name activate)
@@ -464,8 +466,8 @@ and source-file directory for your debugger." t)
 	      auto-mode-alist))
 
 ; Man
-(setq manual-program "jman")
-(setq manual-program "jman")
+(if (string-match "freebsd" system-configuration))
+    (setq manual-program "jman")
 
 ; Comparing files
 (setq diff-switches "-u")
@@ -645,7 +647,15 @@ and source-file directory for your debugger." t)
 (setq browse-url-browser-function 'w3m-browse-url)
 (setq mime-setup-enable-inline-html nil)
 (autoload 'w3m "w3m" "Interface for w3m on Emacs." t)
+(autoload 'w3m-find-file "w3m" "w3m Interface function for local file." t)
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+(eval-after-load "w3m"
+  '(defadvice w3m-reload-this-page (around no-cache activate)
+     (let ((w3m-command-arguments
+	    (append w3m-command-arguments
+		    '("-header" "Pragma: no-cache"
+		      "-header" "Cache-Control: no-cache"))))
+       ad-do-it)))
 (eval-after-load "mime-view"
   '(progn
      (autoload 'mime-w3m-preview-text/html "mime-w3m")
@@ -666,11 +676,13 @@ and source-file directory for your debugger." t)
 	      auto-mode-alist))
 
 ; disable Tool Bar
-;(if (string-match "^21\\." emacs-version)
-;    (tool-bar-mode 0))
+; Xresource => Emacs.toolBar: 0
+(if (eq emacs-major-version 21)
+    (tool-bar-mode 0))
 
 ; Mouse Wheel mode
-(mouse-wheel-mode 1)
+(if (eq emacs-major-version 21)
+    (mouse-wheel-mode 1))
 
 ; HOME directory
 (if (eq window-system 'w32)
