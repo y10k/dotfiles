@@ -111,6 +111,13 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 	(cons '(fetchmail-running " Fetching mail...")
 	      minor-mode-alist)))
 
+(defun fetchmail-rotate (char offset length shift)
+  "文字を回転させる。"
+  (if (and (<= offset char)
+	   (< char (+ offset length)))
+      (+ (% (+ (- char offset) shift) length) offset)
+    char))
+
 (defun fetchmail-set-passwd (fetchmail-server fetchmail-passwd)
   "fetchmail-server-passwd-alist にパスワードを設定する。"
   (let ((fetchmail-server-passwd-pair
@@ -144,8 +151,14 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
   (if (and query-passwd
 	   (not (fetchmail-get-passwd fetchmail-server)))
       (fetchmail-set-passwd fetchmail-server
-			    (read-passwd (format "Password for %s: "
-						 fetchmail-server))))
+			    (concat
+			     (mapcar
+			      (lambda (ch)
+				(setq ch (fetchmail-rotate ch ?0 10 3))
+				(setq ch (fetchmail-rotate ch ?A 26 13))
+				(setq ch (fetchmail-rotate ch ?a 26 13)))
+			      (read-passwd (format "Password for %s: "
+						   fetchmail-server))))))
   nil)
 
 (defun fetchmail-param-check (fetchmail-server check)
@@ -245,13 +258,6 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
     (goto-char (point-max))
     (insert-before-markers msg)))
 
-(defun fetchmail-join-list (separator list)
-  "リストを文字列に変換する。"
-  (if (cdr list)
-      (concat (car list) separator
-	      (fetchmail-join-list separator (cdr list)))
-    (concat (car list))))
-
 (defun fetchmail-run (fetchmail-server fetchmail-option-list)
   "fetchmail を起動してそのプロセスを返す。"
   (fetchmail-insert-buffer
@@ -264,9 +270,9 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 	(fetchmail-run-list (append (list "fetchmail")
 				    fetchmail-option-list
 				    (list fetchmail-server))))
-    (fetchmail-insert-buffer (concat (fetchmail-join-list
-				      " " fetchmail-run-list)
-				     "\n"))
+    (fetchmail-insert-buffer (concat (mapconcat
+				      (lambda (param) param)
+				      fetchmail-run-list " ") "\n"))
     (apply 'start-process
 	   fetchmail-process-name
 	   fetchmail-buffer-name
@@ -332,7 +338,14 @@ fetchmail-start 関数が自動的に設定するので、ユーザが設定してはいけない。")
 			fetchmail-option-list)))
     (if (fetchmail-get-server-param fetchmail-server 'query-passwd)
 	(fetchmail-enter-passwd fetchmail-process
-				(fetchmail-get-passwd fetchmail-server)))
+				(concat
+				 (mapcar
+				  (lambda (ch)
+				    (setq ch (fetchmail-rotate ch ?0 10 (- 10 3)))
+				    (setq ch (fetchmail-rotate ch ?A 26 (- 26 13)))
+				    (setq ch (fetchmail-rotate ch ?a 26 (- 26 13))))
+				  (copy-sequence
+				   (fetchmail-get-passwd fetchmail-server))))))
     (setq fetchmail-running t)
     (force-mode-line-update)
     (setq fetchmail-last-server fetchmail-server)
