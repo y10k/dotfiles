@@ -41,7 +41,7 @@
 (defvar fetchmail-default-server nil
   "デフォルトのサーバ。")
 
-(defvar fetchmail-server-passwd-omit-list ()
+(defvar fetchmail-server-omit-passwd-list ()
   "パスワードの入力を省略するサーバ名のリスト。
 例: '(\"hepsun2.phys.sci.kobe-u.ac.jp\"
       \"phys03.phys.sci.kobe-u.ac.jp\")")
@@ -121,10 +121,10 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
     (if fetchmail-default-server
 	(setq fetchmail-server-list
 	      (cons fetchmail-default-server fetchmail-server-list)))
-    (if fetchmail-server-passwd-omit-list
+    (if fetchmail-server-omit-passwd-list
 	(setq fetchmail-server-list
 	      (append fetchmail-server-list
-		      fetchmail-server-passwd-omit-list)))
+		      fetchmail-server-omit-passwd-list)))
     (let (fetchmail-server-alist fetchmail-server-pair
 	  (fetchmail-server-alist-list (list fetchmail-server-option-alist
 					     fetchmail-server-alias-alist)))
@@ -188,7 +188,7 @@ fetchmail-start関数が自動的に設定するので、ユーザが設定してはいけない。")
 
 (defun fetchmail-query-passwd-p (fetchmail-server)
   (not (member (fetchmail-get-server-name fetchmail-server)
-	       fetchmail-server-passwd-omit-list)))
+	       fetchmail-server-omit-passwd-list)))
 
 (defun fetchmail-query-passwd (fetchmail-server)
   "サーバのパスワードを設定する。"
