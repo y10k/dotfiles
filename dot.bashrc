@@ -51,7 +51,7 @@ hellboy.*)
 esac
 
 # Ports site
-export MASTER_SITE_OVERRIDE='ftp://netlab.is.tsukuba.ac.jp/pub/os/FreeBSD/distfiles/${DIST_SUBDIR}/'
+export MASTER_SITE_OVERRIDE='ftp://ring.htcn.ne.jp/pub/FreeBSD/distfiles/${DIST_SUBDIR}/'
 
 # Java
 export JDK_HOME=/usr/local/java
