@@ -18,17 +18,19 @@ if [ -t 0 ]; then
 fi
 
 # Locale
-export LANG=ja_JP.EUC
+#export LANG=ja_JP.eucJP
 export LC_TIME=C
 
 # Editor and Pager
 case "$EMACS" in
 '') # in Terminal
-  export EDITOR=/usr/local/bin/nvi
-  export PAGER=lv;;
+  export EDITOR=vi
+  export PAGER=lv
+  ;;
 *) # in Emacs
   export EDITOR=emacsclient
-  export PAGER=cat;;
+  export PAGER=cat
+  ;;
 esac
 
 # LV
@@ -45,12 +47,6 @@ export RCSINIT=-zLT
 
 # CVS
 export CVS_RSH=ssh
-case "`hostname`" in
-hellboy.*)
-  export CVSROOT=:ext:babayaga.plutonian.ne.jp:/home/toki/cvsroot;;
-*)
-  export CVSROOT=/home/toki/cvsroot;;
-esac
 
 # Ports site
 export MASTER_SITE_OVERRIDE='ftp://ring.htcn.ne.jp/pub/FreeBSD/distfiles/${DIST_SUBDIR}/'
@@ -59,7 +55,7 @@ export MASTER_SITE_OVERRIDE='ftp://ring.htcn.ne.jp/pub/FreeBSD/distfiles/${DIST_
 export JDK_HOME=/usr/local/java
 export JAVA_HOME=$JDK_HOME
 export JAVA_CLASS=/usr/local/share/java
-export JAVA_COMPILER=shujit
+#export JAVA_COMPILER=shujit
 export PATH=$PATH:$JAVA_HOME/bin
 export CLASSPATH=.:$HOME/java/work:$HOME/java/classes:$JAVA_CLASS/classes
 for jar in {$HOME/java,$JAVA_CLASS,$JAVA_HOME}/classes/*.{zip,jar}; do
@@ -69,11 +65,15 @@ for jar in {$HOME/java,$JAVA_CLASS,$JAVA_HOME}/classes/*.{zip,jar}; do
 done
 
 # HOME PAGE
-export WWW_HOME=http://www.freedom.ne.jp/toki/
+export WWW_HOME='http://www.hatena.ne.jp/'
+export WWW_HOME='http://a.hatena.ne.jp/y10k/'
 
 # Ruby
 export RUBY_HOME=$HOME/ruby
 export RUBYLIB=$RUBY_HOME/lib:$RUBY_HOME/lib/i386-freebsd
+export RUBYOPT=rubygems
+export GEM_HOME=$HOME/rubygems
+export PATH=$PATH:$GEM_HOME/bin
 
 # Rsync
 export RSYNC_RSH=ssh
@@ -90,10 +90,16 @@ if [ -n "$PS1" ]; then
   alias la='ls -a'
   alias lf='ls -FA'
   alias ll='ls -lA'
-  alias ls='ls -F'
   alias diff='diff -u'
-  alias vi=/usr/local/bin/nvi
-  alias view=/usr/local/bin/nview
+
+  case "$EMACS" in
+  '')
+    alias ls='ls -F --color=auto'
+    ;;
+  *)
+    alias ls='ls -F'
+    ;;
+  esac
 
   # Shell options
   HISTSIZE=1000

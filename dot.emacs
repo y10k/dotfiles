@@ -18,88 +18,145 @@
 
 ; Japanese environment
 (set-language-environment 'Japanese)
-(set-default-coding-systems 'japanese-iso-8bit)
-(set-terminal-coding-system 'japanese-iso-8bit)
+(cond
+ ; Coding sytem
+ ((eq system-type 'windows-nt)
+  (set-default-coding-systems 'japanese-shift-jis)
+  (set-terminal-coding-system 'japanese-shift-jis))
+ (t
+  (set-default-coding-systems 'japanese-iso-8bit)
+  (set-terminal-coding-system 'japanese-iso-8bit)))
+
+; Font lock mode
+(custom-declare-face
+ 'font-lock-builtin-face
+ '((((class grayscale) (background light)) (:foreground "lightgray" :bold t))
+   (((class grayscale) (background dark)) (:foreground "dimgray" :bold t))
+   (((class color) (background light)) (:foreground "seagreen"))
+   (((class color) (background dark)) (:foreground "darkolivegreen"))
+   (t (:bold t)))
+ "font lock mode face used to highlight builtins."
+ :group 'font-lock-highlighting-faces)
+(custom-declare-face
+ 'font-lock-string-face
+ '((((type tty) (class color)) (:foreground "green"))
+   (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
+   (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
+   (((class color) (background light)) (:foreground "gray40"))
+   (((class color) (background dark)) (:foreground "lightsalmon"))
+   (t (:italic t)))
+ "font lock mode face used to highlight strings."
+ :group 'font-lock-highlighting-faces)
+(custom-declare-face
+ 'font-lock-variable-name-face
+ '((((class grayscale) (background light)) (:foreground "gray90" :bold t :italic t))
+   (((class grayscale) (background dark)) (:foreground "dimgray" :bold t :italic t))
+   (((class color) (background light)) (:foreground "brown"))
+   (((class color) (background dark)) (:foreground "lightgoldenrod"))
+   (t (:bold t :italic t)))
+ "font lock mode face used to highlight variable names."
+ :group 'font-lock-highlighting-faces)
+(custom-declare-face
+ 'info-node
+ '((((class grayscale) (background light)) (:foreground "black" :bold t))
+   (((class grayscale) (background dark)) (:foreground "white" :bold t))
+   (((class color) (background light)) (:foreground "purple" :bold t))
+   (((class color) (background dark)) (:foreground "plum1" :bold t))
+   (t (:bold t)))
+ "info mode face used to highlight node."
+ :group 'font-lock-highlighting-faces)
+(custom-declare-face
+ 'info-xref
+ '((((class grayscale) (background light)) (:foreground "black" :bold t))
+   (((class grayscale) (background dark)) (:foreground "white" :bold t))
+   (((class color) (background light)) (:foreground "blue" :bold t))
+   (((class color) (background dark)) (:foreground "cyan" :bold t))
+   (t (:bold t)))
+ "info mode face used to highlight xref."
+ :group 'font-lock-highlighting-faces)
+(custom-declare-face
+ 'sh-heredoc-face
+ '((((class color) (background light)) (:foreground "sea green"))
+   (((class color) (background dark)) (:foreground "yellow" :bold t))
+   (t (:bold t)))
+ "Face to show a here-document"
+ :group 'sh-indentation)
+(custom-declare-face
+  'diff-context-face
+  '((((type tty) (class color)) (:foreground "green"))
+    (((class color) (background light)) (:foreground "grey50"))
+    (((class color) (background dark)) (:foreground "grey70"))
+    (t ))
+  "`diff-mode' face used to highlight context and other side-information."
+  :group 'diff-mode)
+(custom-declare-face
+ 'comint-highlight-prompt
+ '((((background dark)) (:foreground "cyan"))
+   (t (:foreground "cyan")))
+ "Face to use to highlight prompt when `comint-highlight-prompt' is non-nil."
+ :group 'comint)
+(custom-declare-face
+ 'log-view-message-face
+ '((((class color) (background light)) (:background "magenta"))
+   (t (:bold t)))
+ "Face for the message header line in `log-view-mode'."
+ :group 'log-view)
+(global-font-lock-mode t)
 
 ; Window system dependent
 (cond
  ((or window-system
-      (string-match "color" (getenv "TERM")))
-  ; Bold face
-  (make-face-bold 'bold)
-  (make-face-bold 'bold-italic)
-
-  ; Font lock mode
-  (custom-declare-face
-   'font-lock-builtin-face
-   '((((class grayscale) (background light)) (:foreground "lightgray" :bold t))
-     (((class grayscale) (background dark)) (:foreground "dimgray" :bold t))
-     (((class color) (background light)) (:foreground "seagreen"))
-     (((class color) (background dark)) (:foreground "darkolivegreen"))
-     (t (:bold t)))
-   "font lock mode face used to highlight builtins."
-   :group 'font-lock-highlighting-faces)
-  (custom-declare-face
-   'font-lock-string-face
-   '((((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-     (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-     (((class color) (background light)) (:foreground "gray40"))
-     (((class color) (background dark)) (:foreground "lightsalmon"))
-     (t (:italic t)))
-   "font lock mode face used to highlight strings."
-   :group 'font-lock-highlighting-faces)
-  (custom-declare-face
-   'font-lock-variable-name-face
-   '((((class grayscale) (background light)) (:foreground "gray90" :bold t :italic t))
-     (((class grayscale) (background dark)) (:foreground "dimgray" :bold t :italic t))
-     (((class color) (background light)) (:foreground "brown"))
-     (((class color) (background dark)) (:foreground "lightgoldenrod"))
-     (t (:bold t :italic t)))
-   "font lock mode face used to highlight variable names."
-   :group 'font-lock-highlighting-faces)
-  (custom-declare-face
-   'info-node
-   '((((class grayscale) (background light)) (:foreground "black" :bold t))
-     (((class grayscale) (background dark)) (:foreground "white" :bold t))
-     (((class color) (background light)) (:foreground "purple" :bold t))
-     (((class color) (background dark)) (:foreground "plum1" :bold t))
-     (t (:bold t)))
-   "info mode face used to highlight node."
-   :group 'font-lock-highlighting-faces)
-  (custom-declare-face
-   'info-xref
-   '((((class grayscale) (background light)) (:foreground "black" :bold t))
-     (((class grayscale) (background dark)) (:foreground "white" :bold t))
-     (((class color) (background light)) (:foreground "blue" :bold t))
-     (((class color) (background dark)) (:foreground "cyan" :bold t))
-     (t (:bold t)))
-   "info mode face used to highlight xref."
-   :group 'font-lock-highlighting-faces)
-  (custom-declare-face
-   'sh-heredoc-face
-   '((((class color) (background light)) (:foreground "sea green"))
-     (((class color) (background dark)) (:foreground "yellow" :bold t))
-     (t (:bold t)))
-   "Face to show a here-document"
-   :group 'sh-indentation)
-  (global-font-lock-mode t)
-
+      (string-match "color" (getenv "TERM"))
+      (string-match "xterm" (getenv "TERM"))
+      (string-match "kterm" (getenv "TERM")))
   ; Window system specific
   (cond
-   ((eq window-system 'w32)
-    ; Coding sytem
-    (set-default-coding-systems 'japanese-shift-jis)
-    (set-terminal-coding-system 'japanese-shift-jis)
-
-    ; Font
-    (create-fontset-from-request
-     "w32font16"
-     '((width . 8)
-       (height . 16)
-       (fixed . t)
-       (italic . nil))
-     '((family . "Lucida Console")
-       (family . "ＭＳ ゴシック")))
+   ((and (eq window-system 'w32)
+	 (featurep 'meadow))
+    (cond
+     ; for Meadow2
+     ((string-match "Meadow-2\.00" (Meadow-version))
+      (w32-add-font
+       "w32font16"
+       '((spec
+	  ((:char-spec ascii :height any)
+	   strict
+	   (w32-logfont "Lucida Console" 8 16 400 0 nil nil nil 0 1 3 49))
+	  ((:char-spec ascii :height any :weight bold)
+	   strict
+	   (w32-logfont "Lucida Console" 7 16 700 0 nil nil nil 0 1 3 49))
+	  ((:char-spec ascii :height any :slant italic)
+	   strict
+	   (w32-logfont "Lucida Console" 8 16 400 0   t nil nil 0 1 3 49))
+	  ((:char-spec ascii :height any :weight bold :slant italic)
+	   strict
+	   (w32-logfont "Lucida Console" 7 16 700 0   t nil nil 0 1 3 49))
+	  ((:char-spec japanese-jisx0208 :height any)
+	   strict
+	   (w32-logfont "ＭＳ ゴシック" 0 16 400 0 nil nil nil 128 1 3 49))
+	  ((:char-spec japanese-jisx0208 :height any :weight bold)
+	   strict
+	   (w32-logfont "ＭＳ ゴシック" 0 16 700 0 nil nil nil 128 1 3 49)
+	   ((spacing . -1)))
+	  ((:char-spec japanese-jisx0208 :height any :slant italic)
+	   strict
+	   (w32-logfont "ＭＳ ゴシック" 0 16 400 0   t nil nil 128 1 3 49))
+	  ((:char-spec japanese-jisx0208 :height any :weight bold :slant italic)
+	   strict
+	   (w32-logfont "ＭＳ ゴシック" 0 16 700 0   t nil nil 128 1 3 49)
+	   ((spacing . -1))))))
+      (set-face-attribute 'variable-pitch nil :font "w32font16"))
+     ; for compatible of Meadow1
+     (t
+      (create-fontset-from-request
+       "w32font16"
+       '((width . 8)
+	 (height . 16)
+	 (fixed . t)
+	 (italic . nil))
+       '(;(family . "Courier New")
+	 (family . "Lucida Console")
+	 (family . "ＭＳ ゴシック")))))
 
     ; Frame
     (setq initial-frame-alist
@@ -113,19 +170,19 @@
 	(progn
 	  (setcdr (assq 'width initial-frame-alist) 120)
 	  (setcdr (assq 'height initial-frame-alist) 56)))
-    (setq default-frame-alist initial-frame-alist)
-
-    ; Shell
-    (setq shell-file-name "bash")
-    (setq explicit-shell-file-name "bash")
-    (add-hook 'shell-mode-hook
-	      (lambda ()
-		(add-hook 'comint-output-filter-functions
-			  'comint-strip-ctrl-m)))))))
+    (setq default-frame-alist initial-frame-alist)))))
 
 ; Shell mode
 (setq comint-scroll-show-maximum-output t)
 (setq comint-scroll-to-bottom-on-output t)
+(cond
+ ((eq system-type 'windows-nt)
+  (setq shell-file-name "bash")
+  (setq explicit-shell-file-name "bash")
+  (add-hook 'shell-mode-hook
+	    (lambda ()
+	      (add-hook 'comint-output-filter-functions
+			'comint-strip-ctrl-m)))))
 
 ; Info directories
 (setq Info-default-directory-list
@@ -133,7 +190,7 @@
        (lambda (path) (expand-file-name path))
        '("/usr/share/info" "/usr/local/info" "/usr/X11R6/info")))
 (cond
- ((eq window-system 'w32)
+ ((eq system-type 'windows-nt)
   (setq Info-directory-list
 	(mapcar
 	 (lambda (path) (expand-file-name path))
@@ -220,6 +277,7 @@
   (if previous
       (other-window -1)
     (other-window 1)))
+(global-set-key "\M-o" 'other-window-one-step)
 (global-set-key "\C-^" 'other-window-one-step)
 (setq truncate-partial-width-windows nil)
 
@@ -230,10 +288,6 @@
 (defun insert-timestamp ()
   (interactive)
   (insert (current-time-string)))
-
-;; ; Emacsclient
-;; (unless (eq window-system 'w32)
-;;   (server-start))
 
 ; HTML mode
 (setq auto-mode-alist
@@ -463,6 +517,9 @@
 ; Ruby mode
 (autoload 'ruby-mode "ruby-mode"
   "mode for editing ruby source files" t)
+(add-hook 'ruby-mode-hook
+	  (lambda ()
+	    (define-key ruby-mode-map "\C-cc" 'compile)))
 (setq auto-mode-alist
       (append '(("\\.rb$" . ruby-mode)
 		("\\.cgi$" . ruby-mode)) auto-mode-alist))
@@ -496,7 +553,8 @@ and source-file directory for your debugger." t)
 	      auto-mode-alist))
 
 ; Man
-(if (string-match "freebsd" system-configuration)
+(if (and (string-match "freebsd" system-configuration)
+	 (string-match "ja" (getenv "LANG")))
     (setq manual-program "jman"))
 
 ; Comparing files
@@ -585,8 +643,8 @@ and source-file directory for your debugger." t)
 (show-paren-mode t)
 
 ; FLIM
-(setq eword-max-size-to-decode (* 64 1024))
-(setq eword-lexical-analyzer		; http://lists.airs.net/wl/archive/199909/msg00009.html
+(setq mime-field-decoding-max-size (* 64 1024))
+(setq mime-header-lexical-analyzer	; http://lists.airs.net/wl/archive/199909/msg00009.html
       '(;eword-analyze-quoted-string
         eword-analyze-domain-literal
         eword-analyze-comment
@@ -600,16 +658,14 @@ and source-file directory for your debugger." t)
      (and ad-return-value 
 	  (setq ad-return-value (eword-decode-string ad-return-value)))))
 
-; SEMI
-(load "mime-setup")
-(setq mime-edit-split-message nil)
+;; ; SEMI
+;; (load "mime-setup")
+;; (setq mime-edit-split-message nil)
 
-; Wanderlust
-(setq wl-plugged nil)			; OFFLINE mode
-;; (if (and (eq emacs-major-version 21) (eq emacs-minor-version 2))
-;;     (setq wl-icon-directory (expand-file-name "/usr/local/share/emacs/21.2/etc/wl/icons")))
-(autoload 'wl "wl" "wanderlust" t)
-(autoload 'wl-draft "wl" "write draft with wanderlust." t)
+;; ; Wanderlust
+;; (setq wl-plugged nil)			; OFFLINE mode
+;; (autoload 'wl "wl" "wanderlust" t)
+;; (autoload 'wl-draft "wl" "write draft with wanderlust." t)
 
 ; SKK
 (autoload 'skk-mode "skk" nil t)
@@ -673,11 +729,13 @@ and source-file directory for your debugger." t)
 ; WWW browser
 (setq w3m-coding-system
       (cond
-       ((eq window-system 'w32) 'shift_jis)
-       (t 'euc-jp)))
-;; (if (and (eq emacs-major-version 21) (eq emacs-minor-version 2))
-;;     (setq w3m-icon-directory "/usr/local/share/emacs/21.2/etc/w3m/icons"))
-(setq browse-url-browser-function 'w3m-browse-url)
+       ((eq system-type 'windows-nt) 'shift_jis-dos)
+       (t 'euc-jp-unix)))
+(if (and (featurep 'meadow)
+	 (eq emacs-major-version 21))
+    (setq w3m-icon-directory "/usr/local/Meadow/2.00b2/etc/w3m/icons"))
+;(setq browse-url-browser-function 'w3m-browse-url)
+(setq browse-url-browser-function 'browse-url-mozilla)
 (setq mime-setup-enable-inline-html nil)
 (autoload 'w3m "w3m" "Interface for w3m on Emacs." t)
 (autoload 'w3m-find-file "w3m" "w3m Interface function for local file." t)
@@ -703,6 +761,13 @@ and source-file directory for your debugger." t)
 (global-set-key "\C-xm" 'browse-url-at-point)
 (setq shimbun-asahi-url "http://www.asahi.com/")
 (setq shimbun-asahi-html-url "http://www.asahi.com/")
+(custom-declare-face
+ 'w3m-form-face
+ '((((class color) (background light)) (:foreground "red" :underline t))
+   (((class color) (background dark)) (:foreground "red" :underline t))
+   (t (:underline t)))
+ "*Face to fontify forms."
+ :group 'w3m-face)
 
 ; EWB mode
 (autoload 'ewb-mode "ewb-mode" "" t)
@@ -719,18 +784,78 @@ and source-file directory for your debugger." t)
 (if (eq emacs-major-version 21)
     (mouse-wheel-mode 1))
 
-; Navi2ch
-(require 'navi2ch)
-(setq navi2ch-net-http-proxy "proxy.plutonia.ne.jp:8080")
-(setq navi2ch-list-bbstable-url "http://www6.ocn.ne.jp/~mirv/2chmenu.html")
-(if (eq window-system 'w32)
-    (setq navi2ch-directory "//cernobog/toki/.navi2ch"))
+;; ; Navi2ch
+;; (require 'navi2ch)
+;; (setq navi2ch-net-http-proxy "proxy.plutonia.ne.jp:8080")
+;; (setq navi2ch-list-bbstable-url "http://www6.ocn.ne.jp/~mirv/2chmenu.html")
+;; (if (eq system-type 'windows-nt)
+;;     (setq navi2ch-directory "//cernobog/toki/.navi2ch"))
 
 ; HOME directory
-(if (eq window-system 'w32)
+(if (eq system-type 'windows-nt)
     (cd (expand-file-name "~")))
+
+; patch for ediff
+;; (if (and (featurep 'meadow)
+;; 	 (string-match "Meadow-1\.15" (Meadow-version)))
+    (progn
+      (eval-after-load "ediff-init"
+	'(defadvice ediff-window-display-p (after disable-window-display activate)
+	   (setq ad-return-value nil)))
+      (if (eq window-system 'w32)
+	  (setq ediff-force-faces t)))
+;;   )
+
+; Big Brother Database
+(setq bbdb-file
+      (if (eq system-type 'windows-nt)
+	  "//cernobog/toki/.bbdb"
+	"~/.bbdb"))
+
+; Switch mobiling
+(setq hellboy-mobiling nil)
+(defun hellboy-switch-mobiling ()
+  (interactive)
+  (if (not hellboy-mobiling)
+      (progn
+	(setq hellboy-mobiling-backup:navi2ch-directory navi2ch-directory)
+	(setq navi2ch-directory (expand-file-name "~/.navi2ch"))
+	(setq hellboy-mobiling-backup:navi2ch-net-http-proxy navi2ch-net-http-proxy)
+	(setq navi2ch-net-http-proxy nil)
+	(setq hellboy-mobiling-backup:bbdb-file bbdb-file)
+	(setq bbdb-file (expand-file-name "~/.bbdb"))
+	(message "hellboy: now mobiling"))
+    (setq navi2ch-directory hellboy-mobiling-backup:navi2ch-directory)
+    (setq navi2ch-net-http-proxy hellboy-mobiling-backup:navi2ch-net-http-proxy)
+    (setq bbdb-file hellboy-mobiling-backup:bbdb-file)
+    (message "hellboy: not mobiling"))
+  (setq hellboy-mobiling (not hellboy-mobiling)))
+
+; mini buffer
+(if (eq emacs-major-version 21)
+    (setq resize-mini-windows nil))
+
+; for compile
+(eval-after-load "compile"
+  '(setq compilation-error-regexp-alist
+	 (append '(;; Ruby
+		   ;; backtrace of Test::Unit
+		   ("[ \t]*\\[?\\([^ \t\n]+\\):\\([0-9]+\\)\\(:in\\|$\\)" 1 2)
+		   ("[ \t]*from \\([^ \t\n]+\\):\\([0-9]+\\)\\(:in\\|$\\)" 1 2))
+		 compilation-error-regexp-alist)))
+
+; for JavaScript
+(autoload 'ecmascript-mode "ecmascript-mode"
+  "Major mode for editing ECMAScript code." t)
+(setq auto-mode-alist
+      (append '(("\\.js$" . ecmascript-mode)) auto-mode-alist))
+
+; for dired
+(add-hook 'dired-load-hook
+	  (lambda ()
+	    (define-key dired-mode-map "W" 'browse-url-of-dired-file)))
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
-
+(put 'set-goal-column 'disabled nil)
