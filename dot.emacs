@@ -855,6 +855,10 @@ and source-file directory for your debugger." t)
 	  (lambda ()
 	    (define-key dired-mode-map "W" 'browse-url-of-dired-file)))
 
+; for subversion
+(require 'psvn)
+(add-to-list 'vc-handled-backends 'SVN)
+
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
