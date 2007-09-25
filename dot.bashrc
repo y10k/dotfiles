@@ -18,7 +18,7 @@ if [ -t 0 ]; then
 fi
 
 # Locale
-#export LANG=ja_JP.eucJP
+export LANG=ja_JP.eucJP
 export LC_TIME=C
 
 # Editor and Pager
