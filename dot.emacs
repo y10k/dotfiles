@@ -198,6 +198,14 @@
 
 ; User key bindings
 (load "term/bobcat")
+(when (fboundp 'terminal-init-bobcat)
+  (terminal-init-bobcat))
+(if (boundp 'minibuffer-local-filename-completion-map)
+    (progn
+      (define-key minibuffer-local-filename-completion-map " "
+	'minibuffer-complete-word)
+      (define-key minibuffer-local-must-match-filename-map " "
+	'minibuffer-complete-word)))
 (global-set-key "\C-\\" 'help-command)
 (global-set-key "\C-\\\C-\\" 'help-for-help)
 (global-set-key "\M-g" 'goto-line)
@@ -485,34 +493,34 @@
 		 (format "%s <%s>" handle id))
 		(t id))))))
 
-; X-Face
-(cond ((featurep 'xemacs)
-       ;; settings for XEmacs.
-       )
-      ((= 21 emacs-major-version)
-       ;;
-       ;; You may have no need to use the following one line if you
-       ;; always use T-gnus 6.14.5 revision 07 and later.
-       (autoload 'x-face-decode-message-header "x-face-e21")
-       ;;
-       (autoload 'x-face-insert "x-face-e21" nil t)
-       (autoload 'x-face-save "x-face-e21" nil t)
-       (autoload 'x-face-show "x-face-e21" nil t)
-       (autoload 'x-face-turn-off "x-face-e21")
-       ;;
-       ;; Show X-Face images when `x-face-insert' is done.
-       (setq x-face-auto-image t)
-       ;;
-       ;; If you show X-Face images in the message sending buffer,
-       ;; it is STRONGLY recommended that you remove images from the
-       ;; buffer before sending a message.  However, it seems not to
-       ;; be required for Gnusae so far.  The following lines are for
-       ;; SEMI and Mew.  The latter can be put into .mew file instead.
-       (add-hook 'mime-edit-translate-hook 'x-face-turn-off)
-       (add-hook 'mew-make-message-hook 'x-face-turn-off))
-      (t
-       ;; settings for the other Emacsen.
-       ))
+;; ; X-Face
+;; (cond ((featurep 'xemacs)
+;;        ;; settings for XEmacs.
+;;        )
+;;       ((= 21 emacs-major-version)
+;;        ;;
+;;        ;; You may have no need to use the following one line if you
+;;        ;; always use T-gnus 6.14.5 revision 07 and later.
+;;        (autoload 'x-face-decode-message-header "x-face-e21")
+;;        ;;
+;;        (autoload 'x-face-insert "x-face-e21" nil t)
+;;        (autoload 'x-face-save "x-face-e21" nil t)
+;;        (autoload 'x-face-show "x-face-e21" nil t)
+;;        (autoload 'x-face-turn-off "x-face-e21")
+;;        ;;
+;;        ;; Show X-Face images when `x-face-insert' is done.
+;;        (setq x-face-auto-image t)
+;;        ;;
+;;        ;; If you show X-Face images in the message sending buffer,
+;;        ;; it is STRONGLY recommended that you remove images from the
+;;        ;; buffer before sending a message.  However, it seems not to
+;;        ;; be required for Gnusae so far.  The following lines are for
+;;        ;; SEMI and Mew.  The latter can be put into .mew file instead.
+;;        (add-hook 'mime-edit-translate-hook 'x-face-turn-off)
+;;        (add-hook 'mew-make-message-hook 'x-face-turn-off))
+;;       (t
+;;        ;; settings for the other Emacsen.
+;;        ))
 
 ; Ruby mode
 (autoload 'ruby-mode "ruby-mode"
