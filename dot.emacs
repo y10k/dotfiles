@@ -1,6 +1,9 @@
 ; -*- mode: Emacs-Lisp;-*-
 ; $Id$
 
+; HOME directory
+(cd (expand-file-name "~"))
+
 ; Personal information
 (setq user-mail-address "toki@freedom.ne.jp")
 (setq user-full-name "TOKI Yoshinori")
@@ -792,12 +795,13 @@ and source-file directory for your debugger." t)
 (if (eq emacs-major-version 21)
     (mouse-wheel-mode 1))
 
-;; ; Navi2ch
-;; (require 'navi2ch)
+; Navi2ch
+(require 'navi2ch)
 ;; (setq navi2ch-net-http-proxy "proxy.plutonia.ne.jp:8080")
 ;; (setq navi2ch-list-bbstable-url "http://www6.ocn.ne.jp/~mirv/2chmenu.html")
-;; (if (eq system-type 'windows-nt)
-;;     (setq navi2ch-directory "//cernobog/toki/.navi2ch"))
+(setq navi2ch-list-bbstable-url "http://menu.2ch.net/bbsmenu.html")
+(if (eq system-type 'windows-nt)
+    (setq navi2ch-directory "//cernobog/toki/.navi2ch"))
 
 ; HOME directory
 (if (eq system-type 'windows-nt)
