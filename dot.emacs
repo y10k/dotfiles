@@ -849,12 +849,16 @@ and source-file directory for your debugger." t)
 
 ; for compile
 (eval-after-load "compile"
-  '(setq compilation-error-regexp-alist
-	 (append '(;; Ruby
-		   ;; backtrace of Test::Unit
-		   ("[ \t]*\\[?\\([^ \t\n]+\\):\\([0-9]+\\)\\(:in\\|$\\)" 1 2)
-		   ("[ \t]*from \\([^ \t\n]+\\):\\([0-9]+\\)\\(:in\\|$\\)" 1 2))
-		 compilation-error-regexp-alist)))
+  '(progn
+     (setq compilation-error-regexp-alist-alist
+	   (append compilation-error-regexp-alist-alist
+		   '((ruby-1
+		      "[ \t]*\\[?\\([^ \t\n]+\\):\\([0-9]+\\)\\(:in\\|$\\)" 1 2)
+		     (ruby-2
+		      "[ \t]*from \\([^ \t\n]+\\):\\([0-9]+\\)\\(:in\\|$\\)" 1 2))))
+     (setq compilation-error-regexp-alist
+	   (append compilation-error-regexp-alist
+		   '(ruby-1 ruby-2)))))
 
 ; for JavaScript
 (autoload 'ecmascript-mode "ecmascript-mode"
