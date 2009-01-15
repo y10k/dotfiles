@@ -878,6 +878,12 @@ and source-file directory for your debugger." t)
 ; for python
 (setq python-indent 2)
 
+; for VBScript
+(autoload 'visual-basic-mode "visual-basic-mode" "Visual Basic mode." t)
+(setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vbs\\)$" . 
+				 visual-basic-mode)) auto-mode-alist))
+(setq visual-basic-mode-indent 2)
+
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
