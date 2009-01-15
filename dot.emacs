@@ -729,11 +729,6 @@ and source-file directory for your debugger." t)
 		       (title "JGENE")
 		       (strategy direct)))))
 
-; Mew
-(autoload 'mew "mew" nil t)
-(autoload 'mew-send "mew" nil t)
-(setq mew-mail-domain-list '("mail.freedom.ne.jp"))
-
 ; Use unzip on zip mode
 (setq archive-zip-use-pkzip nil)
 
@@ -788,11 +783,11 @@ and source-file directory for your debugger." t)
 
 ; disable Tool Bar
 ; Xresource => Emacs.toolBar: 0
-(if (eq emacs-major-version 21)
+(if (>= emacs-major-version 21)
     (tool-bar-mode 0))
 
 ; Mouse Wheel mode
-(if (eq emacs-major-version 21)
+(if (>= emacs-major-version 21)
     (mouse-wheel-mode 1))
 
 ; Navi2ch
