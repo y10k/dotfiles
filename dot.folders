@@ -10,7 +10,7 @@
 	%INBOX:yr10ki@gmail.com/clear@imap.gmail.com:993!	"受信箱@Gmail"
 #	&toki/apop@babayaga.plutonian.ne.jp	"受信箱@ホームサーバ(BABAYAGA)"
 #	&toki/apop@cernobog.plutonian.ne.jp	"受信箱@ホームサーバ(CERNOBOG)"
-#	&toki@mail.freedom.ne.jp		"受信箱@フリーダム"
+	&toki@mail.freedom.ne.jp		"受信箱@フリーダム"
 	&ey05qykf@mx.edit.ne.jp			"受信箱@EditNet"
 #	&toki/apop@sv01.phys.sci.kobe-u.ac.jp	"受信箱@神戸HEP"
 	&toki@babayaga:20110			"貯蔵庫"
