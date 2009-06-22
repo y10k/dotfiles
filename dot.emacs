@@ -879,6 +879,12 @@ and source-file directory for your debugger." t)
 				 visual-basic-mode)) auto-mode-alist))
 (setq visual-basic-mode-indent 2)
 
+; for git
+(require 'git)
+(autoload 'git-blame-mode "git-blame"
+  "Minor mode for incremental blame for Git." t)
+(add-to-list 'vc-handled-backends 'GIT)
+
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
