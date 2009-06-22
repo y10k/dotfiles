@@ -72,7 +72,7 @@ export PATH=$PATH:$GEM_HOME/bin
 # done
 export JAVA_HOME=/usr/local/jdk1.6.0_06
 export PATH="$JAVA_HOME/bin:$PATH"
-export JRUBY_HOME=$HOME/ruby/jruby-1.1.3
+export JRUBY_HOME=$HOME/ruby/jruby-1.2.0
 export PATH="$PATH:$JRUBY_HOME/bin"
 
 # HOME PAGE
