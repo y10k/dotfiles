@@ -33,6 +33,7 @@
 ;;  - working with revisions other than HEAD
 ;;
 
+(require 'git)
 (eval-when-compile (require 'cl))
 
 (defvar git-commits-coding-system 'utf-8
@@ -43,7 +44,7 @@
   (let* ((ok t)
          (str (with-output-to-string
                 (with-current-buffer standard-output
-                  (unless (eq 0 (apply #'call-process "git" nil '(t nil) nil
+                  (unless (eq 0 (apply #'call-process git-cmd nil '(t nil) nil
                                        (append args (list (file-relative-name file)))))
                     (setq ok nil))))))
     (and ok str)))
@@ -51,7 +52,7 @@
 (defun vc-git--run-command (file &rest args)
   "Run a git command on FILE, discarding any output."
   (let ((name (file-relative-name file)))
-    (eq 0 (apply #'call-process "git" nil (get-buffer "*Messages") nil (append args (list name))))))
+    (eq 0 (apply #'call-process git-cmd nil (get-buffer "*Messages") nil (append args (list name))))))
 
 (defun vc-git-registered (file)
   "Check whether FILE is registered with git."
@@ -60,7 +61,7 @@
            (name (file-relative-name file dir)))
       (and (ignore-errors
              (when dir (cd dir))
-             (eq 0 (call-process "git" nil '(t nil) nil "ls-files" "-c" "-z" "--" name)))
+             (eq 0 (call-process git-cmd nil '(t nil) nil "ls-files" "-c" "-z" "--" name)))
            (let ((str (buffer-string)))
              (and (> (length str) (length name))
                   (string= (substring str 0 (1+ (length name))) (concat name "\0"))))))))
@@ -76,7 +77,7 @@
   "git-specific version of `vc-workfile-version'."
   (let ((str (with-output-to-string
                (with-current-buffer standard-output
-                 (call-process "git" nil '(t nil) nil "symbolic-ref" "HEAD")))))
+                 (call-process git-cmd nil '(t nil) nil "symbolic-ref" "HEAD")))))
     (if (string-match "^\\(refs/heads/\\)?\\(.+\\)$" str)
         (match-string 2 str)
       str)))
@@ -88,7 +89,7 @@ Returns nil if not possible."
        (with-temp-buffer
 	 (and
 	  (zerop
-	   (call-process "git" nil '(t nil) nil "name-rev"
+	   (call-process git-cmd nil '(t nil) nil "name-rev"
 			 "--name-only" "--tags"
 			 commit))
 	  (goto-char (point-min))
@@ -104,7 +105,7 @@ Returns nil if not possible."
      (with-temp-buffer
        (and
 	(zerop
-	 (call-process "git" nil '(t nil) nil "rev-list"
+	 (call-process git-cmd nil '(t nil) nil "rev-list"
 		       "-2" rev "--" file))
 	(goto-char (point-max))
 	(bolp)
@@ -123,7 +124,7 @@ Returns nil if not possible."
 	 (with-temp-buffer
 	   (and
 	    (zerop
-	     (call-process "git" nil '(t nil) nil "rev-list"
+	     (call-process git-cmd nil '(t nil) nil "rev-list"
 			   "-1" rev "--" file))
 	    (goto-char (point-max))
 	    (bolp)
@@ -137,7 +138,7 @@ Returns nil if not possible."
 	  (with-temp-buffer
 	    (and
 	     (zerop
-	      (call-process "git" nil '(t nil) nil "rev-list"
+	      (call-process git-cmd nil '(t nil) nil "rev-list"
 			    "HEAD" "--" file))
 	     (goto-char (point-min))
 	     (search-forward current-rev nil t)
@@ -169,14 +170,14 @@ Returns nil if not possible."
 (defun vc-git-print-log (file &optional buffer)
   (let ((name (file-relative-name file))
         (coding-system-for-read git-commits-coding-system))
-    (vc-do-command buffer 'async "git" name "rev-list" "--pretty" "HEAD" "--")))
+    (vc-do-command buffer 'async git-cmd name "rev-list" "--pretty" "HEAD" "--")))
 
 (defun vc-git-diff (file &optional rev1 rev2 buffer)
   (let ((name (file-relative-name file))
         (buf (or buffer "*vc-diff*")))
     (if (and rev1 rev2)
-        (vc-do-command buf 0 "git" name "diff-tree" "-p" rev1 rev2 "--")
-      (vc-do-command buf 0 "git" name "diff-index" "-p" (or rev1 "HEAD") "--"))
+        (vc-do-command buf 0 git-cmd name "diff-tree" "-p" rev1 rev2 "--")
+      (vc-do-command buf 0 git-cmd name "diff-index" "-p" (or rev1 "HEAD") "--"))
     ; git-diff-index doesn't set exit status like diff does
     (if (vc-git-workfile-unchanged-p file) 0 1)))
 
@@ -192,14 +193,14 @@ Returns nil if not possible."
             (coding-system-for-read 'no-conversion)
             (coding-system-for-write 'no-conversion))
         (with-temp-file destfile
-          (eq 0 (call-process "git" nil t nil "cat-file" "blob"
+          (eq 0 (call-process git-cmd nil t nil "cat-file" "blob"
                               (concat (or rev "HEAD") ":" fullname)))))
     (vc-git--run-command file "checkout" (or rev "HEAD"))))
 
 (defun vc-git-annotate-command (file buf &optional rev)
   ; FIXME: rev is ignored
   (let ((name (file-relative-name file)))
-    (call-process "git" nil buf nil "blame" name)))
+    (call-process git-cmd nil buf nil "blame" name)))
 
 (defun vc-git-annotate-time ()
   (and (re-search-forward "[0-9a-f]+ (.* \\([0-9]+\\)-\\([0-9]+\\)-\\([0-9]+\\) \\([0-9]+\\):\\([0-9]+\\):\\([0-9]+\\) \\([-+0-9]+\\) +[0-9]+)" nil t)

@@ -78,6 +78,7 @@
 ;;
 ;;; Code:
 
+(require 'git)
 (eval-when-compile (require 'cl))			      ; to use `push', `pop'
 
 
@@ -224,7 +225,7 @@ See also function `git-blame-mode'."
       (setq git-blame-proc
             (apply 'start-process
                    "git-blame" blame-buf
-                   "git" "blame"
+                   git-cmd "blame"
                    args))
       (with-current-buffer blame-buf
         (erase-buffer)
@@ -370,7 +371,7 @@ See also function `git-blame-mode'."
 
 (defun git-describe-commit (hash)
   (with-temp-buffer
-    (call-process "git" nil t nil
+    (call-process git-cmd nil t nil
                   "log" "-1" "--pretty=oneline"
                   hash)
     (buffer-substring (point-min) (1- (point-max)))))

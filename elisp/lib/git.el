@@ -112,6 +112,10 @@ if there is already one that displays the same directory."
   :group 'git
   :type 'boolean)
 
+(defcustom git-cmd "git"
+  "Git command."
+  :group 'git
+  :type 'string)
 
 (defface git-status-face
   '((((class color) (background light)) (:foreground "purple"))
@@ -188,8 +192,8 @@ if there is already one that displays the same directory."
   "Wrapper for call-process that sets environment strings."
   (if env
       (apply #'call-process "env" nil buffer nil
-             (append (git-get-env-strings env) (list "git") args))
-    (apply #'call-process "git" nil buffer nil args)))
+             (append (git-get-env-strings env) (list git-cmd) args))
+    (apply #'call-process git-cmd nil buffer nil args)))
 
 (defun git-call-process-env-string (env &rest args)
   "Wrapper for call-process that sets environment strings,
@@ -225,9 +229,9 @@ and returns the process output as a string."
   (unless (eq 0 (if env
                     (git-run-process-region
                      buffer start end "env"
-                     (append (git-get-env-strings env) (list "git") args))
+                     (append (git-get-env-strings env) (list git-cmd) args))
                   (git-run-process-region
-                   buffer start end "git" args)))
+                   buffer start end git-cmd args)))
     (error "Failed to run \"git %s\":\n%s" (mapconcat (lambda (x) x) args " ") (buffer-string))))
 
 (defun git-run-hook (hook env &rest args)
@@ -317,7 +321,7 @@ and returns the process output as a string."
   (let ((cdup (with-output-to-string
                 (with-current-buffer standard-output
                   (cd dir)
-                  (unless (eq 0 (call-process "git" nil t nil "rev-parse" "--show-cdup"))
+                  (unless (eq 0 (call-process git-cmd nil t nil "rev-parse" "--show-cdup"))
                     (error "cannot find top-level git tree for %s." dir))))))
     (expand-file-name (concat (file-name-as-directory dir)
                               (car (split-string cdup "\n"))))))
@@ -442,7 +446,7 @@ and returns the process output as a string."
 
 (defun git-empty-db-p ()
   "Check if the git db is empty (no commit done yet)."
-  (not (eq 0 (call-process "git" nil nil nil "rev-parse" "--verify" "HEAD"))))
+  (not (eq 0 (call-process git-cmd nil nil nil "rev-parse" "--verify" "HEAD"))))
 
 (defun git-get-merge-heads ()
   "Retrieve the merge heads from the MERGE_HEAD file if present."
