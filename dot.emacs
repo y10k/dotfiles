@@ -189,7 +189,8 @@
 (global-set-key "\C-x\C-f" 'select-find-file)
 
 ; Buffer switching
-(global-set-key "\C-x\C-b" 'electric-buffer-list)
+(iswitchb-mode t)
+(global-set-key "\C-x\C-b" 'ibuffer)
 (defadvice switch-to-buffer (before strict-buffer-name activate)
   (interactive (list (read-buffer "Switch to buffer: " (other-buffer) t))))
 (defadvice switch-to-buffer-other-window (before strict-buffer-name activate)
