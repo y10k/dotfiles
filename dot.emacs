@@ -106,86 +106,28 @@
  :group 'log-view)
 (global-font-lock-mode t)
 
-; Window system dependent
-(cond
- ((or window-system
-      (string-match "color" (getenv "TERM"))
-      (string-match "xterm" (getenv "TERM"))
-      (string-match "kterm" (getenv "TERM")))
-  ; Window system specific
-  (cond
-   ((and (eq window-system 'w32)
-	 (featurep 'meadow))
-    (cond
-     ; for Meadow2
-     ((string-match "Meadow-2\.00" (Meadow-version))
-      (w32-add-font
-       "w32font16"
-       '((spec
-	  ((:char-spec ascii :height any)
-	   strict
-	   (w32-logfont "Lucida Console" 8 16 400 0 nil nil nil 0 1 3 49))
-	  ((:char-spec ascii :height any :weight bold)
-	   strict
-	   (w32-logfont "Lucida Console" 7 16 700 0 nil nil nil 0 1 3 49))
-	  ((:char-spec ascii :height any :slant italic)
-	   strict
-	   (w32-logfont "Lucida Console" 8 16 400 0   t nil nil 0 1 3 49))
-	  ((:char-spec ascii :height any :weight bold :slant italic)
-	   strict
-	   (w32-logfont "Lucida Console" 7 16 700 0   t nil nil 0 1 3 49))
-	  ((:char-spec japanese-jisx0208 :height any)
-	   strict
-	   (w32-logfont "ＭＳ ゴシック" 0 16 400 0 nil nil nil 128 1 3 49))
-	  ((:char-spec japanese-jisx0208 :height any :weight bold)
-	   strict
-	   (w32-logfont "ＭＳ ゴシック" 0 16 700 0 nil nil nil 128 1 3 49)
-	   ((spacing . -1)))
-	  ((:char-spec japanese-jisx0208 :height any :slant italic)
-	   strict
-	   (w32-logfont "ＭＳ ゴシック" 0 16 400 0   t nil nil 128 1 3 49))
-	  ((:char-spec japanese-jisx0208 :height any :weight bold :slant italic)
-	   strict
-	   (w32-logfont "ＭＳ ゴシック" 0 16 700 0   t nil nil 128 1 3 49)
-	   ((spacing . -1))))))
-      (set-face-attribute 'variable-pitch nil :font "w32font16"))
-     ; for compatible of Meadow1
-     (t
-      (create-fontset-from-request
-       "w32font16"
-       '((width . 8)
-	 (height . 16)
-	 (fixed . t)
-	 (italic . nil))
-       '(;(family . "Courier New")
-	 (family . "Lucida Console")
-	 (family . "ＭＳ ゴシック")))))
-
-    ; Frame
-    (setq initial-frame-alist
-	  '((width . 100)
-	    (height . 42)
-	    (cursor-color . "Navy")
-	    (foreground-color . "Black")
-	    (background-color . "OldLace")
-	    (font . "w32font16")))
-    (if (string-match "^[Vv][Aa][Rr][Cc][Oo][Ll][Aa][Cc]" (system-name))
-	(progn
-	  (setcdr (assq 'width initial-frame-alist) 120)
-	  (setcdr (assq 'height initial-frame-alist) 56)))
-    (setq default-frame-alist initial-frame-alist)))))
+; for Meadow at MS-Windows
+(if (eq window-system 'w32)
+    (progn
+      (setq initial-frame-alist
+	    '((width . 100)
+	      (height . 42)
+	      (cursor-color . "Navy")
+	      (foreground-color . "Black")
+	      (background-color . "OldLace")
+	      (alpha . (90 70 70 70))))
+      (cond
+       ((string-match "^varcolac" (downcase (system-name)))
+	(setcdr (assq 'width initial-frame-alist) 120)
+	(setcdr (assq 'height initial-frame-alist) 56))
+       ((string-match "^cherry-blossom" (downcase (system-name)))
+	(setcdr (assq 'width initial-frame-alist) 110)
+	(setcdr (assq 'height initial-frame-alist) 50)))
+      (setq default-frame-alist initial-frame-alist)))
 
 ; Shell mode
 (setq comint-scroll-show-maximum-output t)
 (setq comint-scroll-to-bottom-on-output t)
-(cond
- ((eq system-type 'windows-nt)
-  (setq shell-file-name "bash")
-  (setq explicit-shell-file-name "bash")
-  (add-hook 'shell-mode-hook
-	    (lambda ()
-	      (add-hook 'comint-output-filter-functions
-			'comint-strip-ctrl-m)))))
 
 ; Info directories
 (setq Info-default-directory-list
@@ -496,35 +438,6 @@
 		 (format "%s <%s>" handle id))
 		(t id))))))
 
-;; ; X-Face
-;; (cond ((featurep 'xemacs)
-;;        ;; settings for XEmacs.
-;;        )
-;;       ((= 21 emacs-major-version)
-;;        ;;
-;;        ;; You may have no need to use the following one line if you
-;;        ;; always use T-gnus 6.14.5 revision 07 and later.
-;;        (autoload 'x-face-decode-message-header "x-face-e21")
-;;        ;;
-;;        (autoload 'x-face-insert "x-face-e21" nil t)
-;;        (autoload 'x-face-save "x-face-e21" nil t)
-;;        (autoload 'x-face-show "x-face-e21" nil t)
-;;        (autoload 'x-face-turn-off "x-face-e21")
-;;        ;;
-;;        ;; Show X-Face images when `x-face-insert' is done.
-;;        (setq x-face-auto-image t)
-;;        ;;
-;;        ;; If you show X-Face images in the message sending buffer,
-;;        ;; it is STRONGLY recommended that you remove images from the
-;;        ;; buffer before sending a message.  However, it seems not to
-;;        ;; be required for Gnusae so far.  The following lines are for
-;;        ;; SEMI and Mew.  The latter can be put into .mew file instead.
-;;        (add-hook 'mime-edit-translate-hook 'x-face-turn-off)
-;;        (add-hook 'mew-make-message-hook 'x-face-turn-off))
-;;       (t
-;;        ;; settings for the other Emacsen.
-;;        ))
-
 ; Ruby mode
 (autoload 'ruby-mode "ruby-mode"
   "mode for editing ruby source files" t)
@@ -570,28 +483,6 @@ and source-file directory for your debugger." t)
 
 ; Comparing files
 (setq diff-switches "-u")
-
-; ; Japanese elisp info
-; (autoload 'elisp-info-describe-function "elisp-info"
-;   "alternative describe-function" t nil)
-; (autoload 'elisp-info-describe-variable "elisp-info"
-;   "alternative describe-variable" t nil)
-; (autoload 'elisp-info-lookup-index "elisp-info"
-;   "alternative index-info" t nil)
-; (eval-after-load
-;     "help.el"
-;   (progn
-;     (define-key help-map "f" 'elisp-info-describe-function)
-;     (define-key help-map "d" 'elisp-info-describe-function)
-;     (define-key help-map "d" 'describe-function)
-;     (define-key help-map "v" 'elisp-info-describe-variable)
-;     (define-key help-map "v" 'describe-variable)))
-; (add-hook
-;  'info-mode-hook
-;  (function
-;   (lambda ()
-;     (define-key info-mode-map "i" 'elisp-info-lookup-index)
-;     (define-key info-mode-map "i" 'info-index))))
 
 ; PAW - kumac-mode
 (autoload 'kumac-mode "kumac-mode" "mode for editing kumac files." t)
@@ -669,15 +560,6 @@ and source-file directory for your debugger." t)
      (and ad-return-value 
 	  (setq ad-return-value (eword-decode-string ad-return-value)))))
 
-;; ; SEMI
-;; (load "mime-setup")
-;; (setq mime-edit-split-message nil)
-
-;; ; Wanderlust
-;; (setq wl-plugged nil)			; OFFLINE mode
-;; (autoload 'wl "wl" "wanderlust" t)
-;; (autoload 'wl-draft "wl" "write draft with wanderlust." t)
-
 ; SKK
 (autoload 'skk-mode "skk" nil t)
 (autoload 'skk-auto-fill-mode "skk" nil t)
@@ -737,10 +619,6 @@ and source-file directory for your debugger." t)
       (cond
        ((eq system-type 'windows-nt) 'shift_jis-dos)
        (t 'euc-jp-unix)))
-(if (and (featurep 'meadow)
-	 (eq emacs-major-version 21))
-    (setq w3m-icon-directory "/usr/local/Meadow/2.00b2/etc/w3m/icons"))
-;(setq browse-url-browser-function 'w3m-browse-url)
 (setq browse-url-browser-function 'browse-url-mozilla)
 (setq mime-setup-enable-inline-html nil)
 (autoload 'w3m "w3m" "Interface for w3m on Emacs." t)
@@ -792,8 +670,6 @@ and source-file directory for your debugger." t)
 
 ; Navi2ch
 (require 'navi2ch)
-;; (setq navi2ch-net-http-proxy "proxy.plutonia.ne.jp:8080")
-;; (setq navi2ch-list-bbstable-url "http://www6.ocn.ne.jp/~mirv/2chmenu.html")
 (setq navi2ch-list-bbstable-url "http://menu.2ch.net/bbsmenu.html")
 (if (eq system-type 'windows-nt)
     (setq navi2ch-directory "//cernobog/toki/.navi2ch"))
@@ -818,25 +694,6 @@ and source-file directory for your debugger." t)
       (if (eq system-type 'windows-nt)
 	  "//cernobog/toki/.bbdb"
 	"~/.bbdb"))
-
-; Switch mobiling
-(setq hellboy-mobiling nil)
-(defun hellboy-switch-mobiling ()
-  (interactive)
-  (if (not hellboy-mobiling)
-      (progn
-	(setq hellboy-mobiling-backup:navi2ch-directory navi2ch-directory)
-	(setq navi2ch-directory (expand-file-name "~/.navi2ch"))
-	(setq hellboy-mobiling-backup:navi2ch-net-http-proxy navi2ch-net-http-proxy)
-	(setq navi2ch-net-http-proxy nil)
-	(setq hellboy-mobiling-backup:bbdb-file bbdb-file)
-	(setq bbdb-file (expand-file-name "~/.bbdb"))
-	(message "hellboy: now mobiling"))
-    (setq navi2ch-directory hellboy-mobiling-backup:navi2ch-directory)
-    (setq navi2ch-net-http-proxy hellboy-mobiling-backup:navi2ch-net-http-proxy)
-    (setq bbdb-file hellboy-mobiling-backup:bbdb-file)
-    (message "hellboy: not mobiling"))
-  (setq hellboy-mobiling (not hellboy-mobiling)))
 
 ; mini buffer
 (if (eq emacs-major-version 21)
@@ -884,6 +741,7 @@ and source-file directory for your debugger." t)
 (autoload 'git-blame-mode "git-blame"
   "Minor mode for incremental blame for Git." t)
 (add-to-list 'vc-handled-backends 'GIT)
+(if (eq system-type 'windows-nt) (setq git-cmd "git.exe"))
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
