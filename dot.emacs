@@ -570,8 +570,9 @@ and source-file directory for your debugger." t)
 (global-set-key "\C-xj" '(function skk-auto-fill-mode))
 (add-hook 'isearch-mode-hook (function skk-isearch-mode-setup))
 (add-hook 'isearch-mode-end-hook (function skk-isearch-mode-cleanup))
-(setq skk-large-jisyo
-      (expand-file-name "/usr/local/share/skk/SKK-JISYO.L"))
+(setq skk-large-jisyo "/usr/local/share/skk/SKK-JISYO.L")
+(if (eq system-type 'windows-nt)
+    (setq skk-large-jisyo (concat (getenv "SystemDrive") skk-large-jisyo)))
 (setq skk-rom-kana-rule-list
       '(("hh" "h"
 	 ("ッ" . "っ"))
