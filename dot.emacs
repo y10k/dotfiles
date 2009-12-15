@@ -27,8 +27,8 @@
   (set-default-coding-systems 'japanese-shift-jis)
   (set-terminal-coding-system 'japanese-shift-jis))
  (t
-  (set-default-coding-systems 'japanese-iso-8bit)
-  (set-terminal-coding-system 'japanese-iso-8bit)))
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)))
 
 ; Font lock mode
 (custom-declare-face
@@ -619,7 +619,7 @@ and source-file directory for your debugger." t)
 (setq w3m-coding-system
       (cond
        ((eq system-type 'windows-nt) 'shift_jis-dos)
-       (t 'euc-jp-unix)))
+       (t 'utf-8)))
 (setq browse-url-browser-function 'browse-url-mozilla)
 (setq mime-setup-enable-inline-html nil)
 (autoload 'w3m "w3m" "Interface for w3m on Emacs." t)
