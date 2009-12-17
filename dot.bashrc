@@ -54,8 +54,6 @@ export MASTER_SITE_OVERRIDE='ftp://ring.htcn.ne.jp/pub/FreeBSD/distfiles/${DIST_
 export RUBY_HOME=$HOME/ruby
 export RUBYLIB=$RUBY_HOME/lib:$RUBY_HOME/lib/i386-freebsd
 export RUBYOPT=rubygems
-export GEM_HOME=$HOME/rubygems
-export PATH=$PATH:$GEM_HOME/bin
 
 # Java
 # export JDK_HOME=/usr/local/java
