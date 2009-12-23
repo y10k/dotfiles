@@ -51,8 +51,6 @@ export CVS_RSH=ssh
 export MASTER_SITE_OVERRIDE='ftp://ring.htcn.ne.jp/pub/FreeBSD/distfiles/${DIST_SUBDIR}/'
 
 # Ruby
-export RUBY_HOME=$HOME/ruby
-export RUBYLIB=$RUBY_HOME/lib:$RUBY_HOME/lib/i386-freebsd
 export RUBYOPT=rubygems
 
 # Java
