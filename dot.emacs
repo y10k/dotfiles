@@ -1,5 +1,4 @@
 ; -*- mode: Emacs-Lisp;-*-
-; $Id$
 
 ; HOME directory
 (cd (expand-file-name "~"))
@@ -15,11 +14,9 @@
 		    (expand-file-name "~/elisp/lib"))
 	      load-path))
 
-; UFT-8
-;(require 'un-define)
-;(require 'jisx0213)
-
 ; Japanese environment
+(require 'un-define)
+(require 'jisx0213)
 (set-language-environment 'Japanese)
 (cond
  ; Coding sytem
@@ -477,11 +474,6 @@ and source-file directory for your debugger." t)
 		("\\.rd\\.[A-Za-z]*$" . rd-mode))
 	      auto-mode-alist))
 
-; Man
-(if (and (string-match "freebsd" system-configuration)
-	 (string-match "ja" (getenv "LANG")))
-    (setq manual-program "jman"))
-
 ; Comparing files
 (setq diff-switches "-u")
 
@@ -570,7 +562,7 @@ and source-file directory for your debugger." t)
 (global-set-key "\C-xj" '(function skk-auto-fill-mode))
 (add-hook 'isearch-mode-hook (function skk-isearch-mode-setup))
 (add-hook 'isearch-mode-end-hook (function skk-isearch-mode-cleanup))
-(setq skk-large-jisyo "/usr/local/share/skk/SKK-JISYO.L")
+(setq skk-large-jisyo "/usr/share/skk/SKK-JISYO.L")
 (if (eq system-type 'windows-nt)
     (setq skk-large-jisyo (concat (getenv "SystemDrive") skk-large-jisyo)))
 (setq skk-rom-kana-rule-list
