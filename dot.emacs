@@ -15,8 +15,6 @@
 	      load-path))
 
 ; Japanese environment
-(require 'un-define)
-(require 'jisx0213)
 (set-language-environment 'Japanese)
 (cond
  ; Coding sytem
