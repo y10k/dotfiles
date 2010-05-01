@@ -101,6 +101,19 @@
  :group 'log-view)
 (global-font-lock-mode t)
 
+; alpha
+(if (and (eq window-system 'x)
+	 (>= emacs-major-version 23))
+    (progn
+      (setq initial-frame-alist
+	    '((width . 100)
+	      (height . 42)
+	      (cursor-color . "Green")
+	      (foreground-color . "White")
+	      (background-color . "Black")
+	      (alpha . (75 50 50 50))))
+      (setq default-frame-alist initial-frame-alist)))
+
 ; for Meadow at MS-Windows
 (if (eq window-system 'w32)
     (progn
