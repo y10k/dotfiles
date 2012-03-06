@@ -31,7 +31,7 @@ case "$EMACS" in
 esac
 
 # LV
-export LV="-d -Ia -Ku8 -Ou8"
+export LV="-c -d -Ia -Ku8 -Ou8"
 
 # FTP
 export FTP_PASSIVE_MODE=YES
