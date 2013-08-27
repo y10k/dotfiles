@@ -729,8 +729,8 @@ and source-file directory for your debugger." t)
 	    (define-key dired-mode-map "W" 'browse-url-of-dired-file)))
 
 ; for subversion
-(require 'psvn)
-(add-to-list 'vc-handled-backends 'SVN)
+;(require 'psvn)
+;(add-to-list 'vc-handled-backends 'SVN)
 
 ; for python
 (setq python-indent 2)

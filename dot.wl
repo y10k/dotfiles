@@ -5,6 +5,17 @@
 ;;; Wanderlust
 ;;;
 
+; SSL
+(setq ssl-program-name "openssl")
+(setq ssl-program-arguments
+  '("s_client"
+    "-quiet"
+    "-host" host
+    "-port" service
+    "-verify" (int-to-string ssl-certificate-verification-policy)
+    "-CApath" ssl-certificate-directory
+    ))
+
 ; Win32 HOME network settings
 (cond
  ((and (eq window-system 'w32)
