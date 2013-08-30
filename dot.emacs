@@ -106,7 +106,7 @@
 	 (>= emacs-major-version 23))
     (progn
       (setq initial-frame-alist
-	    '((width . 100)
+	    '((width . 135)
 	      (height . 42)
 	      (cursor-color . "Green")
 	      (foreground-color . "White")
@@ -748,7 +748,16 @@ and source-file directory for your debugger." t)
 (add-to-list 'vc-handled-backends 'GIT)
 (if (eq system-type 'windows-nt) (setq git-cmd "git.exe"))
 
+; Window
+(setq split-width-threshold 300)
+
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "Black" :foreground "White" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
