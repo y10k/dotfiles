@@ -639,17 +639,6 @@ and source-file directory for your debugger." t)
 		    '("-header" "Pragma: no-cache"
 		      "-header" "Cache-Control: no-cache"))))
        ad-do-it)))
-(eval-after-load "mime-view"
-  '(progn
-     (autoload 'mime-w3m-preview-text/html "mime-w3m")
-     (ctree-set-calist-strictly
-      'mime-preview-condition
-      '((type . text)
-        (subtype . html)
-        (body . visible)
-        (body-presentation-method . mime-w3m-preview-text/html)))
-     (set-alist 'mime-view-type-subtype-score-alist
-                '(text . html) 3)))
 (global-set-key "\C-xm" 'browse-url-at-point)
 (setq shimbun-asahi-url "http://www.asahi.com/")
 (setq shimbun-asahi-html-url "http://www.asahi.com/")
@@ -755,6 +744,10 @@ and source-file directory for your debugger." t)
 
 ; Window
 (setq split-width-threshold 300)
+
+; no menu in CUI
+(if (not window-system)
+    (menu-bar-mode 0))
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
