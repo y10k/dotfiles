@@ -38,10 +38,13 @@
 (setq elmo-imap4-default-authenticate-type 'cram-md5)
 (setq elmo-nntp-default-server "news.edit.ne.jp")
 (setq wl-smtp-posting-server "mail.freedom.ne.jp")
-(setq wl-draft-send-mail-function 'wl-draft-send-mail-with-pop-before-smtp)
+(setq wl-smtp-posting-port 587)
+(setq wl-smtp-posting-user "toki")
+(setq wl-smtp-authenticate-type "plain")
 
 ; Local Domain
-(setq wl-local-domain "plutonia.ne.jp")
+(setq wl-local-domain "wl-message-id-domain")
+(setq wl-message-id-domain "toki@freedom.ne.jp")
 
 ; Offline mode
 (setq wl-plugged nil)
