@@ -46,7 +46,8 @@
                (if ruby-debug-option-p
                    (ruby-minitest-get-command-string-with-ruby-options test-file-name test-method-name "-d")
                  (ruby-minitest-get-command-string test-file-name test-method-name))))
-          (compile command-string)))))
+          (compile command-string))
+      (message "Not found a Ruby MiniTest method here."))))
 
 ; Local Variables:
 ; mode: Emacs-Lisp
