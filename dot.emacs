@@ -450,9 +450,12 @@
 ; Ruby mode
 (autoload 'ruby-mode "ruby-mode"
   "mode for editing ruby source files" t)
+(autoload 'ruby-minitest-run-test-method "ruby-minitest"
+  "run test method of Ruby MiniTest at compilation mode." t)
 (add-hook 'ruby-mode-hook
 	  (lambda ()
-	    (define-key ruby-mode-map "\C-cc" 'compile)))
+	    (define-key ruby-mode-map "\C-cc" 'compile)
+	    (define-key ruby-mode-map "\C-c." 'ruby-minitest-run-test-method)))
 (setq auto-mode-alist
       (append '(("\\.rb$" . ruby-mode)
 		("\\.cgi$" . ruby-mode)) auto-mode-alist))
