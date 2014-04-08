@@ -39,15 +39,16 @@
 (defun ruby-minitest-run-test-method (ruby-debug-option-p)
   "run test method of Ruby MiniTest at compilation mode."
   (interactive "P")
-  (let ((test-file-name (ruby-minitest-get-test-file-name))
-        (test-method-name (ruby-minitest-get-test-method-name (ruby-minitest-get-line))))
-    (if (and test-file-name test-method-name)
-        (let ((command-string
-               (if ruby-debug-option-p
-                   (ruby-minitest-get-command-string-with-ruby-options test-file-name test-method-name "-d")
-                 (ruby-minitest-get-command-string test-file-name test-method-name))))
-          (compile command-string))
-      (message "Not found a Ruby MiniTest method here."))))
+  (save-excursion
+    (let ((test-file-name (ruby-minitest-get-test-file-name))
+          (test-method-name (ruby-minitest-get-test-method-name (ruby-minitest-get-line))))
+      (if (and test-file-name test-method-name)
+          (let ((command-string
+                 (if ruby-debug-option-p
+                     (ruby-minitest-get-command-string-with-ruby-options test-file-name test-method-name "-d")
+                   (ruby-minitest-get-command-string test-file-name test-method-name))))
+            (compile command-string))
+        (message "Not found a Ruby MiniTest method here.")))))
 
 ; Local Variables:
 ; mode: Emacs-Lisp
