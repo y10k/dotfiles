@@ -32,14 +32,21 @@
   "Ruby MiniTestを実行するコマンドを文字列で返す。"
   (concat "bundle exec ruby " test-file-name " -n" test-method-name))
 
-(defun ruby-minitest-run-test-method ()
+(defun ruby-minitest-get-command-string-with-ruby-options (test-file-name test-method-name ruby-options)
+  "Ruby MiniTestを実行するコマンドを文字列で返す。"
+  (concat "bundle exec ruby " ruby-options " " test-file-name " -n" test-method-name))
+
+(defun ruby-minitest-run-test-method (ruby-debug-option-p)
   "run test method of Ruby MiniTest at compilation mode."
-  (interactive)
+  (interactive "P")
   (let ((test-file-name (ruby-minitest-get-test-file-name))
         (test-method-name (ruby-minitest-get-test-method-name (ruby-minitest-get-line))))
     (if (and test-file-name test-method-name)
-        (compile (ruby-minitest-get-command-string test-file-name test-method-name)))
-    ))
+        (let ((command-string
+               (if ruby-debug-option-p
+                   (ruby-minitest-get-command-string-with-ruby-options test-file-name test-method-name "-d")
+                 (ruby-minitest-get-command-string test-file-name test-method-name))))
+          (compile command-string)))))
 
 ; Local Variables:
 ; mode: Emacs-Lisp
