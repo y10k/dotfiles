@@ -162,6 +162,7 @@
 (global-set-key "\C-\\" 'help-command)
 (global-set-key "\C-\\\C-\\" 'help-for-help)
 (global-set-key "\M-g" 'goto-line)
+(global-set-key "\C-h" 'delete-backward-char)
 
 ; Frame title
 (setq frame-title-format

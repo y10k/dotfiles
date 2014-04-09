@@ -11,7 +11,11 @@ umask 22
 
 # terminal settings
 if [ -t 0 ]; then
-  stty erase "^H" intr "^C" susp "^Z"
+  if [ -n "${TMUX}" ]; then
+    stty erase '^?' intr '^C' susp '^Z'
+  else
+    stty erase '^H' intr '^C' susp '^Z'
+  fi
 fi
 
 # Locale
