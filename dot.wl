@@ -97,16 +97,15 @@
 	(("X-ML-Name" "Reply-To") . (("Reply-To") nil nil))
 	("From" . (("From") ("To" "Cc") ("Newsgroups")))))
 (setq wl-draft-always-delete-myself t)
-(setq wl-draft-config-alist
-      '(("^To:.*ruby-talk@"
-	 ("From" . "Yoshinori Toki <toki@freedom.ne.jp>"))))
 (setq wl-template-alist
       '(("sig:japanese"
+	 ("From" . wl-from)
 	 (bottom .
 "-
 土岐 仁謙 (TOKI Yoshinori) <toki@freedom.ne.jp>
 "))
 	("sig:english"
+	 ("From" . "Yoshinori Toki <toki@freedom.ne.jp>")
 	 (bottom .
 "-
 Yoshinori Toki <toki@freedom.ne.jp>
