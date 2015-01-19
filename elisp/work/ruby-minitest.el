@@ -1,5 +1,8 @@
 ;;; ruby-minitest.el --- Emacs からコンパイルモードでMiniTestのテストケースを実行する。
 
+(defvar ruby-minitest-runner-options nil
+  "TestRunnerのオプションを設定する。")
+
 (defun ruby-minitest-get-test-file-name ()
   "カレントバッファで開いているテストファイルの名前を返す。"
   (let ((file-name (buffer-file-name)))
@@ -28,13 +31,13 @@
     (if (string-match "def[ \t]+\\(test_[A-Za-z0-9_]+\\??\\)" line)
         (match-string 1 line))))
 
-(defun ruby-minitest-get-command-string (test-file-name test-method-name)
+(defun ruby-minitest-get-command-string (test-file-name test-method-name &optional test-options ruby-options)
   "Ruby MiniTestを実行するコマンドを文字列で返す。"
-  (concat "bundle exec ruby " test-file-name " -n" test-method-name))
-
-(defun ruby-minitest-get-command-string-with-ruby-options (test-file-name test-method-name ruby-options)
-  "Ruby MiniTestを実行するコマンドを文字列で返す。"
-  (concat "bundle exec ruby " ruby-options " " test-file-name " -n" test-method-name))
+  (concat "bundle exec ruby "
+          (if ruby-options (concat ruby-options " ") "")
+          test-file-name
+          (if test-options (concat " " test-options) "")
+          " -n" test-method-name))
 
 (defun ruby-minitest-run-test-method (ruby-debug-option-p)
   "run test method of Ruby MiniTest at compilation mode."
@@ -45,8 +48,8 @@
       (if (and test-file-name test-method-name)
           (let ((command-string
                  (if ruby-debug-option-p
-                     (ruby-minitest-get-command-string-with-ruby-options test-file-name test-method-name "-d")
-                   (ruby-minitest-get-command-string test-file-name test-method-name))))
+                     (ruby-minitest-get-command-string test-file-name test-method-name ruby-minitest-runner-options "-d")
+                   (ruby-minitest-get-command-string test-file-name test-method-name ruby-minitest-runner-options))))
             (compile command-string))
         (message "Not found a Ruby MiniTest method here.")))))
 
