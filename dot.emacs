@@ -469,6 +469,7 @@
 		("\\.cgi$" . ruby-mode)) auto-mode-alist))
 (setq interpreter-mode-alist
       (append '(("ruby" . ruby-mode)) interpreter-mode-alist))
+(setq ruby-minitest-runner-options "--no-use-color") ; for test-unit on ruby-2.2.0 or later.
 
 ; Interactive ruby
 (autoload 'run-ruby "inf-ruby"
