@@ -118,7 +118,9 @@
 	      (cursor-color . "Green")
 	      (foreground-color . "White")
 	      (background-color . "Black")
-	      (alpha . (75 50 50 50))))
+	      (alpha . (75 50 50 50))
+	      (font . "DejaVu Sans Mono-15") ; for large display
+	      ))
       (setq default-frame-alist initial-frame-alist)))
 
 ; for Meadow at MS-Windows
