@@ -484,7 +484,9 @@
  'ruby-mode-hook
  (function
   (lambda ()
-    (inf-ruby-keys))))
+    (inf-ruby-keys)
+    (setq compile-command
+	 "bundle exec rake test TESTOPTS=--no-use-color"))))
 
 ; Ruby debugger
 (autoload 'rubydb "rubydb3x"
@@ -611,10 +613,10 @@ and source-file directory for your debugger." t)
 	 (setcar (cdr sdic-dictionary)
 		 (expand-file-name (cadr sdic-dictionary)))
 	 sdic-dictionary)
-       '((sdicf-client "/usr/local/share/dict/gene.sdic.gz"
+       '((sdicf-client "~/dict/gene.sdic.gz"
 		       (title "GENE")
 		       (strategy direct))
-	 (sdicf-client "/usr/local/share/dict/eedict.sdic.gz"
+	 (sdicf-client "~/dict/eedict.sdic.gz"
 		       (title "EEDICT")
 		       (strategy direct)))))
 (setq sdic-waei-dictionary-list
@@ -623,10 +625,10 @@ and source-file directory for your debugger." t)
 	 (setcar (cdr sdic-dictionary)
 		 (expand-file-name (cadr sdic-dictionary)))
 	 sdic-dictionary)
-       '((sdicf-client "/usr/local/share/dict/jedict.sdic.gz"
+       '((sdicf-client "~/dict/jedict.sdic.gz"
 		       (title "JEDICT")
 		       (strategy direct))
-	 (sdicf-client "/usr/local/share/dict/jgene.sdic.gz"
+	 (sdicf-client "~/dict/jgene.sdic.gz"
 		       (title "JGENE")
 		       (strategy direct)))))
 
@@ -676,11 +678,11 @@ and source-file directory for your debugger." t)
 (if (>= emacs-major-version 21)
     (mouse-wheel-mode 1))
 
-; Navi2ch
-(require 'navi2ch)
-(setq navi2ch-list-bbstable-url "http://menu.2ch.net/bbsmenu.html")
-(if (eq system-type 'windows-nt)
-    (setq navi2ch-directory "//cernobog/toki/.navi2ch"))
+;; ; Navi2ch
+;; (require 'navi2ch)
+;; (setq navi2ch-list-bbstable-url "http://menu.2ch.net/bbsmenu.html")
+;; (if (eq system-type 'windows-nt)
+;;     (setq navi2ch-directory "//cernobog/toki/.navi2ch"))
 
 ; HOME directory
 (if (eq system-type 'windows-nt)
