@@ -501,6 +501,12 @@ and source-file directory for your debugger." t)
 		("\\.rd\\.[A-Za-z]*$" . rd-mode))
 	      auto-mode-alist))
 
+; yari.el --- Yet Another RI interface for Emacs
+(autoload 'yari "yari" "Look up Ruby documentation." t)
+(add-hook 'ruby-mode-hook
+	  (lambda ()
+	    (define-key ruby-mode-map "\C-cp" 'yari)))
+
 ; Comparing files
 (setq diff-switches "-u")
 
