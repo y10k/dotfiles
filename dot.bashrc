@@ -93,6 +93,7 @@ if [ -n "$PS1" ]; then
   alias ll='ls -lA'
   alias diff='diff -u'
   alias ssh_wan='slogin -AX -L 192.168.56.101:3389:192.168.0.68:3389 218.219.149.23'
+  alias attach_ssh-agent='exec ssh-agent bash'
 
   case "$EMACS" in
   '')
