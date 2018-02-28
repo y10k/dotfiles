@@ -113,13 +113,14 @@
 	 (>= emacs-major-version 23))
     (progn
       (setq initial-frame-alist
-	    '((width . 135)
-	      (height . 42)
+	    '((width . 180)
+	      (height . 55)
 	      (cursor-color . "Green")
 	      (foreground-color . "White")
 	      (background-color . "Black")
 	      (alpha . (75 50 50 50))
-	      (font . "DejaVu Sans Mono-15") ; for large display
+	      (font . "Takaoゴシック-17")
+;	      (font . "DejaVu Sans Mono-15")
 	      ))
       (setq default-frame-alist initial-frame-alist)))
 
@@ -755,7 +756,7 @@ and source-file directory for your debugger." t)
 (setq visual-basic-mode-indent 2)
 
 ; for git
-(require 'git)
+;(require 'git)
 (autoload 'git-blame-mode "git-blame"
   "Minor mode for incremental blame for Git." t)
 (add-to-list 'vc-handled-backends 'GIT)
@@ -773,8 +774,14 @@ and source-file directory for your debugger." t)
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "Black" :foreground "White" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (yaml-mode markdown-mode))))
