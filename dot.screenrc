@@ -1,3 +1,4 @@
+setenv SCREEN_SESSION 1
 defencoding utf-8
 escape ^Tt
 defscrollback 10000

@@ -84,6 +84,19 @@ export PATH=$PATH:/usr/local/pgsql/bin
 export PGLIB=/usr/local/pgsql/lib
 export PGDATA=/usr/local/pgsql/data
 
+# ssh-agent forwarding in GNU Screen session
+saved_ssh_agent_sock="${HOME}/.ssh/agent_sock"
+if [ -n "${SCREEN_SESSION}" ]; then # add to .screenrc: setenv SCREEN_SESSION 1
+  if [ -S "${saved_ssh_agent_sock}" ]; then
+    export SSH_AUTH_SOCK="${saved_ssh_agent_sock}"
+  fi
+else
+  if [ -n "${SSH_AUTH_SOCK}" ] && [ -S "${SSH_AUTH_SOCK}" ] && [ ! -S "${saved_ssh_agent_sock}" ]; then
+    rm -f "${saved_ssh_agent_sock}"
+    ln -s "${SSH_AUTH_SOCK}" "${saved_ssh_agent_sock}"
+  fi
+fi
+
 if [ -n "$PS1" ]; then
   # Aliases
   alias h='history 25'
