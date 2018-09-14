@@ -52,9 +52,6 @@ export CVS_RSH=ssh
 # Ports site
 export MASTER_SITE_OVERRIDE='ftp://ring.htcn.ne.jp/pub/FreeBSD/distfiles/${DIST_SUBDIR}/'
 
-# Ruby
-export RUBYOPT=rubygems
-
 # Java
 # export JDK_HOME=/usr/local/java
 # export JAVA_HOME=$JDK_HOME
