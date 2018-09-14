@@ -543,6 +543,7 @@ and source-file directory for your debugger." t)
 
 ; Shell script mode
 (setq sh-indentation 2)
+(setq sh-basic-offset 2)
 
 ; Shell command completion
 (autoload 'shell-command-with-completion
