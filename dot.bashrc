@@ -82,28 +82,32 @@ export PGLIB=/usr/local/pgsql/lib
 export PGDATA=/usr/local/pgsql/data
 
 # ssh-agent forwarding in GNU Screen session
-saved_ssh_agent_sock="${HOME}/.ssh/agent_sock"
-saved_ssh_agent_env="${HOME}/.ssh/agent_sock_env.sh"
-ssh_agent_reload() {
-  . "${saved_ssh_agent_env}"
-}
-if [ -n "${SCREEN_SESSION}" ]; then # add to .screenrc: setenv SCREEN_SESSION 1
-  if [ -S "${saved_ssh_agent_sock}" ]; then
-    case "$(uname -r)" in
-      *Microsoft*)
-        # for WSL (symbolic link is not worked on unix domain socket)
-        ssh_agent_reload
-        ;;
-      *)
-        export SSH_AUTH_SOCK="${saved_ssh_agent_sock}"
-        ;;
-    esac
-  fi
-else
-  if [ -n "${SSH_AUTH_SOCK}" ] && [ -S "${SSH_AUTH_SOCK}" ]; then
-    rm -f "${saved_ssh_agent_sock}"
-    ln -s "${SSH_AUTH_SOCK}" "${saved_ssh_agent_sock}"
-    echo "export SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >"${saved_ssh_agent_env}" # for WSL
+if [ -n "$PS1" ]; then          # for interactive shell
+  saved_ssh_agent_sock="${HOME}/.ssh/agent_sock"
+  saved_ssh_agent_env="${HOME}/.ssh/agent_sock_env.sh"
+
+  ssh_agent_reload() {
+    . "${saved_ssh_agent_env}"
+  }
+
+  if [ -n "${SCREEN_SESSION}" ]; then # add to .screenrc: setenv SCREEN_SESSION 1
+    if [ -S "${saved_ssh_agent_sock}" ]; then
+      case "$(uname -r)" in
+        *Microsoft*)
+          # for WSL (symbolic link is not worked on unix domain socket)
+          ssh_agent_reload
+          ;;
+        *)
+          export SSH_AUTH_SOCK="${saved_ssh_agent_sock}"
+          ;;
+      esac
+    fi
+  else
+    if [ -n "${SSH_AUTH_SOCK}" ] && [ -S "${SSH_AUTH_SOCK}" ]; then
+      rm -f "${saved_ssh_agent_sock}"
+      ln -s "${SSH_AUTH_SOCK}" "${saved_ssh_agent_sock}"
+      echo "export SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >"${saved_ssh_agent_env}" # for WSL
+    fi
   fi
 fi
 
