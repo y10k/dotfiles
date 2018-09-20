@@ -107,6 +107,15 @@ else
   fi
 fi
 
+# Docker Toolbox for Windows
+case "$(uname -r)" in
+  *Microsoft*)
+    export DOCKER_HOST=tcp://192.168.99.100:2376
+    export DOCKER_CERT_PATH=/mnt/c/Users/toki/.docker/machine/certs
+    export DOCKER_TLS_VERIFY=1
+    ;;
+esac
+
 if [ -n "$PS1" ]; then
   # Aliases
   alias h='history 25'
