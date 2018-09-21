@@ -91,17 +91,19 @@ if [ -n "$PS1" ]; then          # for interactive shell
   }
 
   if [ -n "${SCREEN_SESSION}" ]; then # add to .screenrc: setenv SCREEN_SESSION 1
-    if [ -S "${saved_ssh_agent_sock}" ]; then
-      case "$(uname -r)" in
-        *Microsoft*)
-          # for WSL (symbolic link is not worked on unix domain socket)
+    case "$(uname -r)" in
+      *Microsoft*)
+        # for WSL (symbolic link is not worked on unix domain socket)
+        if [ -f "${saved_ssh_agent_env}" ]; then
           ssh_agent_reload
-          ;;
-        *)
+        fi
+        ;;
+      *)
+        if [ -S "${saved_ssh_agent_sock}" ]; then
           export SSH_AUTH_SOCK="${saved_ssh_agent_sock}"
-          ;;
-      esac
-    fi
+        fi
+        ;;
+    esac
   else
     if [ -n "${SSH_AUTH_SOCK}" ] && [ -S "${SSH_AUTH_SOCK}" ]; then
       rm -f "${saved_ssh_agent_sock}"
