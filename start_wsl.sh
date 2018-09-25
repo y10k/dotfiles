@@ -7,3 +7,6 @@ sudo service screen-cleanup start
 # not used Ubuntu 18.04 on Windows Subsystem for Linux
 #sudo sudo cgroupfs-mount
 #sudo service docker start
+
+# avoid ruby's segmentation fault on emacs. why?
+TERM=xterm screen
