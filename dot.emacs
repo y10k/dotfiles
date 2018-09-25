@@ -502,12 +502,6 @@ and source-file directory for your debugger." t)
 		("\\.rd\\.[A-Za-z]*$" . rd-mode))
 	      auto-mode-alist))
 
-; yari.el --- Yet Another RI interface for Emacs
-(autoload 'yari "yari" "Look up Ruby documentation." t)
-(add-hook 'ruby-mode-hook
-	  (lambda ()
-	    (define-key ruby-mode-map "\C-cp" 'yari)))
-
 ; Comparing files
 (setq diff-switches "-u")
 
@@ -785,4 +779,4 @@ and source-file directory for your debugger." t)
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (yaml-mode markdown-mode))))
+ '(package-selected-packages (quote (yari yaml-mode markdown-mode))))
