@@ -9,4 +9,4 @@ sudo service screen-cleanup start
 #sudo service docker start
 
 # avoid ruby's segmentation fault on emacs. why?
-TERM=xterm screen
+screen
