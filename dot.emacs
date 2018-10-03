@@ -495,11 +495,11 @@
 the directory containing file becomes the initial working directory
 and source-file directory for your debugger." t)
 
-; RD (ruby document) mode
-(autoload 'rd-mode "rd-mode" "major mode for ruby document formatter rd" t)
+; Major mode for RDoc editing
+(autoload 'rdoc-mode "rdoc-mode" "Major mode for RD editing." t)
 (setq auto-mode-alist
-      (append '(("\\.rd$" . rd-mode)
-		("\\.rd\\.[A-Za-z]*$" . rd-mode))
+      (append '(("\\.rd$" . rdoc-mode)
+		("\\.rd\\.[A-Za-z]*$" . rdoc-mode))
 	      auto-mode-alist))
 
 ; Comparing files
