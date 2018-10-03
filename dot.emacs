@@ -261,6 +261,14 @@
 (defun insert-timestamp ()
   (interactive)
   (insert (current-time-string)))
+(defun insert-current-date()
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d (%a)" (current-time))))
+(defun insert-current-time()
+  (interactive)
+  (insert (format-time-string "%H:%M:%S" (current-time))))
+(global-set-key "\C-c;" 'insert-current-date)
+(global-set-key "\C-c:" 'insert-current-time)
 
 ; HTML mode
 (setq auto-mode-alist
