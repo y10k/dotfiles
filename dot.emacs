@@ -787,4 +787,5 @@ and source-file directory for your debugger." t)
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ange-ftp-try-passive-mode t)
  '(package-selected-packages (quote (yari yaml-mode markdown-mode))))
