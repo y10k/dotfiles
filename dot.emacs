@@ -526,13 +526,13 @@
 (setq sh-indentation 2)
 (setq sh-basic-offset 2)
 
-; Shell command completion
-(autoload 'shell-command-with-completion
-      "shell-command" "alternate shell-command" t nil)
-(define-key global-map "\e!" 'shell-command-with-completion)
-(autoload 'shell-command-with-completion-on-region
-  "shell-command" "alternate shell-command-on-region" t nil)
-(define-key global-map "\e|" 'shell-command-with-completion-on-region)
+;; ; Shell command completion
+;; (autoload 'shell-command-with-completion
+;;       "shell-command" "alternate shell-command" t nil)
+;; (define-key global-map "\e!" 'shell-command-with-completion)
+;; (autoload 'shell-command-with-completion-on-region
+;;   "shell-command" "alternate shell-command-on-region" t nil)
+;; (define-key global-map "\e|" 'shell-command-with-completion-on-region)
 
 ; Fetchmail
 (autoload 'fetchmail "fetchmail" nil t)
