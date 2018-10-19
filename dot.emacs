@@ -467,41 +467,20 @@
 		(t id))))))
 
 ; Ruby mode
-(autoload 'ruby-mode "ruby-mode"
-  "mode for editing ruby source files" t)
 (autoload 'ruby-minitest-run-test-method "ruby-minitest"
   "run test method of Ruby MiniTest at compilation mode." t)
+(setq ruby-minitest-runner-options "--no-use-color") ; for test-unit on ruby-2.2.0 or later.
+(setq ruby-program-name
+      (concat "ruby " (expand-file-name "/usr/local/bin/irb") " --inf-ruby-mode"))
+(add-hook 'ruby-mode-hook
+	  (function
+	   (lambda ()
+	     (setq compile-command
+		   "bundle exec rake test TESTOPTS=--no-use-color"))))
 (add-hook 'ruby-mode-hook
 	  (lambda ()
 	    (define-key ruby-mode-map "\C-cc" 'compile)
 	    (define-key ruby-mode-map "\C-c." 'ruby-minitest-run-test-method)))
-(setq auto-mode-alist
-      (append '(("\\.rb$" . ruby-mode)
-		("\\.cgi$" . ruby-mode)) auto-mode-alist))
-(setq interpreter-mode-alist
-      (append '(("ruby" . ruby-mode)) interpreter-mode-alist))
-(setq ruby-minitest-runner-options "--no-use-color") ; for test-unit on ruby-2.2.0 or later.
-
-; Interactive ruby
-(autoload 'run-ruby "inf-ruby"
-  "run an inferior ruby process" t)
-(autoload 'inf-ruby-keys "inf-ruby"
-  "set local key defs for inf-ruby in ruby-mode")
-(setq ruby-program-name
-      (concat "ruby " (expand-file-name "/usr/local/bin/irb") " --inf-ruby-mode"))
-(add-hook
- 'ruby-mode-hook
- (function
-  (lambda ()
-    (inf-ruby-keys)
-    (setq compile-command
-	 "bundle exec rake test TESTOPTS=--no-use-color"))))
-
-; Ruby debugger
-(autoload 'rubydb "rubydb3x"
-  "run rubydb on program file in buffer *gud-file*.
-the directory containing file becomes the initial working directory
-and source-file directory for your debugger." t)
 
 ; Major mode for RDoc editing
 (autoload 'rdoc-mode "rdoc-mode" "Major mode for RD editing." t)
@@ -788,4 +767,4 @@ and source-file directory for your debugger." t)
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ange-ftp-try-passive-mode t)
- '(package-selected-packages (quote (yari yaml-mode markdown-mode))))
+ '(package-selected-packages (quote (inf-ruby yari yaml-mode markdown-mode))))
