@@ -751,6 +751,13 @@
 (if (not window-system)
     (menu-bar-mode 0))
 
+; memo
+(defun change-log-markdown-open ()
+  "open change-log.md"
+  (interactive)
+  (find-file "/mnt/c/Users/toki/OneDrive/ドキュメント/change-log.md")
+  (goto-char (point-max)))
+
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
