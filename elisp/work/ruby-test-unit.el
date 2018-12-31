@@ -6,6 +6,14 @@
 (defvar ruby-unit-test-runner-options nil
   "TestRunnerのオプションを設定する。")
 
+(defvar ruby-unit-test-method-definition-regexp
+  '((pattern . "\\(^\\|\\s-\\)def\\s-+\\(test_[^ \t(){}?!|]+[?!]?\\)")
+    (name-pos . 2)))
+
+(defvar ruby-unit-test-class-definition-regexp
+  '((pattern . "\\(^\\|\\s-\\)class\\s-+\\([^ \t]+\\)\\s-*<\\s-*Test::Unit::TestCase")
+    (name-pos . 2)))
+
 (defun ruby-unit-test-get-test-file-name ()
   "カレントバッファで開いているテストファイルの名前を返す。"
   (let ((file-name (buffer-file-name)))
@@ -33,19 +41,19 @@
   "クラス定義の行へ移動する。"
   (end-of-line)                         ;カレント行を検索対象に含めるため
   (let ((case-fold-search nil))
-    (re-search-backward "\\(^\\|\\s-\\)class\\s-+[A-Z][A-Za-z0-9_]+\\s-*<\\s-*Test::Unit::TestCase" nil t)))
+    (re-search-backward (cdr (assq 'pattern ruby-unit-test-class-definition-regexp)) nil t)))
 
 (defun ruby-unit-test-get-test-method-name (line)
   "Ruby Test::Unitのテストメソッドの名前を文字列から取り出して返す。"
   (let ((case-fold-search nil))
-    (if (string-match "\\(^\\|\\s-\\)def\\s-+\\(test_[A-Za-z0-9_]+\\??\\)" line)
-        (match-string 2 line))))
+    (if (string-match (cdr (assq 'pattern ruby-unit-test-method-definition-regexp)) line)
+        (match-string (cdr (assq 'name-pos ruby-unit-test-method-definition-regexp)) line))))
 
 (defun ruby-unit-test-get-test-class-name (line)
   "Ruby Test::Unitのテストクラスの名前を文字列から取り出して返す。"
   (let ((case-fold-search nil))
-    (if (string-match "\\(^\\|\\s-\\)class\\s-+\\([A-Z][A-Za-z0-9_]+\\)\\s-*<\\s-*Test::Unit::TestCase" line)
-        (match-string 2 line))))
+    (if (string-match (cdr (assq 'pattern ruby-unit-test-class-definition-regexp)) line)
+        (match-string (cdr (assq 'name-pos ruby-unit-test-class-definition-regexp)) line))))
 
 (defun ruby-unit-test-get-test-class-command-string (test-file-name test-class-name &optional test-options ruby-options)
   "Ruby Test::Unitのテストクラスを実行するコマンドを文字列で返す。"
