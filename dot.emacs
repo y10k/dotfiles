@@ -471,6 +471,10 @@
   "run test method of Ruby MiniTest at compilation mode." t)
 (autoload 'ruby-unit-test-run-test-class "ruby-test-unit"
   "run test class of Ruby Test::Unit at compilation mode." t)
+(autoload 'ruby-unit-test-run-test-file "ruby-test-unit"
+  "run test file of Ruby Test::Unit at compilation mode." t)
+(autoload 'ruby-unit-test-run-rake-test "ruby-test-unit"
+  "run test task of Rake at compilation mode." t)
 (setq ruby-unit-test-runner-options "--no-use-color") ; for test-unit on ruby-2.2.0 or later.
 (setq ruby-program-name
       (concat "ruby " (expand-file-name "/usr/local/bin/irb") " --inf-ruby-mode"))
@@ -483,7 +487,9 @@
 	  (lambda ()
 	    (define-key ruby-mode-map "\C-cc" 'compile)
 	    (define-key ruby-mode-map "\C-c." 'ruby-unit-test-run-test-method)
-	    (define-key ruby-mode-map "\C-c@" 'ruby-unit-test-run-test-class)))
+	    (define-key ruby-mode-map "\C-c@" 'ruby-unit-test-run-test-class)
+	    (define-key ruby-mode-map "\C-cf" 'ruby-unit-test-run-test-file)
+	    (define-key ruby-mode-map "\C-cr" 'ruby-unit-test-run-rake-test)))
 
 ; Major mode for RDoc editing
 (autoload 'rdoc-mode "rdoc-mode" "Major mode for RD editing." t)
