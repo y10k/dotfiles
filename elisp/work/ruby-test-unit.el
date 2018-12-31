@@ -6,8 +6,9 @@
 (defun ruby-unit-test-get-test-file-name ()
   "カレントバッファで開いているテストファイルの名前を返す。"
   (let ((file-name (buffer-file-name)))
-    (if (string-match "test_.*\\.rb$" file-name)
-        file-name)))
+    (if file-name
+        (if (string-match ".*\\.[Rr][Bb]$" file-name)
+            file-name))))
 
 (defun ruby-unit-test-get-point-at-beginning-of-line ()
   "ポイントをカレントバッファの行頭に移動してポイント値を返す。"
