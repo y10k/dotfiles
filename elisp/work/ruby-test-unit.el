@@ -1,5 +1,8 @@
 ;;; ruby-unit-test.el --- Emacs からコンパイルモードでTest::Unitのテストケースを実行する。
 
+(defvar ruby-unit-test-ruby-command "bundle exec ruby"
+  "Rubyを実行するコマンドを設定する。")
+
 (defvar ruby-unit-test-runner-options nil
   "TestRunnerのオプションを設定する。")
 
@@ -46,7 +49,7 @@
 
 (defun ruby-unit-test-get-test-class-command-string (test-file-name test-class-name &optional test-options ruby-options)
   "Ruby Test::Unitのテストクラスを実行するコマンドを文字列で返す。"
-  (concat "bundle exec ruby "
+  (concat ruby-unit-test-ruby-command " "
           (if ruby-options (concat ruby-options " ") "")
           test-file-name
           (if test-options (concat " " test-options) "")
