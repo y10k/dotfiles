@@ -467,9 +467,9 @@
 		(t id))))))
 
 ; Ruby mode
-(autoload 'ruby-minitest-run-test-method "ruby-test-unit"
+(autoload 'ruby-unit-test-run-test-method "ruby-test-unit"
   "run test method of Ruby MiniTest at compilation mode." t)
-(setq ruby-minitest-runner-options "--no-use-color") ; for test-unit on ruby-2.2.0 or later.
+(setq ruby-unit-test-runner-options "--no-use-color") ; for test-unit on ruby-2.2.0 or later.
 (setq ruby-program-name
       (concat "ruby " (expand-file-name "/usr/local/bin/irb") " --inf-ruby-mode"))
 (add-hook 'ruby-mode-hook
@@ -480,7 +480,7 @@
 (add-hook 'ruby-mode-hook
 	  (lambda ()
 	    (define-key ruby-mode-map "\C-cc" 'compile)
-	    (define-key ruby-mode-map "\C-c." 'ruby-minitest-run-test-method)))
+	    (define-key ruby-mode-map "\C-c." 'ruby-unit-test-run-test-method)))
 
 ; Major mode for RDoc editing
 (autoload 'rdoc-mode "rdoc-mode" "Major mode for RD editing." t)
