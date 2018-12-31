@@ -12,7 +12,7 @@
   "TestRunnerのオプションを設定する。")
 
 (defvar ruby-test-unit-method-definition-regexp
-  '((pattern . "\\(^\\|\\s-\\)def\\s-+\\(test_[^ \t(){}?!|]+[?!]?\\)")
+  '((pattern . "\\(^\\|\\s-\\)def\\s-+\\(test_[^ \t(){}?!]+[?!]?\\)")
     (name-pos . 2)))
 
 (defvar ruby-test-unit-class-definition-regexp
