@@ -467,7 +467,7 @@
 		(t id))))))
 
 ; Ruby mode
-(autoload 'ruby-minitest-run-test-method "ruby-minitest"
+(autoload 'ruby-minitest-run-test-method "ruby-test-unit"
   "run test method of Ruby MiniTest at compilation mode." t)
 (setq ruby-minitest-runner-options "--no-use-color") ; for test-unit on ruby-2.2.0 or later.
 (setq ruby-program-name
