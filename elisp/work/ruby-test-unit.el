@@ -3,6 +3,9 @@
 (defvar ruby-unit-test-ruby-command "bundle exec ruby"
   "Rubyを実行するコマンドを設定する。")
 
+(defvar ruby-unit-test-rake-test-command "bundle exec rake test"
+  "Rakeでtestタスクを実行するコマンドを設定する。")
+
 (defvar ruby-unit-test-runner-options nil
   "TestRunnerのオプションを設定する。")
 
@@ -145,6 +148,14 @@
                                                                 ruby-unit-test-runner-options))))
             (compile command-string))
         (message "Not a ruby script file.")))))
+
+(defun ruby-unit-test-run-rake-test ()
+  "run test task of Rake at compilation mode."
+  (interactive)
+  (compile (concat ruby-unit-test-rake-test-command
+                   (if ruby-unit-test-runner-options
+                       (concat " " (shell-quote-argument (concat "TESTOPTS=" ruby-unit-test-runner-options)))
+                     ""))))
 
 ; Local Variables:
 ; mode: Emacs-Lisp
