@@ -44,13 +44,20 @@
     (if (string-match "\\(^\\|\\s-\\)class\\s-+\\([A-Z][A-Za-z0-9_]+\\)\\s-*<\\s-*Test::Unit::TestCase" line)
         (match-string 2 line))))
 
-(defun ruby-unit-test-get-test-method-command-string (test-file-name test-class-name test-method-name &optional test-options ruby-options)
-  "Ruby Test::Unitのテストメソッドを実行するコマンドを文字列で返す。"
+(defun ruby-unit-test-get-test-class-command-string (test-file-name test-class-name &optional test-options ruby-options)
+  "Ruby Test::Unitのテストクラスを実行するコマンドを文字列で返す。"
   (concat "bundle exec ruby "
           (if ruby-options (concat ruby-options " ") "")
           test-file-name
           (if test-options (concat " " test-options) "")
-          " -t/" test-class-name "/"
+          " -t/" test-class-name "/"))
+
+(defun ruby-unit-test-get-test-method-command-string (test-file-name test-class-name test-method-name &optional test-options ruby-options)
+  "Ruby Test::Unitのテストメソッドを実行するコマンドを文字列で返す。"
+  (concat (ruby-unit-test-get-test-class-command-string test-file-name
+                                                        test-class-name
+                                                        test-options
+                                                        ruby-options)
           " -n" test-method-name))
 
 (defun ruby-unit-test-run-test-method (ruby-debug-option-p)
@@ -76,6 +83,25 @@
                   (compile command-string)))
             (message "Not found a Ruby Test::Unit test-case class."))
         (message "Not found a Ruby Test::Unit method here.")))))
+
+(defun ruby-unit-test-run-test-class (ruby-debug-option-p)
+  "run test class of Ruby Test::Unit at compilation mode."
+  (interactive "P")
+  (save-excursion
+    (if (ruby-unit-test-goto-test-class-definition)
+        (let ((test-file-name (ruby-unit-test-get-test-file-name))
+              (test-class-name (ruby-unit-test-get-test-class-name (ruby-unit-test-get-line))))
+          (let ((command-string
+                 (if ruby-debug-option-p
+                     (ruby-unit-test-get-test-class-command-string test-file-name
+                                                                   test-class-name
+                                                                   ruby-unit-test-runner-options
+                                                                   "-d")
+                   (ruby-unit-test-get-test-class-command-string test-file-name
+                                                                 test-class-name
+                                                                 ruby-unit-test-runner-options))))
+            (compile command-string)))
+      (message "Not found a Ruby Test::Unit test-case class."))))
 
 ; Local Variables:
 ; mode: Emacs-Lisp
