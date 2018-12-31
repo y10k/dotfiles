@@ -37,6 +37,12 @@
    (ruby-unit-test-get-point-at-beginning-of-line)
    (ruby-unit-test-get-point-at-end-of-line)))
 
+(defun ruby-unit-test-goto-test-method-definition ()
+  "メソッド定義の行へ移動する。"
+  (end-of-line)                         ;カレント行を検索対象に含めるため
+  (let ((case-fold-search nil))
+    (re-search-backward (cdr (assq 'pattern ruby-unit-test-method-definition-regexp)) nil t)))
+
 (defun ruby-unit-test-goto-test-class-definition ()
   "クラス定義の行へ移動する。"
   (end-of-line)                         ;カレント行を検索対象に含めるため
@@ -75,25 +81,27 @@
   "run test method of Ruby Test::Unit at compilation mode."
   (interactive "P")
   (save-excursion
-    (let ((test-file-name (ruby-unit-test-get-test-file-name))
-          (test-method-name (ruby-unit-test-get-test-method-name (ruby-unit-test-get-line))))
-      (if (and test-file-name test-method-name)
-          (if (ruby-unit-test-goto-test-class-definition)
-              (let ((test-class-name (ruby-unit-test-get-test-class-name (ruby-unit-test-get-line))))
-                (let ((command-string
-                       (if ruby-debug-option-p
-                           (ruby-unit-test-get-test-method-command-string test-file-name
-                                                                          test-class-name
-                                                                          test-method-name
-                                                                          ruby-unit-test-runner-options
-                                                                          "-d")
-                         (ruby-unit-test-get-test-method-command-string test-file-name
-                                                                        test-class-name
-                                                                        test-method-name
-                                                                        ruby-unit-test-runner-options))))
-                  (compile command-string)))
-            (message "Not found a Ruby Test::Unit test-case class."))
-        (message "Not found a Ruby Test::Unit method here.")))))
+    (let ((test-file-name (ruby-unit-test-get-test-file-name)))
+      (if test-file-name
+          (if (ruby-unit-test-goto-test-method-definition)
+              (let ((test-method-name (ruby-unit-test-get-test-method-name (ruby-unit-test-get-line))))
+                (if (ruby-unit-test-goto-test-class-definition)
+                    (let ((test-class-name (ruby-unit-test-get-test-class-name (ruby-unit-test-get-line))))
+                      (let ((command-string
+                             (if ruby-debug-option-p
+                                 (ruby-unit-test-get-test-method-command-string test-file-name
+                                                                                test-class-name
+                                                                                test-method-name
+                                                                                ruby-unit-test-runner-options
+                                                                                "-d")
+                               (ruby-unit-test-get-test-method-command-string test-file-name
+                                                                              test-class-name
+                                                                              test-method-name
+                                                                              ruby-unit-test-runner-options))))
+                        (compile command-string)))
+                  (message "Not found a Ruby Test::Unit test-case class.")))
+            (message "Not found a Ruby Test::Unit method."))
+        (message "Not a ruby script file.")))))
 
 (defun ruby-unit-test-run-test-class (ruby-debug-option-p)
   "run test class of Ruby Test::Unit at compilation mode."
