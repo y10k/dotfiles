@@ -1,5 +1,7 @@
 ;;; ruby-unit-test.el --- Emacs からコンパイルモードでTest::Unitのテストケースを実行する。
 
+(require 'compile)
+
 (defvar ruby-unit-test-ruby-command "bundle exec ruby"
   "Rubyを実行するコマンドを設定する。")
 
@@ -158,6 +160,8 @@
                    (if ruby-unit-test-runner-options
                        (concat " " (shell-quote-argument (concat "TESTOPTS=" ruby-unit-test-runner-options)))
                      ""))))
+
+(provide 'ruby-test-unit)
 
 ; Local Variables:
 ; mode: Emacs-Lisp
