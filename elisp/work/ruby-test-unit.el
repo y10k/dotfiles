@@ -29,8 +29,8 @@
 (defun ruby-unit-test-get-test-method-name (line)
   "Ruby Test::Unitのテストメソッドの名前を文字列から取り出して返す。"
   (let ((case-fold-search nil))
-    (if (string-match "def[ \t]+\\(test_[A-Za-z0-9_]+\\??\\)" line)
-        (match-string 1 line))))
+    (if (string-match "\\(^\\|\\s-\\)def\\s-+\\(test_[A-Za-z0-9_]+\\??\\)" line)
+        (match-string 2 line))))
 
 (defun ruby-unit-test-get-test-method-command-string (test-file-name test-method-name &optional test-options ruby-options)
   "Ruby Test::Unitを実行するコマンドを文字列で返す。"
