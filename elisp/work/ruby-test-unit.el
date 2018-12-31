@@ -31,7 +31,7 @@
     (if (string-match "def[ \t]+\\(test_[A-Za-z0-9_]+\\??\\)" line)
         (match-string 1 line))))
 
-(defun ruby-unit-test-get-command-string (test-file-name test-method-name &optional test-options ruby-options)
+(defun ruby-unit-test-get-test-method-command-string (test-file-name test-method-name &optional test-options ruby-options)
   "Ruby Test::Unitを実行するコマンドを文字列で返す。"
   (concat "bundle exec ruby "
           (if ruby-options (concat ruby-options " ") "")
@@ -48,8 +48,8 @@
       (if (and test-file-name test-method-name)
           (let ((command-string
                  (if ruby-debug-option-p
-                     (ruby-unit-test-get-command-string test-file-name test-method-name ruby-unit-test-runner-options "-d")
-                   (ruby-unit-test-get-command-string test-file-name test-method-name ruby-unit-test-runner-options))))
+                     (ruby-unit-test-get-test-method-command-string test-file-name test-method-name ruby-unit-test-runner-options "-d")
+                   (ruby-unit-test-get-test-method-command-string test-file-name test-method-name ruby-unit-test-runner-options))))
             (compile command-string))
         (message "Not found a Ruby Test::Unit method here.")))))
 
