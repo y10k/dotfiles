@@ -77,7 +77,7 @@
                                                        test-options
                                                        ruby-options)
           " "
-          (shell-quote-argument (concat "-t/" test-class-name "/"))))
+          (shell-quote-argument (concat "-t/\\b" test-class-name "\\b/"))))
 
 (defun ruby-unit-test-get-test-method-command-string (test-file-name test-class-name test-method-name &optional test-options ruby-options)
   "Ruby Test::Unitのテストメソッドを実行するコマンドを文字列で返す。"
