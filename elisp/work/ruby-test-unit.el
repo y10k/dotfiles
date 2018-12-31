@@ -68,7 +68,7 @@
   "Ruby Test::Unitのテストファイルを実行するコマンドを文字列で返す。"
   (concat ruby-unit-test-ruby-command " "
           (if ruby-options (concat ruby-options " ") "")
-          test-file-name
+          (shell-quote-argument test-file-name)
           (if test-options (concat " " test-options) "")))
 
 (defun ruby-unit-test-get-test-class-command-string (test-file-name test-class-name &optional test-options ruby-options)
@@ -76,7 +76,8 @@
   (concat (ruby-unit-test-get-test-file-command-string test-file-name
                                                        test-options
                                                        ruby-options)
-          " -t/" test-class-name "/"))
+          " "
+          (shell-quote-argument (concat "-t/" test-class-name "/"))))
 
 (defun ruby-unit-test-get-test-method-command-string (test-file-name test-class-name test-method-name &optional test-options ruby-options)
   "Ruby Test::Unitのテストメソッドを実行するコマンドを文字列で返す。"
@@ -84,7 +85,8 @@
                                                         test-class-name
                                                         test-options
                                                         ruby-options)
-          " -n" test-method-name))
+          " "
+          (shell-quote-argument (concat "-n" test-method-name))))
 
 (defun ruby-unit-test-run-test-method (ruby-debug-option-p)
   "run test method of Ruby Test::Unit at compilation mode."
