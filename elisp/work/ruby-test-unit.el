@@ -107,20 +107,22 @@
   "run test class of Ruby Test::Unit at compilation mode."
   (interactive "P")
   (save-excursion
-    (if (ruby-unit-test-goto-test-class-definition)
-        (let ((test-file-name (ruby-unit-test-get-test-file-name))
-              (test-class-name (ruby-unit-test-get-test-class-name (ruby-unit-test-get-line))))
-          (let ((command-string
-                 (if ruby-debug-option-p
-                     (ruby-unit-test-get-test-class-command-string test-file-name
-                                                                   test-class-name
-                                                                   ruby-unit-test-runner-options
-                                                                   "-d")
-                   (ruby-unit-test-get-test-class-command-string test-file-name
-                                                                 test-class-name
-                                                                 ruby-unit-test-runner-options))))
-            (compile command-string)))
-      (message "Not found a Ruby Test::Unit test-case class."))))
+    (let ((test-file-name (ruby-unit-test-get-test-file-name)))
+      (if test-file-name
+          (if (ruby-unit-test-goto-test-class-definition)
+              (let ((test-class-name (ruby-unit-test-get-test-class-name (ruby-unit-test-get-line))))
+                (let ((command-string
+                       (if ruby-debug-option-p
+                           (ruby-unit-test-get-test-class-command-string test-file-name
+                                                                         test-class-name
+                                                                         ruby-unit-test-runner-options
+                                                                         "-d")
+                         (ruby-unit-test-get-test-class-command-string test-file-name
+                                                                       test-class-name
+                                                                       ruby-unit-test-runner-options))))
+                  (compile command-string)))
+            (message "Not found a Ruby Test::Unit test-case class."))
+        (message "Not a ruby script file.")))))
 
 ; Local Variables:
 ; mode: Emacs-Lisp
