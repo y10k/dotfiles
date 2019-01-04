@@ -12,12 +12,12 @@
   "TestRunnerのオプションを設定する。")
 
 (defvar ruby-test-unit-method-definition-regexp
-  '((pattern . "\\(^\\|\\s-\\)def\\s-+\\(test_[^ \t(){}?!]+[?!]?\\)")
-    (name-pos . 2)))
+  '((pattern . "\\(?:^\\|\\s-\\)def\\s-+\\(test_[^ \t(){}?!]+[?!]?\\)")
+    (name-pos . 1)))
 
 (defvar ruby-test-unit-class-definition-regexp
-  '((pattern . "\\(^\\|\\s-\\)class\\s-+\\([^ \t]+\\)\\s-*<\\s-*Test::Unit::TestCase")
-    (name-pos . 2)))
+  '((pattern . "\\(?:^\\|\\s-\\)class\\s-+\\(\\S-+\\)\\s-*<\\s-*Test::Unit::TestCase")
+    (name-pos . 1)))
 
 (defun ruby-test-unit-get-test-file-name ()
   "カレントバッファで開いているテストファイルの名前を返す。"
