@@ -1,6 +1,7 @@
 ;;; ruby-unit-test.el --- Emacs からコンパイルモードでTest::Unitのテストケースを実行する。
 
 (require 'compile)
+(require 'ruby-mode)
 
 (defvar ruby-test-unit-ruby-command "bundle exec ruby"
   "Rubyを実行するコマンドを設定する。")
@@ -160,6 +161,25 @@
                    (if ruby-test-unit-runner-options
                        (concat " " (shell-quote-argument (concat "TESTOPTS=" ruby-test-unit-runner-options)))
                      ""))))
+
+(defun ruby-test-unit-keys ()
+  "set local key defs for ruby-test-unit in ruby-mode"
+  (define-key ruby-mode-map "\C-cc" 'compile)
+  (define-key ruby-mode-map "\C-c." 'ruby-test-unit-run-test-method)
+  (define-key ruby-mode-map "\C-c@" 'ruby-test-unit-run-test-class)
+  (define-key ruby-mode-map "\C-cf" 'ruby-test-unit-run-test-file)
+  (define-key ruby-mode-map "\C-cr" 'ruby-test-unit-run-rake-test))
+
+(defun ruby-test-unit-compilation-errors ()
+  "set error defs for ruby-test-unit in compilation-mode"
+  (dolist (i '((ruby-1 "\\s-*\\[?\\(\\S-+\\):\\([0-9]+\\)\\(?::in\\|$\\)" 1 2)
+               (ruby-2 "\\s-*from \\(\\S-+\\):\\([0-9]+\\)\\(?::in\\|$\\)" 1 2)
+               (ruby-3 "\\[\\(\\S-+\\):\\([0-9]+\\)\\]:$" 1 2)))
+    (add-to-list 'compilation-error-regexp-alist (car i))
+    (add-to-list 'compilation-error-regexp-alist-alist i)))
+
+(ruby-test-unit-keys)
+(ruby-test-unit-compilation-errors)
 
 (provide 'ruby-test-unit)
 
