@@ -471,13 +471,6 @@
 (setq ruby-test-unit-runner-options "--no-use-color") ; for test-unit on ruby-2.2.0 or later.
 (setq ruby-program-name
       (concat "ruby " (expand-file-name "/usr/local/bin/irb") " --inf-ruby-mode"))
-(add-hook 'ruby-mode-hook
-	  (lambda ()
-	    (define-key ruby-mode-map "\C-cc" 'compile)
-	    (define-key ruby-mode-map "\C-c." 'ruby-test-unit-run-test-method)
-	    (define-key ruby-mode-map "\C-c@" 'ruby-test-unit-run-test-class)
-	    (define-key ruby-mode-map "\C-cf" 'ruby-test-unit-run-test-file)
-	    (define-key ruby-mode-map "\C-cr" 'ruby-test-unit-run-rake-test)))
 
 ; Major mode for RDoc editing
 (autoload 'rdoc-mode "rdoc-mode" "Major mode for RD editing." t)
@@ -694,21 +687,6 @@
 ; mini buffer
 (if (eq emacs-major-version 21)
     (setq resize-mini-windows nil))
-
-; for compile
-(eval-after-load "compile"
-  '(progn
-     (setq compilation-error-regexp-alist-alist
-	   (append compilation-error-regexp-alist-alist
-		   '((ruby-1
-		      "[ \t]*\\[?\\([^ \t\n]+\\):\\([0-9]+\\)\\(:in\\|$\\)" 1 2)
-		     (ruby-2
-		      "[ \t]*from \\([^ \t\n]+\\):\\([0-9]+\\)\\(:in\\|$\\)" 1 2)
-		     (ruby-3
-		      "\\[\\([^ \t\n]+\\):\\([0-9]+\\)\\]:$" 1 2))))
-     (setq compilation-error-regexp-alist
-	   (append compilation-error-regexp-alist
-		   '(ruby-1 ruby-2 ruby-3)))))
 
 ; for JavaScript
 (autoload 'ecmascript-mode "ecmascript-mode"

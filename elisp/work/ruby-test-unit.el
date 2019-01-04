@@ -164,11 +164,11 @@
 
 (defun ruby-test-unit-keys ()
   "set local key defs for ruby-test-unit in ruby-mode"
-  (define-key ruby-mode-map "\C-cc" 'compile)
   (define-key ruby-mode-map "\C-c." 'ruby-test-unit-run-test-method)
   (define-key ruby-mode-map "\C-c@" 'ruby-test-unit-run-test-class)
   (define-key ruby-mode-map "\C-cf" 'ruby-test-unit-run-test-file)
-  (define-key ruby-mode-map "\C-cr" 'ruby-test-unit-run-rake-test))
+  (define-key ruby-mode-map "\C-cr" 'ruby-test-unit-run-rake-test)
+  (define-key ruby-mode-map "\C-cc" 'compile))
 
 (defun ruby-test-unit-compilation-errors ()
   "set error defs for ruby-test-unit in compilation-mode"
