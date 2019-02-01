@@ -84,32 +84,13 @@ export PGDATA=/usr/local/pgsql/data
 # ssh-agent forwarding in GNU Screen session
 if [ -n "$PS1" ]; then          # for interactive shell
   saved_ssh_agent_sock="${HOME}/.ssh/agent_sock"
-  saved_ssh_agent_env="${HOME}/.ssh/agent_sock_env.sh"
-
-  ssh_agent_reload() {
-    . "${saved_ssh_agent_env}"
-  }
+  unix_socket_tunnel="${HOME}/git_work/unix_socket_tunnel/unix_socket_tunnel"
 
   if [ -n "${SCREEN_SESSION}" ]; then # add to .screenrc: setenv SCREEN_SESSION 1
-    case "$(uname -r)" in
-      *Microsoft*)
-        # for WSL (symbolic link is not worked on unix domain socket)
-        if [ -f "${saved_ssh_agent_env}" ]; then
-          ssh_agent_reload
-        fi
-        ;;
-      *)
-        if [ -S "${saved_ssh_agent_sock}" ]; then
-          export SSH_AUTH_SOCK="${saved_ssh_agent_sock}"
-        fi
-        ;;
-    esac
-  else
-    if [ -n "${SSH_AUTH_SOCK}" ] && [ -S "${SSH_AUTH_SOCK}" ]; then
-      rm -f "${saved_ssh_agent_sock}"
-      ln -s "${SSH_AUTH_SOCK}" "${saved_ssh_agent_sock}"
-      echo "export SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >"${saved_ssh_agent_env}" # for WSL
-    fi
+    export SSH_AUTH_SOCK="${saved_ssh_agent_sock}"
+  elif shopt -q login_shell && [ -n "${SSH_AUTH_SOCK}" ] && [ -S "${SSH_AUTH_SOCK}" ]; then
+    rm -f "${saved_ssh_agent_sock}"
+    "${unix_socket_tunnel}" "${SSH_AUTH_SOCK}" "${saved_ssh_agent_sock}" &
   fi
 fi
 
