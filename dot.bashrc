@@ -100,6 +100,8 @@ case "$(uname -r)" in
     export DOCKER_HOST=tcp://192.168.99.100:2376
     export DOCKER_CERT_PATH=/mnt/c/Users/toki/.docker/machine/certs
     export DOCKER_TLS_VERIFY=1
+    export DOCKER_SSL_VERSION=TLSv1_2
+    export COMPOSE_TLS_VERSION="${DOCKER_SSL_VERSION}"
     ;;
 esac
 
