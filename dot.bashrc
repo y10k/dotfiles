@@ -1,7 +1,4 @@
 #!/usr/local/bin/bash
-# ---
-# $Id$
-#
 
 # Startup file
 export BASH_ENV=$HOME/.bashrc
@@ -18,6 +15,7 @@ if [ -t 0 ]; then
 fi
 
 # Locale
+export LANG=ja_JP.UTF-8
 export LC_TIME=C
 
 # Editor and Pager
