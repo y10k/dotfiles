@@ -1,5 +1,4 @@
-; -*- mode: emacs-lisp;-*-
-; $Id$
+; -*- mode: emacs-lisp; coding: utf-8 -*-
 
 ;;;
 ;;; Wanderlust
@@ -34,8 +33,12 @@
 
 ; Server
 (setq elmo-pop3-default-server "mail.freedom.ne.jp")
-(setq elmo-imap4-default-server "cernobog.plutonian.ne.jp")
-(setq elmo-imap4-default-authenticate-type 'cram-md5)
+(setq elmo-imap4-default-server "imap.gmail.com")
+(setq elmo-imap4-default-port 993)
+(setq elmo-imap4-default-stream-type 'ssl)
+(setq elmo-imap4-default-user "yr10ki@gmail.com")
+(setq elmo-imap4-default-authenticate-type 'clear)
+(setq elmo-imap4-use-modified-utf7 t)
 (setq elmo-nntp-default-server "news.edit.ne.jp")
 (setq wl-smtp-posting-server "mail.freedom.ne.jp")
 (setq wl-smtp-posting-port 587)
@@ -44,7 +47,6 @@
 
 ; Local Domain
 (setq wl-local-domain "wl-message-id-domain")
-(setq wl-message-id-domain "toki@freedom.ne.jp")
 
 ; Offline mode
 (setq wl-plugged nil)
@@ -71,93 +73,12 @@
 (setq wl-summary-target-above 1000)
 (setq wl-message-id-domain "mail.freedom.ne.jp")
 (setq wl-summary-auto-refile-skip-marks ())
-(setq wl-refile-rule-alist
-      '(; Ruby
-	("X-ML-Name"
-	 ("ruby-list" . "%INBOX.ruby.list")
-	 ("rubyunit"  . "%INBOX.ruby.unit")
-	 ("rubybook"  . "%INBOX.ruby.unit"))
-	; §“§”§»§‚
-	("Subject"
-	 ("§“§”§»§‚ƒÃøÆ" . "%INBOX.hibitomo"))
-	; §ﬁ§∞§ﬁ§∞
-	("Subject"
-	 ("^\\[Weekly Mag2"                         . "%INBOX.mag2.weekly")
-	 ("^\\[\\(≈≈«æƒÃæ Û…Ù\\|Ã¿∆¸§Ú¡œ§Î§‚§Œ\\|§‚§√§»§Ô§´§Î°˜£…£‘\\)"
-	                                            . "%INBOX.mag2.id_0000003443")
-	 ("^\\[∫£Ωµ§Œ°˚°˚"                          . "%INBOX.mag2.id_0000004784")
-	 ("^§ø§√§ø∞ÏøÕ§Œæ Û•∑•π•∆•‡≤›"             . "%INBOX.mag2.id_0000016004"))
-	("From"
-	 ("mag2" . "%INBOX.mag2"))
-	; ∆¸µ≠•Ì•∞
-	("From"
-	 ("^DIARY Archive CGI (nobody@\\(web\\|www\\)\\.freedom" . "%INBOX.diary"))
-	; ∑◊ªªµ°
-	("From"
-	 ("Cron Daemon" . "%INBOX.admin.cron"))
-	("Subject"
-	 ("cernobog" . "%INBOX.admin.cernobog")
-	 ("babayaga" . "%INBOX.admin.babayaga")
-	 ("root"     . "%INBOX.admin.root"))
-	("To"
-	 ("root@cernobog" . "%INBOX.admin.cernobog")
-	 ("root@babayaga" . "%INBOX.admin.babayaga")
-	 ("root"          . "%INBOX.admin.root"))))
-(setq wl-refile-rule-alist
-      (append wl-refile-rule-alist
-	      ((lambda (rule-src-list)
-		 (apply (function append) 
-			(mapcar
-			 (lambda (rule-src)
-			   (apply (lambda (field-list pattern-list folder)
-				    (mapcar
-				     (lambda (field)
-				       (cons field
-					     (mapcar
-					      (lambda (pattern)
-						(cons pattern folder))
-					      pattern-list)))
-				     field-list))
-				  rule-src))
-			 rule-src-list)))
-	       '(
-		 ; •’•Í°º•¿•‡
-		 (("To" "Cc" "From") ("info@freedom.ne.jp") "%INBOX.freedom")
-		 ; TSUTAYA
-		 (("To" "Cc" "From") ("@tsutaya\\.co\\.jp") "%INBOX.tsutaya")
-		 ; NTT
-		 (("To" "Cc" "From") ("ntt\\.co\\.jp") "%INBOX.ntt")
-		 ))))
 
 ; Expire
 (setq wl-expire-use-log t)
 (setq wl-summary-expire-reserve-marks
       '(; "$"
 	"N" "U" "!"))
-;; (setq wl-expire-alist
-;;       '(("^+send$"                 (date 7)         trash)
-;; 	("^+trash$"                (number 100 130) remove)
-;; 	("^+ruby/list$"            (number 100 130) wl-expire-archive-date)
-;; 	("^+mag2/weekly$"          (number 100 130) wl-expire-archive-date)
-;; 	("^+mag2/id\\.0000003443$" (number 100 130) wl-expire-archive-date)
-;; 	("^+diary/freedom$"        (number 100 130) wl-expire-archive-date)
-;; 	("^+freedom$"              (number 100 130) wl-expire-archive-date)
-;; 	("^+admin/root$"           (number 100 130) wl-expire-archive-date)
-;; 	("^+admin/mail$"           (number 100 130) wl-expire-archive-date)
-;; 	("^+admin/babayaga$"       (number 100 130) wl-expire-archive-date)
-;; 	("^+admin/cernobog$"       (number 100 130) wl-expire-archive-date)
-;; 	("^+admin/root$"           (number 100 130) wl-expire-archive-date)
-;; 	))
-; (if (and
-;      (equal system-name "cernobog.plutonian.ne.jp")
-;      (eq system-type 'berkeley-unix))
-;     (add-hook
-;      'wl-summary-prepared-pre-hook
-;      (function
-;       (lambda ()
-; 	(cond
-; 	 (t
-; 	  (wl-summary-expire)))))))
 
 ; Draft
 (setq wl-interactive-send t)
@@ -168,7 +89,7 @@
 	"toki@sv01.phys.sci.kobe-u.ac.jp"
 	"toki@icepp.s.u-tokyo.ac.jp"
 	"toki@imopc7.icepp.s.u-tokyo.ac.jp"))
-(setq wl-from "≈⁄¥Ù øŒ∏¨ (TOKI Yoshinori) <toki@freedom.ne.jp>")
+(setq wl-from "ÂúüÂ≤ê ‰ªÅË¨ô (TOKI Yoshinori) <toki@freedom.ne.jp>")
 (setq wl-fcc "+send")
 (setq wl-draft-reply-without-argument-list
       '(("Followup-To" . (nil nil ("Followup-To")))
@@ -177,34 +98,18 @@
 	("From" . (("From") ("To" "Cc") ("Newsgroups")))))
 (setq wl-draft-always-delete-myself t)
 (setq wl-draft-config-alist
-      '((t
-	 ("X-GnuPG-Fingerprint" . "2968 565F 0550 57D3 1AF8  E03F 520A 03B6 FAC1 4744"))
-	))
+      '(("^To:.*ruby-talk@"
+	 ("From" . "Yoshinori Toki <toki@freedom.ne.jp>"))))
 (setq wl-template-alist
-      '(("sig:phys"
+      '(("sig:japanese"
 	 (bottom .
-"------------------------------------------------------------
-§»§¢§ÎÕÔ«¿æÏ§ÀΩı∏¿§Úµ·§·§È§Ï§ø ™Õ˝≥ÿº‘§Œ¿‚Ã¿°£
-»‡§œπı»ƒ§À•ﬁ•Î§Ú∞Ï§ƒΩÒ§≠°÷§ﬁ§∫°¢µÌ§ÚµÂ§»≤æƒÍ§∑§ﬁ§π°ƒ°◊
-≈⁄¥Ù øŒ∏¨ (TOKI Yoshinori) <toki@freedom.ne.jp>
+"-
+ÂúüÂ≤ê ‰ªÅË¨ô (TOKI Yoshinori) <toki@freedom.ne.jp>
 "))
-	("sig:ed5"
+	("sig:english"
 	 (bottom .
-"--------------------------------------------------
-°÷ø¥Ãµ§Ø§∑§∆°¢µª ≥§Ô§∫°£µªÃµ§Ø§∑§∆°¢ø¥∆œ§´§∫°£°◊
-≈⁄¥Ù øŒ∏¨ (TOKI Yoshinori) <toki@freedom.ne.jp>
-"))
-	("sig:grappler"
-	 (bottom .
-"--------------------------------------------------
-°÷∏Ωº¬§√§∆§≥§¶§ §Û§¿°£ø¥§¨«±§È§Ï§Ω§¶§¿°£°◊
-≈⁄¥Ù øŒ∏¨ (http://www.freedom.ne.jp/toki/)
-"))
-	("sig:chernobog"
-	(bottom .
-"--------------------------------------------------
-≈⁄¥Ù øŒ∏¨ (http://www.freedom.ne.jp/toki/)
-Cop, cop, kopocam! Va! Sagana! Sagana! Va!
+"-
+Yoshinori Toki <toki@freedom.ne.jp>
 "))
 	))
 (add-hook
@@ -217,55 +122,6 @@ Cop, cop, kopocam! Va! Sagana! Sagana! Va!
  (function
   (lambda ()
     (define-key wl-draft-mode-map "\C-c\C-y" 'xcite-yank-cur-msg))))
-
-;; ; X-Face
-;; (cond ((featurep 'xemacs)
-;;        ;;
-;;        )
-;;       ((= 21 emacs-major-version)
-;;        (setq wl-highlight-x-face-function 'x-face-decode-message-header)
-;;        (define-key wl-summary-mode-map "\C-x4s" 'x-face-save)
-;;        (define-key wl-draft-mode-map "\C-x4i" 'x-face-insert)
-;;        ;; "\M-t" key is reserved for wl command.
-;;        (define-key wl-draft-mode-map "\M-\C-t" 'x-face-show)
-;;        ;;
-;;        ;; If a file name has no directory component, it should be
-;;        ;; found in the directory which is specified by the option
-;;        ;; `x-face-image-file-directory'.
-;;        (setq x-face-default-xbm-file "YourFace.xbm")
-;;        ;;
-;;        (add-hook 'wl-mail-setup-hook 'x-face-insert)
-;;        ;; If you use `wl-draft-insert-x-face-field' instead of
-;;        ;; `x-face-insert' for inserting an X-Face, you can highlight
-;;        ;; it as an image with the setting of the following hook:
-;;        (add-hook 'wl-draft-insert-x-face-field-hook
-;; 		 (lambda nil
-;; 		   (x-face-insert wl-x-face-file)))
-;;        )
-;;       (t
-;;        ;;
-;;        ))
-
-
-;; ; IM
-;; (defun TT:wl-inc-mail ()
-;;   (interactive)
-;;   (message "Incing ... ")
-;;   (call-process "imget" nil nil nil)
-;;   (if (and (boundp 'wl-summary-buffer-folder-name)
-;;            (eq wl-summary-buffer-folder-name wl-default-folder))
-;;       (wl-summary-sync-force-update)
-;;     (wl-summary-goto-folder-subr wl-default-folder 'force-update nil nil)))
-;; (add-hook
-;;  'wl-folder-mode-hook
-;;  (function
-;;   (lambda ()
-;;     (define-key wl-folder-mode-map  "\M-i" 'TT:wl-inc-mail))))
-;; (add-hook
-;;  'wl-summary-mode-hook
-;;  (function
-;;   (lambda ()
-;;     (define-key wl-summary-mode-map "\M-i" 'TT:wl-inc-mail))))
 
 ; Color
 (set-face-foreground 'wl-highlight-message-cited-text-2 "DeepPink")

@@ -1,101 +1,27 @@
-# $Id$
+# -*- coding: utf-8 -*-
 #
 # Folder definition file
 # This file is generated automatically by Wanderlust 1.1.1 (Purple Rain).
 #
 
-#'mark	"½ÅÍ×"
-¼õ¿®È¢{
-#	+inbox					"¼õ¿®È¢@¥í¡¼¥«¥ë"
-	%INBOX:yr10ki@gmail.com/clear@imap.gmail.com:993!	"¼õ¿®È¢@Gmail"
-#	&toki/apop@babayaga.plutonian.ne.jp	"¼õ¿®È¢@¥Û¡¼¥à¥µ¡¼¥Ğ(BABAYAGA)"
-#	&toki/apop@cernobog.plutonian.ne.jp	"¼õ¿®È¢@¥Û¡¼¥à¥µ¡¼¥Ğ(CERNOBOG)"
-	&toki@mail.freedom.ne.jp		"¼õ¿®È¢@¥Õ¥ê¡¼¥À¥à"
-	&ey05qykf@mx.edit.ne.jp			"¼õ¿®È¢@EditNet"
-#	&toki/apop@sv01.phys.sci.kobe-u.ac.jp	"¼õ¿®È¢@¿À¸ÍHEP"
-	&toki@babayaga:20110			"ÃùÂ¢¸Ë"
+#'mark	"é‡è¦"
+å—ä¿¡ç®±{
+	%INBOX					"å—ä¿¡ç®±@Gmail"
+	&toki@mail.freedom.ne.jp		"å—ä¿¡ç®±@ãƒ•ãƒªãƒ¼ãƒ€ãƒ "
+	&ey05qykf@mx.edit.ne.jp			"å—ä¿¡ç®±@EditNet"
+	&toki@babayaga:20110			"è²¯è”µåº«"
 }
 Wanderlust{
-	+draft					"Áğ°ÆÈ¢"
-	+send					"Á÷¿®ºÑ"
-	+queue					"Á÷¿®Ãæ"
-	+tmp					"ºî¶ÈÍÑ"
-	+trash					"ÇÑ´ş"
+	+draft					"è‰æ¡ˆç®±"
+	+send					"é€ä¿¡æ¸ˆ"
+	+queue					"é€ä¿¡ä¸­"
+	+tmp					"ä½œæ¥­ç”¨"
+	+trash					"å»ƒæ£„"
 }
-#¥á¡¼¥ë{
-#	Ruby{
-#		%INBOX.ruby.list		"ruby-list"
-#		%INBOX.ruby.list.admin		"ruby-list´ÉÍı"
-#		%INBOX.ruby.unit		"ruby-unit"
-#		%INBOX.ruby.misc		"ruby¤½¤ÎÂ¾"
-#	}
-#	¤Ş¤°¤Ş¤°{
-#		%INBOX.mag2.weekly		"¥¦¥£¡¼¥¯¥ê¡¼¥Ş¥°¥Ş¥°"
-#		%INBOX.mag2.id_0000003443	"ÅÅÇ¾¾ğÊóÄÌ¿®Éô"
-#	}
-#	·×»»µ¡{
-#		%INBOX.admin.root		"·×»»µ¡´ÉÍı¼Ô"
-#		%INBOX.admin.mail		"¥á¡¼¥ë´ÉÍı¼Ô"
-#		%INBOX.admin.cron		"CRON"
-#		%INBOX.admin.babayaga		"BABAYAGA"
-#		%INBOX.admin.cernobog		"CERNOBOG"
-#	}
-#	%INBOX.home				"¼Â²È"
-#	%INBOX.kobe_hep				"¿À¸Í¹â¥¨¥Í¸¦OB"
-#	%INBOX.apollon				"¥¢¥İ¥í¥ó"
-#	%INBOX.hibitomo				"¤Ò¤Ó¤È¤â"
-#	%INBOX.tsutaya				"TSUTAYA"
-#	%INBOX.freeml				"¥Õ¥ê¡¼¥á¡¼¥ë"
-#	%INBOX.isize				"ISIZE"
-#	%INBOX.diary				"Æüµ­¥¢¥¯¥»¥¹¥í¥°"
-#	%INBOX.freedom				"¥Õ¥ê¡¼¥À¥à"
-#	%INBOX.ntt				"NTT"
-#	%INBOX.kotarochin			"¹â¶¶(¹À)"
-#	%INBOX.misc				"¤½¤ÎÂ¾"
-#	%INBOX.spam				"ÌÂÏÇ¥á¡¼¥ë"
-#}
-#¥Ë¥å¡¼¥¹{
-#	-fj.comp.lang.c
-#	-fj.comp.lang.c++
-#	-fj.comp.lang.java
-#	-fj.comp.lang.ruby
-#	-fj.comp.lang.misc
-#	-fj.comp.misc
-#	-fj.comp.oops
-#	-fj.comp.security
-#	-fj.mail.reader
-#	-fj.news.reader
-#	-fj.net.programming
-#	-fj.net.providers
-#	-fj.os.bsd.freebsd
-#	-fj.os.bsd.misc
-#	-fj.os.linux
-#	-fj.questions.internet
-#	-fj.questions.unix
-#	-fj.rec.comics
-#	-fj.rec.games.video.pc
-#}
-#¿·Ê¹{
-#	@asahi/
-#	@zdnet/
-#	@wired/
-#	@impress/
-#}
-#¾ğÊó{
-#	@ruby.ruby-dev
-#	@ruby.ruby-talk
-#	@airs.wl
-#	@meadow/
-#	@security-memo/
-#	@ibm-dev/
-#}
-#°µ½Ì{
-#	$archive/
-#}
-#%/
-#+/
-#-fj/
-#'cache/
+%/
++/
+-fj/
+'cache/
 
 # petname definition (group, folder in access group)
 
