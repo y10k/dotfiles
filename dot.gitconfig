@@ -1,0 +1,9 @@
+[user]
+	name = TOKI Yoshinori
+	email = toki@freedom.ne.jp
+[color]
+	ui = true
+[alias]
+	graph = log --graph --oneline --decorate
+[push]
+	default = simple
