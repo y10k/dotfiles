@@ -44,13 +44,6 @@ Wanderlust{
 	%INBOX.freedom				"フリーダム"
 	%INBOX.misc				"その他"
 }
-圧縮{
-	$ruby/
-	$mag2/
-	$diary/
-	$admin/
-	$/
-}
 ニュース{
 	-fj.comp.lang.c
 	-fj.comp.lang.c++
@@ -71,6 +64,9 @@ Wanderlust{
 	-fj.questions.unix
 	-fj.rec.comics
 	-fj.rec.games.video.pc
+}
+圧縮{
+	$archive/
 }
 %/
 +/
