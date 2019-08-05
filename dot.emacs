@@ -867,6 +867,9 @@ and source-file directory for your debugger." t)
 (require 'psvn)
 (add-to-list 'vc-handled-backends 'SVN)
 
+; for python
+(setq python-indent 2)
+
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)

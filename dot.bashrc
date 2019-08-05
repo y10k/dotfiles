@@ -7,7 +7,7 @@
 export BASH_ENV=$HOME/.bashrc
 
 # Path
-export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin:/usr/X11R6/bin:$HOME/bin
+export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin:/usr/X11R6/bin:$HOME/bin:$HOME/web/photon/bin
 
 # File permission
 umask 22
@@ -51,29 +51,33 @@ export CVS_RSH=ssh
 # Ports site
 export MASTER_SITE_OVERRIDE='ftp://ring.htcn.ne.jp/pub/FreeBSD/distfiles/${DIST_SUBDIR}/'
 
-# Java
-export JDK_HOME=/usr/local/java
-export JAVA_HOME=$JDK_HOME
-export JAVA_CLASS=/usr/local/share/java
-#export JAVA_COMPILER=shujit
-export PATH=$PATH:$JAVA_HOME/bin
-export CLASSPATH=.:$HOME/java/work:$HOME/java/classes:$JAVA_CLASS/classes
-for jar in {$HOME/java,$JAVA_CLASS,$JAVA_HOME}/classes/*.{zip,jar}; do
-    if [ -f $jar ]; then
-	CLASSPATH=$CLASSPATH:$jar
-    fi
-done
-
-# HOME PAGE
-export WWW_HOME='http://www.hatena.ne.jp/'
-export WWW_HOME='http://a.hatena.ne.jp/y10k/'
-
 # Ruby
 export RUBY_HOME=$HOME/ruby
 export RUBYLIB=$RUBY_HOME/lib:$RUBY_HOME/lib/i386-freebsd
 export RUBYOPT=rubygems
 export GEM_HOME=$HOME/rubygems
 export PATH=$PATH:$GEM_HOME/bin
+
+# Java
+# export JDK_HOME=/usr/local/java
+# export JAVA_HOME=$JDK_HOME
+# export JAVA_CLASS=/usr/local/share/java
+# #export JAVA_COMPILER=shujit
+# export PATH=$PATH:$JAVA_HOME/bin
+# export CLASSPATH=.:$HOME/java/work:$HOME/java/classes:$JAVA_CLASS/classes
+# for jar in {$HOME/java,$JAVA_CLASS,$JAVA_HOME}/classes/*.{zip,jar}; do
+#     if [ -f $jar ]; then
+# 	CLASSPATH=$CLASSPATH:$jar
+#     fi
+# done
+export JAVA_HOME=/usr/local/jdk1.6.0_06
+export PATH="$JAVA_HOME/bin:$PATH"
+export JRUBY_HOME=$HOME/ruby/jruby-1.1.2
+export PATH="$PATH:$JRUBY_HOME/bin"
+
+# HOME PAGE
+export WWW_HOME='http://www.hatena.ne.jp/'
+export WWW_HOME='http://a.hatena.ne.jp/y10k/'
 
 # Rsync
 export RSYNC_RSH=ssh

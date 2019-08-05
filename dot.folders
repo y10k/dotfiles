@@ -4,14 +4,16 @@
 # This file is generated automatically by Wanderlust 1.1.1 (Purple Rain).
 #
 
-'mark	"重要"
+#'mark	"重要"
 受信箱{
-	+inbox					"受信箱@ローカル"
-	&toki/apop@babayaga.plutonian.ne.jp	"受信箱@ホームサーバ(BABAYAGA)"
-	&toki/apop@cernobog.plutonian.ne.jp	"受信箱@ホームサーバ(CERNOBOG)"
-	&toki@mail.freedom.ne.jp		"受信箱@フリーダム"
+#	+inbox					"受信箱@ローカル"
+	%INBOX:yr10ki@gmail.com/clear@imap.gmail.com:993!	"受信箱@Gmail"
+#	&toki/apop@babayaga.plutonian.ne.jp	"受信箱@ホームサーバ(BABAYAGA)"
+#	&toki/apop@cernobog.plutonian.ne.jp	"受信箱@ホームサーバ(CERNOBOG)"
+#	&toki@mail.freedom.ne.jp		"受信箱@フリーダム"
 	&ey05qykf@mx.edit.ne.jp			"受信箱@EditNet"
-	&toki/apop@sv01.phys.sci.kobe-u.ac.jp	"受信箱@神戸HEP"
+#	&toki/apop@sv01.phys.sci.kobe-u.ac.jp	"受信箱@神戸HEP"
+	&toki@babayaga:20110			"貯蔵庫"
 }
 Wanderlust{
 	+draft					"草案箱"
@@ -20,80 +22,80 @@ Wanderlust{
 	+tmp					"作業用"
 	+trash					"廃棄"
 }
-メール{
-	Ruby{
-		%INBOX.ruby.list		"ruby-list"
-		%INBOX.ruby.list.admin		"ruby-list管理"
-		%INBOX.ruby.unit		"ruby-unit"
-		%INBOX.ruby.misc		"rubyその他"
-	}
-	まぐまぐ{
-		%INBOX.mag2.weekly		"ウィークリーマグマグ"
-		%INBOX.mag2.id_0000003443	"電脳情報通信部"
-	}
-	計算機{
-		%INBOX.admin.root		"計算機管理者"
-		%INBOX.admin.mail		"メール管理者"
-		%INBOX.admin.cron		"CRON"
-		%INBOX.admin.babayaga		"BABAYAGA"
-		%INBOX.admin.cernobog		"CERNOBOG"
-	}
-	%INBOX.home				"実家"
-	%INBOX.kobe_hep				"神戸高エネ研OB"
-	%INBOX.apollon				"アポロン"
-	%INBOX.hibitomo				"ひびとも"
-	%INBOX.tsutaya				"TSUTAYA"
-	%INBOX.freeml				"フリーメール"
-	%INBOX.isize				"ISIZE"
-	%INBOX.diary				"日記アクセスログ"
-	%INBOX.freedom				"フリーダム"
-	%INBOX.ntt				"NTT"
-	%INBOX.kotarochin			"高橋(浩)"
-	%INBOX.misc				"その他"
-	%INBOX.spam				"迷惑メール"
-}
-ニュース{
-	-fj.comp.lang.c
-	-fj.comp.lang.c++
-	-fj.comp.lang.java
-	-fj.comp.lang.ruby
-	-fj.comp.lang.misc
-	-fj.comp.misc
-	-fj.comp.oops
-	-fj.comp.security
-	-fj.mail.reader
-	-fj.news.reader
-	-fj.net.programming
-	-fj.net.providers
-	-fj.os.bsd.freebsd
-	-fj.os.bsd.misc
-	-fj.os.linux
-	-fj.questions.internet
-	-fj.questions.unix
-	-fj.rec.comics
-	-fj.rec.games.video.pc
-}
-新聞{
-	@asahi/
-	@zdnet/
-	@wired/
-	@impress/
-}
-情報{
-	@ruby.ruby-dev
-	@ruby.ruby-talk
-	@airs.wl
-	@meadow/
-	@security-memo/
-	@ibm-dev/
-}
-圧縮{
-	$archive/
-}
-%/
-+/
--fj/
-'cache/
+#メール{
+#	Ruby{
+#		%INBOX.ruby.list		"ruby-list"
+#		%INBOX.ruby.list.admin		"ruby-list管理"
+#		%INBOX.ruby.unit		"ruby-unit"
+#		%INBOX.ruby.misc		"rubyその他"
+#	}
+#	まぐまぐ{
+#		%INBOX.mag2.weekly		"ウィークリーマグマグ"
+#		%INBOX.mag2.id_0000003443	"電脳情報通信部"
+#	}
+#	計算機{
+#		%INBOX.admin.root		"計算機管理者"
+#		%INBOX.admin.mail		"メール管理者"
+#		%INBOX.admin.cron		"CRON"
+#		%INBOX.admin.babayaga		"BABAYAGA"
+#		%INBOX.admin.cernobog		"CERNOBOG"
+#	}
+#	%INBOX.home				"実家"
+#	%INBOX.kobe_hep				"神戸高エネ研OB"
+#	%INBOX.apollon				"アポロン"
+#	%INBOX.hibitomo				"ひびとも"
+#	%INBOX.tsutaya				"TSUTAYA"
+#	%INBOX.freeml				"フリーメール"
+#	%INBOX.isize				"ISIZE"
+#	%INBOX.diary				"日記アクセスログ"
+#	%INBOX.freedom				"フリーダム"
+#	%INBOX.ntt				"NTT"
+#	%INBOX.kotarochin			"高橋(浩)"
+#	%INBOX.misc				"その他"
+#	%INBOX.spam				"迷惑メール"
+#}
+#ニュース{
+#	-fj.comp.lang.c
+#	-fj.comp.lang.c++
+#	-fj.comp.lang.java
+#	-fj.comp.lang.ruby
+#	-fj.comp.lang.misc
+#	-fj.comp.misc
+#	-fj.comp.oops
+#	-fj.comp.security
+#	-fj.mail.reader
+#	-fj.news.reader
+#	-fj.net.programming
+#	-fj.net.providers
+#	-fj.os.bsd.freebsd
+#	-fj.os.bsd.misc
+#	-fj.os.linux
+#	-fj.questions.internet
+#	-fj.questions.unix
+#	-fj.rec.comics
+#	-fj.rec.games.video.pc
+#}
+#新聞{
+#	@asahi/
+#	@zdnet/
+#	@wired/
+#	@impress/
+#}
+#情報{
+#	@ruby.ruby-dev
+#	@ruby.ruby-talk
+#	@airs.wl
+#	@meadow/
+#	@security-memo/
+#	@ibm-dev/
+#}
+#圧縮{
+#	$archive/
+#}
+#%/
+#+/
+#-fj/
+#'cache/
 
 # petname definition (group, folder in access group)
 

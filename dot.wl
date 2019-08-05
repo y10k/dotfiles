@@ -30,12 +30,13 @@
 (setq wl-draft-send-mail-function 'wl-draft-send-mail-with-pop-before-smtp)
 
 ; Local Domain
-(setq wl-local-domain "plutonian.ne.jp")
+(setq wl-local-domain "plutonia.ne.jp")
 
 ; Offline mode
 (setq wl-plugged nil)
 (if (or (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name))
-	(string-match "^[Vv][Aa][Rr][Cc][Oo][Ll][Aa][Cc]" (system-name)))
+	(string-match "^[Vv][Aa][Rr][Cc][Oo][Ll][Aa][Cc]" (system-name))
+	(string-match "^[Bb][Aa][Bb][Aa][Yy][Aa][Gg][Aa]" (system-name)))
     (add-hook 'wl-make-plugged-hook
 	      (function
 	       (lambda ()
@@ -44,6 +45,7 @@
 		 (elmo-set-plugged t "babayaga.plutonian.ne.jp" 110)
 		 (elmo-set-plugged t "cernobog.plutonian.ne.jp" 110)
 		 (elmo-set-plugged t "cernobog.plutonian.ne.jp" 143)
+		 (elmo-set-plugged t "imap.gmail.com" 993 'ssl)
 		 (elmo-set-plugged t "news.edit.ne.jp" 119)
 		 (elmo-set-plugged t "shimbun")))))
 
@@ -118,20 +120,20 @@
 (setq wl-summary-expire-reserve-marks
       '(; "$"
 	"N" "U" "!"))
-(setq wl-expire-alist
-      '(("^+send$"                 (date 7)         trash)
-	("^+trash$"                (number 100 130) remove)
-	("^+ruby/list$"            (number 100 130) wl-expire-archive-date)
-	("^+mag2/weekly$"          (number 100 130) wl-expire-archive-date)
-	("^+mag2/id\\.0000003443$" (number 100 130) wl-expire-archive-date)
-	("^+diary/freedom$"        (number 100 130) wl-expire-archive-date)
-	("^+freedom$"              (number 100 130) wl-expire-archive-date)
-	("^+admin/root$"           (number 100 130) wl-expire-archive-date)
-	("^+admin/mail$"           (number 100 130) wl-expire-archive-date)
-	("^+admin/babayaga$"       (number 100 130) wl-expire-archive-date)
-	("^+admin/cernobog$"       (number 100 130) wl-expire-archive-date)
-	("^+admin/root$"           (number 100 130) wl-expire-archive-date)
-	))
+;; (setq wl-expire-alist
+;;       '(("^+send$"                 (date 7)         trash)
+;; 	("^+trash$"                (number 100 130) remove)
+;; 	("^+ruby/list$"            (number 100 130) wl-expire-archive-date)
+;; 	("^+mag2/weekly$"          (number 100 130) wl-expire-archive-date)
+;; 	("^+mag2/id\\.0000003443$" (number 100 130) wl-expire-archive-date)
+;; 	("^+diary/freedom$"        (number 100 130) wl-expire-archive-date)
+;; 	("^+freedom$"              (number 100 130) wl-expire-archive-date)
+;; 	("^+admin/root$"           (number 100 130) wl-expire-archive-date)
+;; 	("^+admin/mail$"           (number 100 130) wl-expire-archive-date)
+;; 	("^+admin/babayaga$"       (number 100 130) wl-expire-archive-date)
+;; 	("^+admin/cernobog$"       (number 100 130) wl-expire-archive-date)
+;; 	("^+admin/root$"           (number 100 130) wl-expire-archive-date)
+;; 	))
 ; (if (and
 ;      (equal system-name "cernobog.plutonian.ne.jp")
 ;      (eq system-type 'berkeley-unix))
@@ -202,54 +204,54 @@ Cop, cop, kopocam! Va! Sagana! Sagana! Va!
   (lambda ()
     (define-key wl-draft-mode-map "\C-c\C-y" 'xcite-yank-cur-msg))))
 
-; X-Face
-(cond ((featurep 'xemacs)
-       ;;
-       )
-      ((= 21 emacs-major-version)
-       (setq wl-highlight-x-face-function 'x-face-decode-message-header)
-       (define-key wl-summary-mode-map "\C-x4s" 'x-face-save)
-       (define-key wl-draft-mode-map "\C-x4i" 'x-face-insert)
-       ;; "\M-t" key is reserved for wl command.
-       (define-key wl-draft-mode-map "\M-\C-t" 'x-face-show)
-       ;;
-       ;; If a file name has no directory component, it should be
-       ;; found in the directory which is specified by the option
-       ;; `x-face-image-file-directory'.
-       (setq x-face-default-xbm-file "YourFace.xbm")
-       ;;
-       (add-hook 'wl-mail-setup-hook 'x-face-insert)
-       ;; If you use `wl-draft-insert-x-face-field' instead of
-       ;; `x-face-insert' for inserting an X-Face, you can highlight
-       ;; it as an image with the setting of the following hook:
-       (add-hook 'wl-draft-insert-x-face-field-hook
-		 (lambda nil
-		   (x-face-insert wl-x-face-file)))
-       )
-      (t
-       ;;
-       ))
+;; ; X-Face
+;; (cond ((featurep 'xemacs)
+;;        ;;
+;;        )
+;;       ((= 21 emacs-major-version)
+;;        (setq wl-highlight-x-face-function 'x-face-decode-message-header)
+;;        (define-key wl-summary-mode-map "\C-x4s" 'x-face-save)
+;;        (define-key wl-draft-mode-map "\C-x4i" 'x-face-insert)
+;;        ;; "\M-t" key is reserved for wl command.
+;;        (define-key wl-draft-mode-map "\M-\C-t" 'x-face-show)
+;;        ;;
+;;        ;; If a file name has no directory component, it should be
+;;        ;; found in the directory which is specified by the option
+;;        ;; `x-face-image-file-directory'.
+;;        (setq x-face-default-xbm-file "YourFace.xbm")
+;;        ;;
+;;        (add-hook 'wl-mail-setup-hook 'x-face-insert)
+;;        ;; If you use `wl-draft-insert-x-face-field' instead of
+;;        ;; `x-face-insert' for inserting an X-Face, you can highlight
+;;        ;; it as an image with the setting of the following hook:
+;;        (add-hook 'wl-draft-insert-x-face-field-hook
+;; 		 (lambda nil
+;; 		   (x-face-insert wl-x-face-file)))
+;;        )
+;;       (t
+;;        ;;
+;;        ))
 
 
-; IM
-(defun TT:wl-inc-mail ()
-  (interactive)
-  (message "Incing ... ")
-  (call-process "imget" nil nil nil)
-  (if (and (boundp 'wl-summary-buffer-folder-name)
-           (eq wl-summary-buffer-folder-name wl-default-folder))
-      (wl-summary-sync-force-update)
-    (wl-summary-goto-folder-subr wl-default-folder 'force-update nil nil)))
-(add-hook
- 'wl-folder-mode-hook
- (function
-  (lambda ()
-    (define-key wl-folder-mode-map  "\M-i" 'TT:wl-inc-mail))))
-(add-hook
- 'wl-summary-mode-hook
- (function
-  (lambda ()
-    (define-key wl-summary-mode-map "\M-i" 'TT:wl-inc-mail))))
+;; ; IM
+;; (defun TT:wl-inc-mail ()
+;;   (interactive)
+;;   (message "Incing ... ")
+;;   (call-process "imget" nil nil nil)
+;;   (if (and (boundp 'wl-summary-buffer-folder-name)
+;;            (eq wl-summary-buffer-folder-name wl-default-folder))
+;;       (wl-summary-sync-force-update)
+;;     (wl-summary-goto-folder-subr wl-default-folder 'force-update nil nil)))
+;; (add-hook
+;;  'wl-folder-mode-hook
+;;  (function
+;;   (lambda ()
+;;     (define-key wl-folder-mode-map  "\M-i" 'TT:wl-inc-mail))))
+;; (add-hook
+;;  'wl-summary-mode-hook
+;;  (function
+;;   (lambda ()
+;;     (define-key wl-summary-mode-map "\M-i" 'TT:wl-inc-mail))))
 
 ; Color
 (set-face-foreground 'wl-highlight-message-cited-text-2 "DeepPink")
