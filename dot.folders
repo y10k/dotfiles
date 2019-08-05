@@ -7,7 +7,7 @@
 'mark	"重要"
 受信箱{
 	+inbox					"受信箱@ローカル"
-	%INBOX					"受信箱@ホームサーバ"
+	&toki/apop@mail.plutonian.ne.jp		"受信箱@ホームサーバ"
 	&toki@mail.freedom.ne.jp		"受信箱@フリーダム"
 	&toki/apop@sv01.phys.sci.kobe-u.ac.jp	"受信箱@神戸HEP"
 }
@@ -20,35 +20,29 @@ Wanderlust{
 }
 メール{
 	Ruby{
-		%#mh/ruby/list		"ruby-list"
-		%#mh/ruby/perllib	"perl"
-		%#mh/ruby/rmp3		"rmp3"
-		%#mh/ruby/erb		"ERb"
-		%#mh/ruby/rubyring	"RubyRing"
-		%#mh/ruby/daemon	"daemon"
+		%INBOX.ruby.list		"ruby-list"
+		%INBOX.ruby.list.admin		"ruby-list管理"
+		%INBOX.ruby.misc		"rubyその他"
 	}
 	まぐまぐ{
-		%#mh/mag2/weekly	"ウィークリーマグマグ"
-		%#mh/mag2/id.0000003443	"電脳情報通信部"
-	}
-	アポロン{
-		%#mh/apollon/tokyo	"関東圏"
-		%#mh/apollon		"関東圏外"
+		%INBOX.mag2.weekly		"ウィークリーマグマグ"
+		%INBOX.mag2.id_0000003443	"電脳情報通信部"
 	}
 	計算機{
-		%#mh/admin/root		"管理者"
-		%#mh/admin/cernobog	"CERNOBOG"
-		%#mh/admin/babayaga	"BABAYAGA"
-		%#mh/admin/mail		"POSTMASTER"
+		%INBOX.admin.root		"計算機管理者"
+		%INBOX.admin.mail		"メール管理者"
+		%INBOX.admin.babayaga		"CERNOBOG"
+		%INBOX.admin.cernobog		"BABAYAGA"
 	}
-	%#mh/hibitomo		"ひびとも会"
-	%#mh/kobe-hep		"神戸HEP OB"
-	%#mh/home		"実家"
-	%#mh/diary/freedom	"日記ログ"
-	%#mh/freedom		"フリーダム"
-	%#mh/isize		"ISIZE"
-	%#mh/ibm		"Club IBM"
-	%#mh/ntt		"NTT"
+	%INBOX.home				"実家"
+	%INBOX.kobe_hep				"神戸高エネ研OB"
+	%INBOX.apollon				"アポロン"
+	%INBOX.hibitomo				"ひびとも"
+	%INBOX.tsutaya				"TSUTAYA"
+	%INBOX.isize				"ISIZE"
+	%INBOX.diary				"日記アクセスログ"
+	%INBOX.freedom				"フリーダム"
+	%INBOX.misc				"その他"
 }
 圧縮{
 	$ruby/
@@ -78,7 +72,8 @@ Wanderlust{
 	-fj.rec.comics
 	-fj.rec.games.video.pc
 }
-%#mh/
+%/
++/
 -fj/
 'cache/
 

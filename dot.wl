@@ -8,7 +8,7 @@
 ; Win32 HOME network settings
 (cond
  ((and (eq window-system 'w32)
-       (equal (system-name) "CERNOBOG"))
+       (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name)))
   (setq elmo-msgdb-dir "//babayaga/toki/.elmo")
   (setq elmo-localdir-folder-path "//babayaga/toki/Mail")))
 
@@ -24,14 +24,18 @@
 (setq elmo-default-nntp-server "news7.dion.ne.jp")
 (setq elmo-default-pop3-server "mail.freedom.ne.jp")
 (setq elmo-default-imap4-server "mail.plutonian.ne.jp")
+(setq elmo-default-imap4-authenticate-type 'cram-md5)
 (setq wl-smtp-posting-server "mail.freedom.ne.jp")
 (setq wl-draft-send-mail-func 'wl-draft-send-mail-with-pop-before-smtp)
 
 ; Offline mode
 (setq wl-plugged nil)
-(if (equal (system-name) "cernobog.plutonian.ne.jp")
+(if (string-match "^[Cc][Ee][Rr][Nn][Oo][Bb][Oo][Gg]" (system-name))
     (add-hook 'wl-make-plugged-hook
-	      (function (lambda () (elmo-set-plugged t "mail.plutonian.ne.jp" 143)))))
+	      (function
+	       (lambda ()
+		 (elmo-set-plugged t "mail.plutonian.ne.jp" 110)
+		 (elmo-set-plugged t "mail.plutonian.ne.jp" 143)))))
 
 ; Message
 (setq elmo-msgdb-extra-fields '("X-ML-Name" "Newsgroups"))
@@ -42,34 +46,29 @@
 (setq wl-message-id-domain "mail.freedom.ne.jp")
 (setq wl-summary-auto-refile-skip-marks ())
 (setq wl-refile-rule-alist
-      '(; 予定
-	("Subject"
-	 ("^\\[予定\\]" . "%#mh/schedule"))
-	; 日記ログ
+      '(; 日記ログ
 	("From"
-	 ("^DIARY Archive CGI (toki@imopc7"          . "%#mh/diary/local")
-	 ("^DIARY Archive CGI (toki@ppbdbs01"        . "%#mh/diary/local")
-	 ("^DIARY Archive CGI (nobody@\\(web\\|www\\)\\.freedom" . "%#mh/diary/freedom"))
+	 ("^DIARY Archive CGI (nobody@\\(web\\|www\\)\\.freedom" . "%INBOX.diary"))
 	; 計算機
 	("Subject"
-	 ("cernobog" . "%#mh/admin/cernobog")
-	 ("babayaga" . "%#mh/admin/babayaga")
-	 ("root"     . "%#mh/admin/root"))
+	 ("root"     . "%INBOX.admin.root")
+	 ("cernobog" . "%INBOX.admin.cernobog")
+	 ("babayaga" . "%INBOX.admin.babayaga"))
 	("To"
-	 ("root@cernobog" . "%#mh/admin/cernobog")
-	 ("root@babayaga" . "%#mh/admin/babayaga")
-	 ("root"          . "%#mh/admin/root"))
+	 ("root"          . "%INBOX.admin.root")
+	 ("root@cernobog" . "%INBOX.admin.cernobog")
+	 ("root@babayaga" . "%INBOX.admin.babayaga"))
 	; Ruby
 	("X-ML-Name"
-	 ("ruby-list" . "%#mh/ruby/list"))
+	 ("ruby-list" . "%INBOX.ruby.list"))
 	; まぐまぐ
 	("Subject"
-	 ("^\\[Weekly Mag2"                         . "%#mh/mag2/weekly")
-	 ("^\\[\\(電脳通情報部\\|明日を創るもの\\)" . "%#mh/mag2/id.0000003443")
-	 ("^\\[今週の○○"                          . "%#mh/mag2/id.0000004784")
-	 ("^たった一人の情報システム課"             . "%#mh/mag2/id.0000016004"))
+	 ("^\\[Weekly Mag2"                         . "%INBOX.mag2.weekly")
+	 ("^\\[\\(電脳通情報部\\|明日を創るもの\\)" . "%INBOX.mag2.id_0000003443")
+	 ("^\\[今週の○○"                          . "%INBOX.mag2.id_0000004784")
+	 ("^たった一人の情報システム課"             . "%INBOX.mag2.id_0000016004"))
 	("From"
-	 ("mag2" . "%#mh/mag2"))))
+	 ("mag2" . "%INBOX.mag2"))))
 (setq wl-refile-rule-alist
       (append wl-refile-rule-alist
 	      ((lambda (rule-src-list)
@@ -88,19 +87,8 @@
 				  rule-src))
 			 rule-src-list)))
 	       '(
-		 ; BESS
-		 (("To" "Cc" "From") ("bess-japan") "%#mh/kobe/bess/japan")
-		 (("To" "Cc" "From") ("bess-workers") "%#mh/kobe/bess/workers")
-		 (("To" "Cc" "From") ("chousan" "anraku" "imori") "%#mh/kobe/bess/fadcif")
 		 ; フリーダム
-		 (("To" "Cc" "From") ("info@freedom.ne.jp") "%#mh/freedom")
-		 ; JLC
-		 (("To" "Cc" "From") ("jlc") "%#mh/kobe/jlc")
-		 ; 神戸
-		 (("To" "Cc" "From") ("srvadm") "%#mh/kobe/computer/srvadm")
-		 (("To" "Cc" "From") ("pp-bulletin") "%#mh/kobe/pp-bulletin")
-		 (("To" "Cc" "From") ("m1@astro") "%#mh/kobe/m1")
-		 (("To" "Cc" "From") ("m2@astro") "%#mh/kobe/m2")
+		 (("To" "Cc" "From") ("info@freedom.ne.jp") "%INBOX.freedom")
 		 ))))
 
 ; Expire
@@ -109,29 +97,29 @@
       '(; "$"
 	"N" "U" "!"))
 (setq wl-expire-alist
-      '(("^%#mh/send$"                 (date 7)         trash)
-	("^%#mh/trash$"                (number 100 130) remove)
-	("^%#mh/ruby/list$"            (number 100 130) wl-expire-archive-date)
-	("^%#mh/mag2/weekly$"          (number 100 130) wl-expire-archive-date)
-	("^%#mh/mag2/id\\.0000003443$" (number 100 130) wl-expire-archive-date)
-	("^%#mh/diary/freedom$"        (number 100 130) wl-expire-archive-date)
-	("^%#mh/freedom$"              (number 100 130) wl-expire-archive-date)
-	("^%#mh/admin/root$"           (number 100 130) wl-expire-archive-date)
-	("^%#mh/admin/mail$"           (number 100 130) wl-expire-archive-date)
-	("^%#mh/admin/babayaga$"       (number 100 130) wl-expire-archive-date)
-	("^%#mh/admin/cernobog$"       (number 100 130) wl-expire-archive-date)
-	("^%#mh/admin/root$"           (number 100 130) wl-expire-archive-date)
-        ))
-(if (and
-     (equal system-name "cernobog.plutonian.ne.jp")
-     (eq system-type 'berkeley-unix))
-    (add-hook
-     'wl-summary-prepared-pre-hook
-     (function
-      (lambda ()
-	(cond
-	 (t
-	  (wl-summary-expire)))))))
+      '(("^+send$"                 (date 7)         trash)
+	("^+trash$"                (number 100 130) remove)
+	("^+ruby/list$"            (number 100 130) wl-expire-archive-date)
+	("^+mag2/weekly$"          (number 100 130) wl-expire-archive-date)
+	("^+mag2/id\\.0000003443$" (number 100 130) wl-expire-archive-date)
+	("^+diary/freedom$"        (number 100 130) wl-expire-archive-date)
+	("^+freedom$"              (number 100 130) wl-expire-archive-date)
+	("^+admin/root$"           (number 100 130) wl-expire-archive-date)
+	("^+admin/mail$"           (number 100 130) wl-expire-archive-date)
+	("^+admin/babayaga$"       (number 100 130) wl-expire-archive-date)
+	("^+admin/cernobog$"       (number 100 130) wl-expire-archive-date)
+	("^+admin/root$"           (number 100 130) wl-expire-archive-date)
+	))
+; (if (and
+;      (equal system-name "cernobog.plutonian.ne.jp")
+;      (eq system-type 'berkeley-unix))
+;     (add-hook
+;      'wl-summary-prepared-pre-hook
+;      (function
+;       (lambda ()
+; 	(cond
+; 	 (t
+; 	  (wl-summary-expire)))))))
 
 ; Draft
 (setq wl-interactive-send t)
