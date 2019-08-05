@@ -147,7 +147,7 @@
 (setq wl-draft-always-delete-myself t)
 (setq wl-draft-config-alist
       '((t
-	 ("X-PGP-Fingerprint" . "D0 A8 90 AB 73 F8 34 FE  CE CA DB BF 01 30 C0 35"))
+	 ("X-GPG-Fingerprint" . "2968 565F 0550 57D3 1AF8  E03F 520A 03B6 FAC1 4744"))
 	))
 (setq wl-template-alist
       '(("sig:phys"
