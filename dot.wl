@@ -16,16 +16,13 @@
 ; Server
 (setq elmo-default-nntp-server "news.neweb.ne.jp")
 (setq wl-smtp-posting-server "mail.freedom.ne.jp")
-; ; POP Server in HOME LAN
-; (add-hook 'wl-make-plugged-hook
-; 	  (function
-; 	   (lambda ()
-; 	     (elmo-set-plugged t "babayaga" 110))))
-; ; POP before SMTP
-; (setq wl-pop-before-smtp-server "mail.freedom.ne.jp")
-; (setq wl-pop-before-smtp-authenticate-type "POP")
-; (setq wl-draft-send-mail-func
-;       'wl-draft-send-mail-with-pop-before-smtp)
+
+; Offline mode
+(setq wl-plugged nil)
+(add-hook 'wl-make-plugged-hook
+	  (function
+	   (lambda ()
+	     (elmo-set-plugged t "babayaga" 110))))
 
 ; Message
 (setq elmo-msgdb-extra-fields '("X-ML-Name" "Newsgroups"))
