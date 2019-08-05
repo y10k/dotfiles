@@ -57,7 +57,7 @@ export MASTER_SITE_OVERRIDE='ftp://netlab.is.tsukuba.ac.jp/pub/os/FreeBSD/distfi
 export JDK_HOME=/usr/local/java
 export JAVA_HOME=$JDK_HOME
 export JAVA_CLASS=/usr/local/share/java
-export JAVA_COMPILER=shujit
+#export JAVA_COMPILER=shujit
 export PATH=$PATH:$JAVA_HOME/bin
 export CLASSPATH=.:$HOME/java/work:$HOME/java/classes:$JAVA_CLASS/classes
 for jar in {$HOME/java,$JAVA_CLASS,$JAVA_HOME}/classes/*.{zip,jar}; do

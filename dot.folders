@@ -7,7 +7,7 @@
 'mark	"重要"
 受信箱{
 	+inbox					"受信箱@ローカル"
-	&toki/apop@babayaga			"受信箱@ホームサーバ"
+	%INBOX					"受信箱@ホームサーバ"
 	&toki@mail.freedom.ne.jp		"受信箱@フリーダム"
 	&toki/apop@sv01.phys.sci.kobe-u.ac.jp	"受信箱@神戸HEP"
 }
@@ -20,34 +20,35 @@ Wanderlust{
 }
 メール{
 	Ruby{
-		+ruby/list	"ruby-list"
-		+ruby/perllib	"perl"
-		+ruby/rmp3	"rmp3"
-		+ruby/erb	"ERb"
-		+ruby/rubyring	"RubyRing"
-		+ruby/daemon	"daemon"
+		%#mh/ruby/list		"ruby-list"
+		%#mh/ruby/perllib	"perl"
+		%#mh/ruby/rmp3		"rmp3"
+		%#mh/ruby/erb		"ERb"
+		%#mh/ruby/rubyring	"RubyRing"
+		%#mh/ruby/daemon	"daemon"
 	}
 	まぐまぐ{
-		+mag2/weekly		"ウィークリーマグマグ"
-		+mag2/id.0000003443	"電脳情報通信部"
+		%#mh/mag2/weekly	"ウィークリーマグマグ"
+		%#mh/mag2/id.0000003443	"電脳情報通信部"
 	}
 	アポロン{
-		+apollon/tokyo	"関東圏"
-		+apollon	"関東圏外"
+		%#mh/apollon/tokyo	"関東圏"
+		%#mh/apollon		"関東圏外"
 	}
 	計算機{
-		+admin/root	"管理者"
-		+admin/cernobog	"CERNOBOG"
-		+admin/babayaga	"BABAYAGA"
-		+admin/mail	"POSTMASTER"
+		%#mh/admin/root		"管理者"
+		%#mh/admin/cernobog	"CERNOBOG"
+		%#mh/admin/babayaga	"BABAYAGA"
+		%#mh/admin/mail		"POSTMASTER"
 	}
-	+kobe-hep	"神戸HEP OB"
-	+home		"実家"
-	+diary/freedom	"日記ログ"
-	+freedom	"フリーダム"
-	+isize		"ISIZE"
-	+ibm		"Club IBM"
-	+ntt		"NTT"
+	%#mh/hibitomo		"ひびとも会"
+	%#mh/kobe-hep		"神戸HEP OB"
+	%#mh/home		"実家"
+	%#mh/diary/freedom	"日記ログ"
+	%#mh/freedom		"フリーダム"
+	%#mh/isize		"ISIZE"
+	%#mh/ibm		"Club IBM"
+	%#mh/ntt		"NTT"
 }
 圧縮{
 	$ruby/
@@ -77,7 +78,7 @@ Wanderlust{
 	-fj.rec.comics
 	-fj.rec.games.video.pc
 }
-	+/
+%#mh/
 -fj/
 'cache/
 

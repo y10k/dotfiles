@@ -1,5 +1,6 @@
 # $Id$
 
+continue = on
 passive_ftp = on
 ftp_proxy = proxy.plutonian.ne.jp:8080
 http_proxy = proxy.plutonian.ne.jp:8080
