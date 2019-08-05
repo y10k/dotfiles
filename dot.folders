@@ -9,6 +9,7 @@
 	+inbox					"受信箱@ローカル"
 	&toki/apop@mail.plutonian.ne.jp		"受信箱@ホームサーバ"
 	&toki@mail.freedom.ne.jp		"受信箱@フリーダム"
+	&ey05qykf@mx.edit.ne.jp			"受信箱@EditNet"
 	&toki/apop@sv01.phys.sci.kobe-u.ac.jp	"受信箱@神戸HEP"
 }
 Wanderlust{
@@ -72,7 +73,6 @@ Wanderlust{
 新聞{
 	@asahi/
 	@mainichi/
-	@nikkei/
 	@cnet/
 	@zdnet/
 	@wired/
@@ -80,7 +80,9 @@ Wanderlust{
 }
 情報{
 	@security-memo/
+	@meadow/
 	@ibm-dev/
+	@airs.wl
 }
 圧縮{
 	$archive/

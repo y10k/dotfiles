@@ -40,6 +40,7 @@
 	      (function
 	       (lambda ()
 		 (elmo-set-plugged t "mail.freedom.ne.jp" 110)
+		 (elmo-set-plugged t "mx.edit.ne.jp" 110)
 		 (elmo-set-plugged t "mail.plutonian.ne.jp" 110)
 		 (elmo-set-plugged t "mail.plutonian.ne.jp" 143)
 		 (elmo-set-plugged t "news.edit.ne.jp" 119)
