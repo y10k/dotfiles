@@ -122,7 +122,9 @@
 	("^%#mh/admin/cernobog$"       (number 100 130) wl-expire-archive-date)
 	("^%#mh/admin/root$"           (number 100 130) wl-expire-archive-date)
         ))
-(if (equal (system-name) "cernobog.plutonian.ne.jp")
+(if (and
+     (equal system-name "cernobog.plutonian.ne.jp")
+     (eq system-type 'berkeley-unix))
     (add-hook
      'wl-summary-prepared-pre-hook
      (function
