@@ -22,7 +22,9 @@
 
 ; Server
 (setq elmo-default-nntp-server "news.neweb.ne.jp")
+(setq elmo-default-pop3-server "mail.freedom.ne.jp")
 (setq wl-smtp-posting-server "mail.freedom.ne.jp")
+(setq wl-draft-send-mail-func 'wl-draft-send-mail-with-pop-before-smtp)
 
 ; Offline mode
 (setq wl-plugged nil)
