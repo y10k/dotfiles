@@ -13,7 +13,7 @@ export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin:/usr/X1
 umask 22
 
 # terminal settings
-[ -t 0 ] && stty erase "^H" intr "^C" susp "^Z"
+[ -n "$PS1" ] && [ -t 0 ] && stty erase "^H" intr "^C" susp "^Z"
 
 # Locale
 export LANG=ja_JP.EUC
@@ -73,9 +73,6 @@ export WWW_HOME=http://www.freedom.ne.jp/toki/
 export RUBY_HOME=$HOME/ruby
 export RUBYLIB=$RUBY_HOME/lib:$RUBY_HOME/lib/i386-freebsd
 
-# Name servers
-export NS_NEWEB=210.132.91.129
-
 # Rsync
 export RSYNC_RSH=ssh
 
@@ -84,21 +81,23 @@ export PATH=$PATH:/usr/local/pgsql/bin
 export PGLIB=/usr/local/pgsql/lib
 export PGDATA=/usr/local/pgsql/data
 
-# Aliases
-alias h='history 25'
-alias j='jobs -l'
-alias la='ls -a'
-alias lf='ls -FA'
-alias ll='ls -lA'
-alias ls='ls -F'
-alias diff='diff -u'
-alias vi=/usr/local/bin/nvi
-alias view=/usr/local/bin/nview
+if [ -n "$PS1" ]; then
+  # Aliases
+  alias h='history 25'
+  alias j='jobs -l'
+  alias la='ls -a'
+  alias lf='ls -FA'
+  alias ll='ls -lA'
+  alias ls='ls -F'
+  alias diff='diff -u'
+  alias vi=/usr/local/bin/nvi
+  alias view=/usr/local/bin/nview
 
-# Shell options
-HISTSIZE=1000
-HISTFILESIZE=1000
-MAILPATH=/var/mail/toki
+  # Shell options
+  HISTSIZE=1000
+  HISTFILESIZE=1000
+  MAILPATH=/var/mail/toki
 
-# Prompt
-PS1='\u@\h(\!)$ '
+  # Prompt
+  PS1='\u@\h(\!)$ '
+fi
