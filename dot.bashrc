@@ -19,7 +19,7 @@ if [ -t 0 ]; then
 fi
 
 # Locale
-export LANG=ja_JP.UTF-8
+#export LANG=ja_JP.UTF-8        # default LANG is used.
 export LC_TIME=C
 
 # Editor and Pager
@@ -61,7 +61,7 @@ export MASTER_SITE_OVERRIDE='ftp://ring.htcn.ne.jp/pub/FreeBSD/distfiles/${DIST_
 # export CLASSPATH=.:$HOME/java/work:$HOME/java/classes:$JAVA_CLASS/classes
 # for jar in {$HOME/java,$JAVA_CLASS,$JAVA_HOME}/classes/*.{zip,jar}; do
 #     if [ -f $jar ]; then
-# 	CLASSPATH=$CLASSPATH:$jar
+#       CLASSPATH=$CLASSPATH:$jar
 #     fi
 # done
 export JAVA_HOME=/usr/local/jdk1.6.0_06
@@ -91,12 +91,12 @@ if [ -n "${SCREEN_SESSION}" ]; then # add to .screenrc: setenv SCREEN_SESSION 1
   if [ -S "${saved_ssh_agent_sock}" ]; then
     case "$(uname -r)" in
       *Microsoft*)
-	# for WSL (symbolic link is not worked on unix domain socket)
-	ssh_agent_reload
-	;;
+        # for WSL (symbolic link is not worked on unix domain socket)
+        ssh_agent_reload
+        ;;
       *)
-	export SSH_AUTH_SOCK="${saved_ssh_agent_sock}"
-	;;
+        export SSH_AUTH_SOCK="${saved_ssh_agent_sock}"
+        ;;
     esac
   fi
 else
@@ -135,3 +135,7 @@ if [ -n "$PS1" ]; then
   # Prompt
   PS1='\u@\h(\!)$ '
 fi
+
+# Local Variables:
+# indent-tabs-mode: nil
+# End:
