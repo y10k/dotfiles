@@ -84,13 +84,29 @@ export PGDATA=/usr/local/pgsql/data
 # ssh-agent forwarding in GNU Screen session
 if [ -n "$PS1" ]; then          # for interactive shell
   saved_ssh_agent_sock="${HOME}/.ssh/agent_sock"
+  saved_ssh_x11_forwarding="${HOME}/.ssh/x11_forwarding"
   unix_socket_tunnel="${HOME}/git_work/unix_socket_tunnel/unix_socket_tunnel"
 
   if [ -n "${SCREEN_SESSION}" ]; then # add to .screenrc: setenv SCREEN_SESSION 1
     export SSH_AUTH_SOCK="${saved_ssh_agent_sock}"
-  elif shopt -q login_shell && [ -n "${SSH_AUTH_SOCK}" ] && [ -S "${SSH_AUTH_SOCK}" ]; then
-    rm -f "${saved_ssh_agent_sock}"
-    "${unix_socket_tunnel}" "${SSH_AUTH_SOCK}" "${saved_ssh_agent_sock}" &
+
+    ssh_x11_forwarding_reload() {
+      if [ -f "${saved_ssh_x11_forwarding}" ]; then
+        . "${saved_ssh_x11_forwarding}"
+      fi
+    }
+    ssh_x11_forwarding_reload
+  else
+    if shopt -q login_shell && [ -n "${SSH_AUTH_SOCK}" ] && [ -S "${SSH_AUTH_SOCK}" ]; then
+      rm -f "${saved_ssh_agent_sock}"
+      "${unix_socket_tunnel}" "${SSH_AUTH_SOCK}" "${saved_ssh_agent_sock}" &
+    fi
+
+    if [ -n "${DISPLAY}" ]; then
+      echo "export DISPLAY=${DISPLAY}" >"${saved_ssh_x11_forwarding}"
+    else
+      rm -f "${saved_ssh_x11_forwarding}"
+    fi
   fi
 fi
 
