@@ -121,6 +121,16 @@ case "$(uname -r)" in
     ;;
 esac
 
+# Xmodmap
+if [ -n "${DISPLAY}" ]; then
+  if xmodmap | egrep 'mod1.*Alt_R'; then
+    xmodmap - <<EOF
+remove mod1 = Alt_R
+add control = Alt_R
+EOF
+  fi
+fi
+
 if [ -n "$PS1" ]; then
   # Aliases
   alias h='history 25'
