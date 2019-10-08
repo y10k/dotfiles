@@ -9,7 +9,6 @@
 	%INBOX					"受信箱@Gmail"
 	&toki@mail.freedom.ne.jp		"受信箱@フリーダム"
 	&ey05qykf@mx.edit.ne.jp			"受信箱@EditNet"
-	&toki@babayaga:20110			"貯蔵庫"
 }
 Wanderlust{
 	+draft					"草案箱"
@@ -17,6 +16,14 @@ Wanderlust{
 	+queue					"送信中"
 	+tmp					"作業用"
 	+trash					"廃棄"
+}
+貯蔵庫{
+	%INBOX:toki@192.168.100.200:143!direct                  "貯蔵庫"
+	%mail.freedom.ne.jp:toki@192.168.100.200:143!direct	"mail.freedom.ne.jp"
+	%mx.edit.ne.jp:toki@192.168.100.200:143!direct	        "mx.edit.ne.jp"
+	%gmail_yr10ki_all:toki@192.168.100.200:143!direct	"gmail_yr10ki_all"
+	%gmail_yr10ki_junk:toki@192.168.100.200:143!direct	"gmail_yr10ki_junk"
+	%lost+found:toki@192.168.100.200:143!direct	        "lost+found"
 }
 %/
 +/
