@@ -123,7 +123,7 @@ esac
 
 # Xmodmap
 if [ -n "${DISPLAY}" ]; then
-  if xmodmap | egrep 'mod1.*Alt_R'; then
+  if xmodmap | egrep 'mod1.*Alt_R' >/dev/null; then
     xmodmap - <<EOF
 remove mod1 = Alt_R
 add control = Alt_R
