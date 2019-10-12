@@ -17,7 +17,7 @@ Wanderlust{
 	+trash					"廃棄"
 }
 貯蔵庫{
-	%INBOX:toki@192.168.100.200:143!direct                  "貯蔵庫"
+	%INBOX:toki@192.168.100.200:143!direct                  "INBOX"
 	%mail.freedom.ne.jp:toki@192.168.100.200:143!direct	"mail.freedom.ne.jp"
 	%mx.edit.ne.jp:toki@192.168.100.200:143!direct	        "mx.edit.ne.jp"
 	%gmail_yr10ki_all:toki@192.168.100.200:143!direct	"gmail_yr10ki_all"
