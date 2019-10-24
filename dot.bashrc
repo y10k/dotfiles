@@ -122,17 +122,15 @@ case "$(uname -r)" in
 esac
 
 # Xmodmap
-if [ -n "${DISPLAY}" ]; then
-  xmodmap_AltR() {
-    if xmodmap | egrep 'mod1.*Alt_R' >/dev/null; then
-      xmodmap - <<EOF
+xmodmap_AltR() {
+  if xmodmap | grep 'mod1.*Alt_R' >/dev/null; then
+    xmodmap - <<EOF
 remove mod1 = Alt_R
 add control = Alt_R
 EOF
-    fi
-  }
-  xmodmap_AltR
-fi
+  fi
+}
+[ -n "${DISPLAY}" ] && xmodmap_AltR
 
 if [ -n "$PS1" ]; then
   # Aliases
