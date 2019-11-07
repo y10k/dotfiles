@@ -121,17 +121,6 @@ case "$(uname -r)" in
     ;;
 esac
 
-# Xmodmap
-xmodmap_AltR() {
-  if xmodmap | grep 'mod1.*Alt_R' >/dev/null; then
-    xmodmap - <<EOF
-remove mod1 = Alt_R
-add control = Alt_R
-EOF
-  fi
-}
-[ -n "${DISPLAY}" ] && xmodmap_AltR
-
 if [ -n "$PS1" ]; then
   # Aliases
   alias h='history 25'
