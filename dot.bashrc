@@ -132,6 +132,7 @@ if [ -n "$PS1" ]; then
   alias cmd='/mnt/c/Windows/System32/cmd.exe'
   alias explorer='/mnt/c/Windows/explorer.exe'
   alias git_apply="${HOME}/dotfiles/git_apply.sh"
+  alias hwclock_reset='sudo hwclock -s; date'
 
   case "$EMACS" in
   '')
